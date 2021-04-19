@@ -4,34 +4,20 @@
 
 var DEBUG = true
 
-/* tries to use built-in browser plugin to authentication;
-when false uses OS default browser with a simple url link;
-option `true` is not working, check:
-https://github.com/apache/cordova-plugin-inappbrowser/issues/498 */
-var AUTHENTICATION_WITH_IN_APP_BROWSER = false
-
 var app = {}
 
 app.main = (function (thisModule) {
   var wasInit
 
   thisModule.urls = {
-    Chave_Movel_Digital: {
-      aderir: 'https://www.autenticacao.gov.pt/cmd-pedido-chave',
-      a_minha_area: 'https://www.autenticacao.gov.pt/a-chave-movel-digital',
-      assinar_pdf: 'https://cmd.autenticacao.gov.pt/Ama.Authentication.Frontend/Processes/DigitalSignature/DigitalSignatureIntro.aspx',
-      appAndroid: 'https://play.google.com/store/apps/details?id=pt.ama.autenticacaogov&hl=pt',
-      app_iOS: 'https://apps.apple.com/pt/app/id1291777170'
-    },
     databaseServer: {
-      uploadImages: 'https://contabo.joaopimentel.com/passeio_livre/serverapp_img_upload', // used to upload an image
-      requestImage: 'https://contabo.joaopimentel.com/passeio_livre/image_server', // folder where all the images are stored
-      uploadOccurence: 'https://contabo.joaopimentel.com/passeio_livre/serverapp', // to upload anew or update the data of an occurence
-      requestHistoric: 'https://contabo.joaopimentel.com/passeio_livre/serverapp_get_historic' // to request all historic ocurrences of current user
+      uploadImages: '', // used to upload an image
+      requestImage: '', // folder where all the images are stored
+      uploadOccurence: '', // to upload anew or update the data of an occurence
+      requestHistoric: '' // to request all historic ocurrences of current user
     },
     androidApps: {
-      thisApp: 'https://play.google.com/store/apps/details?id=com.form.parking.violation',
-      shareToFileSystem: 'https://play.google.com/store/apps/details?id=com.boxhead.android.sharetofilesystem&hl=pt'
+      thisApp: 'https://play.google.com/store/apps/details?id=com.form.parking.violation'
     },
     openStreetMaps: {
       nominatimReverse: 'https://nominatim.openstreetmap.org/reverse'
@@ -48,7 +34,6 @@ app.main = (function (thisModule) {
 
   function onDeviceReady () {
     console.log('onDeviceReady() started')
-    console.log('AUTHENTICATION_WITH_IN_APP_BROWSER: ', AUTHENTICATION_WITH_IN_APP_BROWSER)
     console.success = (message) => { console.log('%c ' + message, 'color: green; font-weight:bold') }
 
     document.addEventListener('online', onOnline, false)
@@ -112,13 +97,10 @@ app.main = (function (thisModule) {
       }
     })
 
-    $('#plate').css('border-color', '')
-    app.form.setPortuguesePlateInput()
-
     // this is used to get address on form, and for maps section
     app.localization.loadMapsApi()
 
-    app.map.init()
+    // app.map.init()
 
     if (DEBUG) {
       app.functions.setDebugValues()
@@ -193,45 +175,13 @@ app.main = (function (thisModule) {
   // botão de gerar email
   $('#send_email_btn').click(function () {
     // it popups the alerts according to needed fields
-    if (!app.form.isMessageReady()) {
-      return
+    if (app.form.isMessageReady()) {
+      sendEMailMessage()
     }
-
-    var mensagem = 'A Autoridade Nacional de Segurança Rodoviária (ANSR), num parecer enviado às polícias a propósito desta APP, ' +
-    'refere que as polícias devem de facto proceder à emissão efetiva da multa, perante as queixas dos cidadãos por esta via. ' +
-    'Todavia, refere a ANSR, que os denunciantes deverão posteriormente dirigir-se às instalações da polícia respetiva, para se identificarem presencialmente.<br><br>' +
-    'Caso não se queira dirigir à polícia, terá de se autenticar fazendo uso da <b>Chave  Móvel Digital</b> emitida pela Administração Pública. ' +
-    'Caso não tenha uma, veja no menu principal como pedi-la.'
-
-    $.jAlert({
-      title: 'Deseja autenticar a sua mensagem com Chave Móvel Digital?',
-      content: mensagem,
-      theme: 'dark_blue',
-      btns: [
-        {
-          text: '<b>Usar</b> Chave Móvel Digital',
-          theme: 'green',
-          class: 'jButtonAlert',
-          onClick: function () {
-            if (AUTHENTICATION_WITH_IN_APP_BROWSER) {
-              app.authentication.startAuthenticationWithInAppBrowser()
-            } else {
-              app.authentication.startAuthenticationWithSystemBrowser()
-            }
-          }
-        },
-        {
-          text: '<b>Não usar</b> Chave Móvel Digital',
-          theme: 'green',
-          class: 'jButtonAlert',
-          onClick: sendMailMessageWithoutCMD
-        }
-      ]
-    })
   })
 
   // CMD -> Chave Móvel Digital
-  function sendMailMessageWithoutCMD () {
+  function sendEMailMessage () {
     app.dbServerLink.submitNewEntryToDB()
 
     var imagesArray = app.photos.getPhotosForEmailAttachment()
@@ -248,7 +198,7 @@ app.main = (function (thisModule) {
     })
   }
 
-  thisModule.sendMailMessageWithoutCMD = sendMailMessageWithoutCMD
+  thisModule.sendEMailMessage = sendEMailMessage
 
   return thisModule
 })({})

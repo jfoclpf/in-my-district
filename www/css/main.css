@@ -2,6 +2,11 @@ h1 {
   text-align: center
 }
 
+#header_title {
+  font-size: 190%;
+  font-weight: 500;
+}
+
 #content {
   width: 100%;
 }
@@ -143,8 +148,4 @@ button#save_personal_data {
   background-size: 25px 25px;
   background-position:right center;
   background-repeat: no-repeat;
-}
-
-#cmd_how_it_works a {
-  text-decoration: underline;
 }

@@ -17,22 +17,6 @@ app.sidebar = (function (thisModule) {
       }
     })
 
-    // populates urls
-    $('a.aderir_url').attr('href', app.main.urls.Chave_Movel_Digital.aderir)
-    $('a.a_minha_area_url').attr('href', app.main.urls.Chave_Movel_Digital.a_minha_area)
-    $('a.assinar_pdf_url').attr('href', app.main.urls.Chave_Movel_Digital.assinar_pdf)
-
-    if (app.functions.isThisAndroid()) {
-      $('a.app_CMD_url').attr('href', app.main.urls.Chave_Movel_Digital.appAndroid)
-      $('a.app_save_PDF').attr('href', app.main.urls.androidApps.shareToFileSystem)
-    } else if (app.functions.isThis_iOS()) {
-      $('a.app_CMD_url').attr('href', app.main.urls.Chave_Movel_Digital.app_iOS)
-      $('a.app_save_PDF').remove()
-    } else {
-      $('a.app_CMD_url').remove()
-      $('a.app_save_PDF').remove()
-    }
-
     // opens http links with system browser
     $('a[href]').click(function (event) {
       var href = $(this).attr('href')
@@ -48,38 +32,25 @@ app.sidebar = (function (thisModule) {
       app.sidebar.toggleSidebar(false)
     })
 
-    $('#historic_show').click(function () {
+    $('#historic_show').remove()
+    /* $('#historic_show').click(function () {
       app.historic.updateHistoric()
       showSection('historic')
       app.sidebar.toggleSidebar(false)
-    })
+    }) */
 
-    $('#map_section_show').click(function () {
+    $('#map_section_show').remove()
+    /* $('#map_section_show').click(function () {
       showSection('map_section')
       app.sidebar.toggleSidebar(false)
 
       // this must be here on the last line,
       // because `$('#map_view_select').val()` returns null before Sidebar is hidden
       app.map.tryToShowMap($('#map_view_select').val())
-    })
+    }) */
 
     $('#form_show').click(function () {
       showSection('main_form')
-      app.sidebar.toggleSidebar(false)
-    })
-
-    $('#legal_basis_show').click(function () {
-      showSection('legal_basis')
-      app.sidebar.toggleSidebar(false)
-    })
-
-    $('#cmd_how_it_works_show').click(function () {
-      showSection('cmd_how_it_works')
-      app.sidebar.toggleSidebar(false)
-    })
-
-    $('#cmd_legal_basis_shows').click(function () {
-      showSection('cmd_legal_basis')
       app.sidebar.toggleSidebar(false)
     })
 
