@@ -1,0 +1,150 @@
+h1 {
+  text-align: center
+}
+
+#content {
+  width: 100%;
+}
+
+#sub_title{
+  width:90%;
+  margin:0 auto;
+  text-align:justify;
+  font-size:16
+}
+
+.header {
+  font-size: 200%;
+}
+
+.lead{
+  text-align: justify;
+}
+
+.lh80 {
+  line-height: 80%;
+}
+
+.jButtonAlert{
+  height: 45px;
+  line-height: 40px;
+  text-align: center;
+}
+
+/*hides spin buttons on form input number*/
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+#message{
+  text-align:left;
+  display:block;
+  width:100%;
+  font-size:16
+}
+
+#mail_message{
+  display: none;
+}
+
+.border-element {
+  border: solid 2px #343a40;
+  border-radius: .50rem;
+  margin: 18px 4px;
+  padding: 15px 0 0 0;
+}
+
+/* Images section */
+#main_form img{
+  border: 2px solid black !important;
+  border-radius: 10px !important;
+  padding: 0 !important;
+  width: 100%;
+  display: none;
+}
+
+#historic img {
+  border: 0;
+  width: 100%;
+  display: block;
+}
+
+#map_section, #map {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+#map .gm-style-iw.gm-style-iw-c {
+  max-width: none !important;
+}
+
+#cmd_how_it_works img{
+  border: none !important;
+  width: 100%;
+  padding: 10px 0 !important;
+  display: block !important;
+}
+
+/* remove buttons */
+#remImg_1, #remImg_2, #remImg_3, #remImg_4{
+  display: none;
+}
+/* hides all image containers except the first */
+#image_selector .img-container:not(:first-of-type) {
+  display: none;
+}
+/* === */
+
+button#save_personal_data {
+  display: none;
+}
+
+.ja_button_with_icon {
+  width: unset !important;
+  padding: 10px 15px !important;
+  margin: 0 8px;
+}
+
+.ja_300px {
+  width: 300px !important;
+}
+
+.note {
+  font-size: 0.82em;
+}
+
+/* Image Designing Propoerties */
+.thumb {
+  height: 75px;
+  border: 1px solid #000;
+  margin: 10px 5px 0 0;
+}
+
+.mailmessage {
+  border-width: 2px;
+  border-color: black;
+  border-style: solid;
+  background-color: white;
+  color: black;
+  font-family: monospace;
+  padding: 20px;
+}
+
+.loading {
+  background-color: #ffffff;
+  background-image: url("res/images/loading.gif") !important;
+  background-size: 25px 25px;
+  background-position:right center;
+  background-repeat: no-repeat;
+}
+
+#cmd_how_it_works a {
+  text-decoration: underline;
+}

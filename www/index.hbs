@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="pt">
+<!-- [html-validate-disable no-trailing-whitespace] -->
+
+<head>
+  {{> head}}
+</head>
+
+<body>
+  <div class="wrapper">
+    {{> sidebar}}
+
+    <!-- Page Content  -->
+    <div id="content">
+      {{> appHeader}}
+      <hr>
+      {{> mainForm}}
+      {{> personalData}}
+      {{> historic}}
+      {{> mapSection}}
+      {{> textSections}}
+      {{> mainMessageInline}}
+    </div>
+    {{> scripts}}
+  </div>
+</body>
+
+</html>

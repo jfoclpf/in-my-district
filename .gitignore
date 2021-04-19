@@ -1,0 +1,48 @@
+# intermediate files
+node_modules/
+temp/
+build/
+bin/
+test/www/*
+
+# Cordova - platforms and plugins
+platforms/
+plugins/
+
+# Cordova - plugins - remove all except json & xml
+plugins/**/.DS_Store
+plugins/**/*.cs
+plugins/**/*.h
+plugins/**/*.java
+plugins/**/*.js
+plugins/**/*.m
+plugins/**/*.map
+plugins/**/*.md
+plugins/**/*.modulemap
+plugins/**/*.ts
+plugins/**/LICENSE
+plugins/**/NOTICE
+plugins/**/*.gradle
+plugins/**/tests/
+
+# res
+**/resources/signing
+
+# where the build script stores the apk
+dist/formParkingViolation.*
+
+# keys and credentials
+www/js/credentials.js
+server/DBcredentials.json
+keys/
+
+#upload script to server
+uploadToServer.sh
+updateServer.sh
+
+# server side files
+server/
+
+# configs from Atom
+.on-save.json
+www/credentials.js

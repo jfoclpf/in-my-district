@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<widget id="com.in.my.district" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+  <name>No meu Bairro!</name>
+  <description>
+    Comunique ao seu município anomalias no seu bairro, como buracos na calçada ou lixo por recolher
+  </description>
+  <author email="joao.pimentel.ferreira@gmail.com" href="https://www.joaopimentel.com/">
+    João Pimentel Ferreira
+  </author>
+  <content src="index.html"/>
+  <icon height="512" src="res/icon/universal/icon4_512x512_playstore.png" width="512"/>
+  <icon density="xhdpi" height="196" src="res/icon/universal/icon4_XHDPI_196x196_320dpi.png" width="196"/>
+  <icon density="xxxhdpi" height="192" src="res/icon/universal/icon4_XXXHDPI_192x192_640dpi.png" width="192"/>
+  <icon density="xxhdpi" height="144" src="res/icon/universal/icon4_XXHDPI_144x144_480dpi.png" width="144"/>
+  <icon density="hdpi" height="72" src="res/icon/universal/icon4_HDPI_72x72_240dpi.png" width="72"/>
+  <icon density="mdpi" height="48" src="res/icon/universal/icon4_MDPI_48x48_160dpi.png" width="48"/>
+  <access origin="*"/>
+  <allow-navigation href="*"/>
+  <allow-intent href="http://*/*"/>
+  <allow-intent href="https://*/*"/>
+  <preference name="OverrideUserAgent" value="APP/com.in.my.district"/>
+  <preference name="windows-target-version" value="10.0"/>
+  <preference name="windows-phone-target-version" value="10.0"/>
+  <preference name="iosExtraFilesystems" value="library,library-nosync,documents,documents-nosync,cache,bundle"/>
+  <preference name="AndroidExtraFilesystems" value="files,files-external,documents,sdcard,cache,cache-external,assets"/>
+  <preference name="StatusBarOverlaysWebView" value="false"/>
+  <preference name="StatusBarBackgroundColor" value="#FFFFFF"/>
+  <preference name="StatusBarStyle" value="blacktranslucent"/>
+  <preference name="AndroidXEnabled" value="true"/>
+  <hook src="hooks/copyCredentials.js" type="before_prepare"/>
+  <hook src="hooks/convertHbsToHtml.js" type="after_prepare"/>
+  <hook src="hooks/minifyFiles.js" type="after_prepare"/>
+  <hook src="node_modules/cordova-import-npm/scripts/importNpmPackages.js" type="before_prepare"/>
+  <platform name="android">
+    <preference name="android-minSdkVersion" value="22"/>
+    <preference name="android-targetSdkVersion" value="29"/>
+    <preference name="AndroidPersistentFileLocation" value="Compatibility"/>
+    <allow-intent href="market:*"/>
+    <icon height="512" src="res/icon/android/512.png" width="512"/>
+    <icon density="xhdpi" height="192" src="res/icon/android/192.png" width="192"/>
+    <icon density="xxxhdpi" height="192" src="res/icon/android/192.png" width="192"/>
+    <icon density="xxhdpi" height="144" src="res/icon/android/144.png" width="144"/>
+    <icon density="hdpi" height="72" src="res/icon/android/72.png" width="72"/>
+    <icon density="mdpi" height="48" src="res/icon/android/48.png" width="48"/>
+    <splash density="hdpi" src="res/screen/android/screen-hdpi-portrait.png"/>
+    <splash density="port-hdpi" src="res/screen/android/screen-hdpi-portrait.png"/>
+    <splash density="ldpi" src="res/screen/android/screen-ldpi-portrait.png"/>
+    <splash density="port-ldpi" src="res/screen/android/screen-ldpi-portrait.png"/>
+    <splash density="mdpi" src="res/screen/android/screen-mdpi-portrait.png"/>
+    <splash density="port-mdpi" src="res/screen/android/screen-mdpi-portrait.png"/>
+    <splash density="xhdpi" src="res/screen/android/screen-xhdpi-portrait.png"/>
+    <splash density="port-xhdpi" src="res/screen/android/screen-xhdpi-portrait.png"/>
+  </platform>
+  <platform name="ios">
+    <allow-intent href="itms:*"/>
+    <allow-intent href="itms-apps:*"/>
+    <icon src="res/icon/ios/16.png" width="16" height="16"/>
+    <icon src="res/icon/ios/20.png" width="20" height="20"/>
+    <icon src="res/icon/ios/29.png" width="29" height="29"/>
+    <icon src="res/icon/ios/32.png" width="32" height="32"/>
+    <icon src="res/icon/ios/40.png" width="40" height="40"/>
+    <icon src="res/icon/ios/48.png" width="48" height="48"/>
+    <icon src="res/icon/ios/50.png" width="50" height="50"/>
+    <icon src="res/icon/ios/55.png" width="55" height="55"/>
+    <icon src="res/icon/ios/57.png" width="57" height="57"/>
+    <icon src="res/icon/ios/58.png" width="58" height="58"/>
+    <icon src="res/icon/ios/60.png" width="60" height="60"/>
+    <icon src="res/icon/ios/64.png" width="64" height="64"/>
+    <icon src="res/icon/ios/72.png" width="72" height="72"/>
+    <icon src="res/icon/ios/76.png" width="76" height="76"/>
+    <icon src="res/icon/ios/80.png" width="80" height="80"/>
+    <icon src="res/icon/ios/87.png" width="87" height="87"/>
+    <icon src="res/icon/ios/88.png" width="88" height="88"/>
+    <icon src="res/icon/ios/100.png" width="100" height="100"/>
+    <icon src="res/icon/ios/114.png" width="114" height="114"/>
+    <icon src="res/icon/ios/120.png" width="120" height="120"/>
+    <icon src="res/icon/ios/128.png" width="128" height="128"/>
+    <icon src="res/icon/ios/144.png" width="144" height="144"/>
+    <icon src="res/icon/ios/152.png" width="152" height="152"/>
+    <icon src="res/icon/ios/167.png" width="167" height="167"/>
+    <icon src="res/icon/ios/172.png" width="172" height="172"/>
+    <icon src="res/icon/ios/180.png" width="180" height="180"/>
+    <icon src="res/icon/ios/196.png" width="196" height="196"/>
+    <icon src="res/icon/ios/216.png" width="216" height="216"/>
+    <icon src="res/icon/ios/256.png" width="256" height="256"/>
+    <icon src="res/icon/ios/512.png" width="512" height="512"/>
+    <icon src="res/icon/ios/1024.png" width="1024" height="1024"/>
+    <preference name="iosPersistentFileLocation" value="Library"/>
+    <edit-config target="NSLocationWhenInUseUsageDescription" file="*-Info.plist" mode="merge">
+      <string>Necessita da sua localização para indicar o endereço da ocorrência a ser enviada ao seu município</string>
+    </edit-config>
+    <edit-config target="NSLocationAlwaysAndWhenInUseUsageDescription" file="*-Info.plist" mode="merge">
+      <string>Necessita da sua localização para indicar o endereço da ocorrência a ser enviada ao seu município</string>
+    </edit-config>
+    <edit-config target="NSLocationAlwaysUsageDescription" file="*-Info.plist" mode="merge">
+      <string>Necessita da sua localização para indicar o endereço da ocorrência a ser enviada ao seu município</string>
+    </edit-config>
+    <edit-config target="NSLocationAlwaysAndWhenInUseUsageDescription" file="*-Info.plist" mode="merge">
+      <string>Necessita da sua localização para indicar o endereço da ocorrência a ser enviada ao seu município</string>
+    </edit-config>
+    <edit-config target="NSCameraUsageDescription" file="*-Info.plist" mode="merge">
+      <string>Necessita da acesso à câmera para tirar fotos às anomalias</string>
+    </edit-config>
+    <edit-config target="NSPhotoLibraryUsageDescription" file="*-Info.plist" mode="merge">
+      <string>Necessita da acesso à galeria, caso você já tenha tirado anteriormente a foto à ocorrência</string>
+    </edit-config>
+    <edit-config target="NSPhotoLibraryAddUsageDescription" file="*-Info.plist" mode="merge">
+      <string>Necessita da acesso à galeria para guardar algumas fotos, mesmo que temporariamente</string>
+    </edit-config>
+    <edit-config target="UIFileSharingEnabled" file="*-Info.plist" mode="merge">
+      <true/>
+    </edit-config>
+    <edit-config target="LSSupportsOpeningDocumentsInPlace" file="*-Info.plist" mode="merge">
+      <true/>
+    </edit-config>
+    <edit-config target="UISupportsDocumentBrowser" file="*-Info.plist" mode="merge">
+      <true/>
+    </edit-config>
+  </platform>
+</widget>
