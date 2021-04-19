@@ -9,33 +9,16 @@ app.text = (function (thisModule) {
       // Penalties
       var penaltyDescription
       var penaltyLawArticle
-      var penalties = app.penalties.getPenalties()
+      var anomalies = app.anomalies.getAnomalies()
 
-      for (const key in penalties) {
-        if (!Object.prototype.hasOwnProperty.call(penalties, key)) continue
+      for (const key in anomalies) {
+        if (!Object.prototype.hasOwnProperty.call(anomalies, key)) continue
 
-        var obj = penalties[key]
-        if ($('#penalties').val() === key) {
+        var obj = anomalies[key]
+        if ($('#anomalies').val() === key) {
           penaltyDescription = obj.description
           penaltyLawArticle = obj.law_article
         }
-      }
-
-      var carPlateStr = app.form.getCarPlate()
-
-      // texto para marca e modelo
-      var is_carmake = ($('#carmake').val().replace(/^\s+|\s+$/g, '').length !== 0)
-      var is_model = ($('#carmodel').val().replace(/^\s+|\s+$/g, '').length !== 0)
-      var carmake_model_txt
-      if (is_carmake && is_model) {
-        carmake_model_txt = 'de marca e modelo <b>' + $('#carmake').val() +
-          ' ' + $('#carmodel').val() + '</b>, '
-      } else if (is_carmake) {
-        carmake_model_txt = 'de marca <b>' + $('#carmake').val() + '</b>, '
-      } else if (is_model) {
-        carmake_model_txt = 'de modelo <b>' + $('#carmodel').val() + '</b>, '
-      } else {
-        carmake_model_txt = ''
       }
 
       var msg = getRandomGreetings() + ' da ' + getNameOfCurrentSelectedAuthority() + ';'
@@ -55,14 +38,6 @@ app.text = (function (thisModule) {
         ', ' + 'na <b>' + $('#street').val() + ', ' + $('#locality').val() + '</b>, ' +
         ($('#street_number').val() ? 'aproximadamente junto à porta com o <b>número ' +
         $('#street_number').val() + '</b>, ' : '') // optional
-
-      if (app.functions.isThis_iOS()) {
-        msg2 += `a viatura <b>${carmake_model_txt}</b> cuja matrícula se encontra na foto em anexo, `
-      } else {
-        msg2 += 'a viatura com matrícula <b>' + carPlateStr + '</b> ' + carmake_model_txt
-      }
-      msg2 += 'encontrava-se estacionada' + ' ' + penaltyDescription +
-      ', em violação ' + penaltyLawArticle + '.'
 
       var msg3 = 'Pode-se comprovar esta situação através' +
         ' ' + ((app.photos.getPhotosUriOnFileSystem().length === 1) ? 'da fotografia anexa' : 'das fotografias anexas') +
@@ -108,7 +83,7 @@ app.text = (function (thisModule) {
     var text = `${getRandomGreetings()} da ${occurrence.autoridade}<br><br>` +
       `No seguimento da denúncia já enviada anteriormente a V. Exas. a propósito da violação do Código da Estrada perpetrada pelo condutor do veículo ${occurrence.carro_marca} ${occurrence.carro_modelo} com a matrícula ${occurrence.carro_matricula}, ` +
       `na ${occurrence.data_local} n. ${occurrence.data_num_porta}, ${occurrence.data_concelho}, no dia ${(new Date(occurrence.data_data)).toLocaleDateString('pt-PT')} às ${occurrence.data_hora.slice(0, 5)}, ` +
-      `veículo esse que se encontrava ${app.penalties.getDescription(occurrence.base_legal)} em violação ${app.penalties.getLawArticle(occurrence.base_legal)}, ` +
+      `veículo esse que se encontrava ${app.anomalies.getDescription(occurrence.base_legal)} em violação ${app.anomalies.getLawArticle(occurrence.base_legal)}, ` +
       `vinha por este meio inquirir V. Exas. sobre o estado do processo respetivo, considerando que já decorreram ${Math.round(((new Date()) - new Date(occurrence.data_data)) / (1000 * 60 * 60 * 24))} dias desde a data da ocorrência.<br><br>` +
       `Fico a aguardar resposta de V. Exas.<br><br>${getRegards()}`
 

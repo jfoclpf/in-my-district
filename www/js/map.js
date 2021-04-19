@@ -23,12 +23,12 @@ app.map = (function (thisModule) {
       mine: { select: 'Apenas as minhas denúncias' }
     }
 
-    // populates yet with type of penalties: faixa_bus, baixa_bus, etc.
-    const penalties = app.penalties.getPenalties()
-    for (const key in penalties) {
-      if (penalties.hasOwnProperty(key)) {
+    // populates yet with type of anomalies: faixa_bus, baixa_bus, etc.
+    const anomalies = app.anomalies.getAnomalies()
+    for (const key in anomalies) {
+      if (anomalies.hasOwnProperty(key)) {
         markersGroups[key] = {}
-        markersGroups[key].select = penalties[key].select
+        markersGroups[key].select = anomalies[key].select
       }
     }
 
@@ -207,7 +207,7 @@ app.map = (function (thisModule) {
           `<b>Veículo</b>: ${el.carro_marca} ${el.carro_modelo} <span style="white-space: nowrap;">[${el.carro_matricula}]</span><br>` +
           `<b>Local</b>: ${el.data_local} n. ${el.data_num_porta}, ${el.data_concelho}<br>` +
           `<b>Data</b>: ${(new Date(el.data_data)).toLocaleDateString('pt-PT')} às ${el.data_hora.slice(0, 5)}<br>` +
-          `<b>Infração</b>: ${app.penalties.getShortDescription(el.base_legal)}<br>` +
+          `<b>Infração</b>: ${app.anomalies.getShortDescription(el.base_legal)}<br>` +
           `<b>Autoridade</b>: ${el.autoridade}<br><br>`
 
       for (var photoIndex = 1; photoIndex <= 4; photoIndex++) {

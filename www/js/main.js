@@ -86,8 +86,8 @@ app.main = (function (thisModule) {
     // information stored in variable window.localStorage
     app.personalInfo.loadsPersonalInfo()
 
-    // populates HTML select according to the information on penalties.js file
-    app.penalties.populatesPenalties()
+    // populates HTML select according to the information on anomalies.js file
+    app.anomalies.populatesAnomalies()
 
     app.functions.updateDateAndTime()
 

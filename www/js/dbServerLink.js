@@ -42,7 +42,7 @@ app.dbServerLink = (function (thisModule) {
       data_num_porta: app.form.getStreetNumber(),
       data_coord_latit: app.localization.getCoordinates().latitude,
       data_coord_long: app.localization.getCoordinates().longitude,
-      base_legal: app.penalties.getSelectedPenaltyCode(),
+      base_legal: app.anomalies.getSelectedAnomaly(),
       autoridade: app.form.getAuthority()
     }
 

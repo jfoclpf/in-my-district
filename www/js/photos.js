@@ -1,6 +1,6 @@
 /* eslint camelcase: off */
 
-/* global app, FileReader, $, Camera, textocr */
+/* global app, FileReader, $, Camera */
 
 app.photos = (function (thisModule) {
   // get Photo function
@@ -48,14 +48,6 @@ app.photos = (function (thisModule) {
       imageUri = app.functions.adaptURItoAndroid(imageUri)
       console.log('imageUri b) ' + imageUri)
     }
-
-    getOCRcarPlate(imageUri, function (result) {
-      console.log('A matrícula é:' + result.join('\u2013'))
-      $('#plate').val(result.join('\u2013'))
-      $('#plate').trigger('input')
-    }, function (err) {
-      console.log('erro no OCR: ' + err)
-    })
 
     photosUriOnFileSystem[imgNmbr] = imageUri
 
@@ -162,68 +154,6 @@ app.photos = (function (thisModule) {
       correctOrientation: true // Corrects Android orientation quirks
     }
     return options
-  }
-
-  function getOCRcarPlate (imageUri, success, error) {
-    if (textocr && typeof textocr.recText === 'function') {
-      textocr.recText(0, imageUri,
-        function (recognizedTextObj) {
-          console.debug(recognizedTextObj)
-          if (!recognizedTextObj.foundText) {
-            error('plate not detected')
-            return
-          }
-          // see https://www.npmjs.com/package/cordova-plugin-mobile-ocr#plugin-usage
-          var blockTextArray = recognizedTextObj.blocks.blocktext
-          var linesArray = recognizedTextObj.lines.linetext
-
-          // four valid plate types: AA-00-00, 00-00-AA, 00-AA-00, AA-00-AA
-          // between AA and 00 can be space \s or any type of hyphen (-) en dash (–) and em dash (—)
-          // see: https://pt.stackoverflow.com/a/431398/101186
-          // see: https://regex101.com/r/SuYjr4/3
-          var detectPlate = RegExp(/^\s{0,}.{0,1}(([A-Z]{2}[\s-–—]{0,1}[0-9]{2}[\s-–—]{0,1}[0-9]{2})|([0-9]{2}[\s-–—]{0,1}[0-9]{2}[\s-–—]{0,1}[A-Z]{2})|([0-9]{2}[\s\-–—]{0,1}[A-Z]{2}[\s\-–—]{0,1}[0-9]{2})|([A-Z]{2}[\s-–—]{0,1}[0-9]{2}[\s-–—]{0,1}[A-Z]{2})).{0,1}\s{0,}$/)
-
-          var pattern, plateArray
-          for (var i = 0; i < linesArray.length; i++) {
-            pattern = detectPlate.exec(linesArray[i])
-            if (pattern && pattern[0]) {
-              // plate may be p00 00–AAk
-              plateArray = pattern[0].split(/[\s-–—]/)
-              if (plateArray.length === 3) {
-                plateArray[0] = plateArray[0].slice(-2)
-                plateArray[2] = plateArray[2].slice(0, 2)
-                if (app.form.isArrayAValidPlate(plateArray)) {
-                  success(plateArray)
-                  return
-                }
-              }
-            }
-          }
-
-          for (i = 0; i < blockTextArray.length; i++) {
-            pattern = detectPlate.exec(blockTextArray[i])
-            if (pattern && pattern[0]) {
-              // plate may be p00 00–AAk
-              plateArray = pattern[0].split(/[\s-–—]/)
-              if (plateArray.length === 3) {
-                plateArray[0] = plateArray[0].slice(-2)
-                plateArray[2] = plateArray[2].slice(0, 2)
-                if (app.form.isArrayAValidPlate(plateArray)) {
-                  success(plateArray)
-                  return
-                }
-              }
-            }
-          }
-
-          error('plate not detected')
-        }, function onFail (message) {
-          error('no OCR because: ' + message) // OCR failed
-        }
-      )
-    } else {
-      error('OCR service/function not available')
-    }
   }
 
   // tries to get date from file name

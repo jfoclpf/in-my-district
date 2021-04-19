@@ -94,10 +94,7 @@ app.functions = (function (thisModule) {
   }
 
   function setDebugValues () {
-    $('#plate').val('00\u2013XX\u201300')
-    $('#carmake').val('Opel')
-    $('#carmodel').val('Corsa')
-    $('#penalties').val('bicicletas')
+    $('#anomalies').val('bicicletas')
   }
 
   /* === Public methods to be returned === */

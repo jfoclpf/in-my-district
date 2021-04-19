@@ -97,7 +97,7 @@ app.historic = (function (thisModule) {
             </div>
           </div>
           <div>
-            <b>Infração</b>: ${app.penalties.getShortDescription(el.base_legal)}<br>
+            <b>Infração</b>: ${app.anomalies.getShortDescription(el.base_legal)}<br>
             <b>Autoridade</b>: ${el.autoridade}
           </div>
         </div>`
