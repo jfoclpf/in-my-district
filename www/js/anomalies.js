@@ -12,7 +12,7 @@ app.anomalies = (function (thisModule) {
     return anomalies
   }
 
-  function populatesAnomalies () {
+  function populatesAnomaliesSelect () {
     var keys = []
     for (var key in anomalies) {
       if (Object.prototype.hasOwnProperty.call(anomalies, key)) {
@@ -49,7 +49,7 @@ app.anomalies = (function (thisModule) {
 
   /* === Public methods to be returned === */
   thisModule.getAnomalies = getAnomalies
-  thisModule.populatesAnomalies = populatesAnomalies
+  thisModule.populatesAnomaliesSelect = populatesAnomaliesSelect
   thisModule.getSelectedAnomaly = getSelectedAnomaly
   thisModule.getShortDescription = getShortDescription
   thisModule.getDescription = getDescription

@@ -60,7 +60,7 @@ app.localization = (function (thisModule) {
   }
 
   /* Get address by coordinates */
-  thisModule.AUTHORITIES = [] // array of possible authorities applicable for that area
+  thisModule.MUNICIPALITIES = [] // array of possible authorities applicable for that area
 
   function getAuthoritiesFromOSM (latitude, longitude) {
     $.ajax({
@@ -87,7 +87,7 @@ app.localization = (function (thisModule) {
   }
 
   function getAuthoritiesFromAddress (address) {
-    thisModule.AUTHORITIES = []
+    thisModule.MUNICIPALITIES = []
     var geoNames = [] // array of possible names for the locale, for example ["Lisboa", "Odivelas"]
 
     if (address) {
@@ -152,9 +152,9 @@ app.localization = (function (thisModule) {
     geoNames = app.functions.cleanArray(geoNames) // removes empty strings
     console.log('geoNames :', geoNames)
     // to check JS apply, see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/apply
-    thisModule.AUTHORITIES.push.apply(thisModule.AUTHORITIES, app.contactsFunctions.getPMcontacts(geoNames))
-    thisModule.AUTHORITIES.push.apply(thisModule.AUTHORITIES, app.contactsFunctions.getGNRcontacts(geoNames))
-    thisModule.AUTHORITIES.push.apply(thisModule.AUTHORITIES, app.contactsFunctions.getPSPcontacts(geoNames))
+    thisModule.MUNICIPALITIES.push.apply(thisModule.MUNICIPALITIES, app.contactsFunctions.getPMcontacts(geoNames))
+    thisModule.MUNICIPALITIES.push.apply(thisModule.MUNICIPALITIES, app.contactsFunctions.getGNRcontacts(geoNames))
+    thisModule.MUNICIPALITIES.push.apply(thisModule.MUNICIPALITIES, app.contactsFunctions.getPSPcontacts(geoNames))
 
     var PSPGeral = {
       authority: 'Polícia',
@@ -168,11 +168,11 @@ app.localization = (function (thisModule) {
       nome: 'Comando Geral',
       contacto: 'gnr@gnr.pt'
     }
-    thisModule.AUTHORITIES.push(PSPGeral)
-    thisModule.AUTHORITIES.push(GNRGeral)
+    thisModule.MUNICIPALITIES.push(PSPGeral)
+    thisModule.MUNICIPALITIES.push(GNRGeral)
 
-    console.log('AUTHORITIES :', thisModule.AUTHORITIES)
-    populateAuthoritySelect(thisModule.AUTHORITIES)
+    console.log('MUNICIPALITIES :', thisModule.MUNICIPALITIES)
+    populateAuthoritySelect(thisModule.MUNICIPALITIES)
 
     GPSLoadingOnFields(false)
   }

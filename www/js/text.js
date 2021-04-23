@@ -7,8 +7,7 @@ app.text = (function (thisModule) {
   function getMainMessage (option) {
     if (option === 'body') {
       // Penalties
-      var penaltyDescription
-      var penaltyLawArticle
+      var anomalyDescription
       var anomalies = app.anomalies.getAnomalies()
 
       for (const key in anomalies) {
@@ -16,41 +15,32 @@ app.text = (function (thisModule) {
 
         var obj = anomalies[key]
         if ($('#anomalies').val() === key) {
-          penaltyDescription = obj.description
-          penaltyLawArticle = obj.law_article
+          anomalyDescription = obj.description
         }
       }
 
-      var msg = getRandomGreetings() + ' da ' + getNameOfCurrentSelectedAuthority() + ';'
+      var msgInit = getRandomGreetings() + ' da ' + getNameOfCurrentSelectedMunicipality() + ';'
 
-      var msg1 = 'Eu, <b>' + $('#name').val() + '</b>,' +
-        ' com o <b>' + $('#id_type').val() + '</b> com o número <b>' + $('#id_number').val() + '</b> ' +
-        'e com residência em <b>' + $('#address').val() +
-        ', ' + $('#postal_code').val() + ', ' + $('#address_city').val() +
-        '</b>, venho por este meio,' + ' ' +
-        'ao abrigo do n.º 5 do artigo 170.º do Código da Estrada, ' +
-        'fazer a seguinte denúncia de contra-ordenação para que V. Exas. ' +
-        'levantem o auto respetivo e multem o infra-mencionado responsável.'
+      var msg1 = `Eu, <b>${$('#name').val()}</b>, ` +
+        `com o <b>${$('#id_type').val()}</b> com o número <b>${$('#id_number').val()}</b> ` +
+        `e com residência em <b>${$('#address').val()}, ${$('#postal_code').val()}, ${$('#address_city').val()}</b>, ` +
+        'venho por este meio comunicar a V. Exas. a seguinte anomalia e irregularidade, ' +
+        'para que a mesma seja resolvida pelos serviços de V. Exas o mais rapidamente quanto possível.'
 
-      var msg2 = 'No passado dia <b>' +
-        $.datepicker.formatDate("dd' de 'MM' de 'yy", $('#date').datepicker('getDate')) + '</b>' +
+      var msg2 = `No passado dia <b>${$.datepicker.formatDate("dd' de 'MM' de 'yy", $('#date').datepicker('getDate'))}</b>` +
         ($('#time').val() ? ' pelas <b>' + $('#time').val() + '</b>' : '') + // optional
-        ', ' + 'na <b>' + $('#street').val() + ', ' + $('#locality').val() + '</b>, ' +
-        ($('#street_number').val() ? 'aproximadamente junto à porta com o <b>número ' +
-        $('#street_number').val() + '</b>, ' : '') // optional
+        `, na <b>${$('#street').val()}, ${$('#locality').val()}</b>, ` +
+        ($('#street_number').val()
+          ? `aproximadamente junto à porta com o <b>número ${$('#street_number').val()}</b>, `
+          : '') + // optional
+        `deparei-me com ${anomalyDescription}.`
 
       var msg3 = 'Pode-se comprovar esta situação através' +
         ' ' + ((app.photos.getPhotosUriOnFileSystem().length === 1) ? 'da fotografia anexa' : 'das fotografias anexas') +
         ' ' + 'à presente mensagem eletrónica. ' +
-        'Juro pela minha honra que a informação supra citada é verídica.' +
-        ' ' + 'Recordo ainda, que ao abrigo do referido n.º 5 do artigo 170.º do Código da Estrada,' +
-        ' ' + 'a autoridade que tiver notícia por denúncia de contraordenação, levanta auto,' +
-        ' ' + 'não carecendo de presenciar tal contraordenação rodoviária, ' +
-        'situação a que se aplica o n.º 1 do mesmo artigo.' + '</b></b>' +
-        ' ' + 'Refiro ainda que me encontro plenamente disponível para participar na qualidade de testemunha' +
-        ' ' + 'no processo que vier a ser instaurado com referência à presente missiva.'
+        'Juro pela minha honra que a informação supra citada é verídica.'
 
-      var message = msg + '<br><br>' + msg1 + '<br><br>' + msg2 + '<br><br>' + msg3 + '<br><br>' + getRegards() + '<br>'
+      var message = msgInit + '<br><br>' + msg1 + '<br><br>' + msg2 + '<br><br>' + msg3 + '<br><br>' + getRegards() + '<br>'
 
       return message
     } else if (option === 'subject') {
@@ -92,7 +82,7 @@ app.text = (function (thisModule) {
 
   function getMailMessageWithCMD (option) {
     if (option === 'body') {
-      var mainMessage = getRandomGreetings() + ' da ' + getNameOfCurrentSelectedAuthority() + ';<br><br>' +
+      var mainMessage = getRandomGreetings() + ' da ' + getNameOfCurrentSelectedMunicipality() + ';<br><br>' +
         'Envio em anexo ficheiro PDF com uma denúncia de estacionamento ao abrigo do n.º 5 do art. 170.º do Código da Estrada.<br><br>'
 
       mainMessage += 'Refira-se ainda que o PDF em anexo tem o meu certificado digital emitido pela Agência para a Modernização Administrativa, <b>o que é equivalente, de acordo com a Lei, à minha presenção nas instalações de V. Exas</b>.<br><br>' +
@@ -118,15 +108,15 @@ app.text = (function (thisModule) {
     }
   }
 
-  function getNameOfCurrentSelectedAuthority () {
+  function getNameOfCurrentSelectedMunicipality () {
     // Authority
-    var authority, authorityName
+    var municipality, municipalityName
     var index = $('#authority').val()
 
-    authority = app.localization.AUTHORITIES[index].authority
-    authorityName = app.localization.AUTHORITIES[index].nome
+    municipality = app.localization.MUNICIPALITIES[index].authority
+    municipalityName = app.localization.MUNICIPALITIES[index].nome
 
-    return authority + ', ' + authorityName
+    return municipality + ', ' + municipalityName
   }
 
   function getRandomGreetings () {

@@ -87,7 +87,7 @@ app.main = (function (thisModule) {
     app.personalInfo.loadsPersonalInfo()
 
     // populates HTML select according to the information on anomalies.js file
-    app.anomalies.populatesAnomalies()
+    app.anomalies.populatesAnomaliesSelect()
 
     app.functions.updateDateAndTime()
 

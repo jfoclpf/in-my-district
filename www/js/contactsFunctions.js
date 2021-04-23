@@ -158,7 +158,7 @@ app.contactsFunctions = (function (thisModule) {
 
   function getEmailOfCurrentSelectedAuthority () {
     var index = $('#authority').val()
-    return app.localization.AUTHORITIES[index].contacto
+    return app.localization.MUNICIPALITIES[index].contacto
   }
 
   thisModule.getEmailByFullName = getEmailByFullName
