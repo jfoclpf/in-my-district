@@ -24,14 +24,18 @@ app.form = (function (thisModule) {
   function getFullAddress () {
     const streetNumber = getStreetNumber()
     if (streetNumber) {
-      return `${getStreetName()} n. ${streetNumber}, ${getLocality()}`
+      return `${getStreetName()} n. ${streetNumber}, ${getMunicipality()}, na freguesia ${getParish()}`
     } else {
-      return `${getStreetName()}, ${getLocality()}`
+      return `${getStreetName()}, ${getMunicipality()}, na freguesia ${getParish()}`
     }
   }
 
-  function getLocality () {
-    return $('#locality').val()
+  function getMunicipality () {
+    return $('#municipality').val()
+  }
+
+  function getParish () {
+    return $('#parish').val()
   }
 
   function getStreetName () {
@@ -218,7 +222,7 @@ app.form = (function (thisModule) {
 
   /* ********************************************************************** */
   /* ********************* LOCAL OF OCCURRENCE **************************** */
-  $('#locality').on('input', function () {
+  $('#municipality, #parish').on('input', function () {
     if ($(this).val() === '' && !DEBUG) {
       $(this).css('border-color', 'red')
     } else {
@@ -226,7 +230,7 @@ app.form = (function (thisModule) {
     }
   })
 
-  $('#locality').focusout(function () {
+  $('#municipality, #parish').focusout(function () {
     app.localization.getAuthoritiesFromAddress()
   })
 
@@ -244,7 +248,8 @@ app.form = (function (thisModule) {
   thisModule.getDateYYYY_MM_DD = getDateYYYY_MM_DD
   thisModule.getTimeHH_MM = getTimeHH_MM
   thisModule.getFullAddress = getFullAddress
-  thisModule.getLocality = getLocality
+  thisModule.getMunicipality = getMunicipality
+  thisModule.getParish = getParish
   thisModule.getStreetName = getStreetName
   thisModule.getStreetNumber = getStreetNumber
   thisModule.getAuthority = getAuthority

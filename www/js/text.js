@@ -17,6 +17,7 @@ app.text = (function (thisModule) {
         var obj = anomalies[key]
         if ($('#anomalies').val() === key) {
           anomalyDescription = obj.description
+          break
         }
       }
 
@@ -30,11 +31,11 @@ app.text = (function (thisModule) {
 
       var msg2 = `No passado dia <b>${$.datepicker.formatDate("dd' de 'MM' de 'yy", $('#date').datepicker('getDate'))}</b>` +
         ($('#time').val() ? ' pelas <b>' + $('#time').val() + '</b>' : '') + // optional
-        `, na <b>${$('#street').val()}, ${$('#locality').val()}</b>, ` +
+        `, na <b>${$('#street').val()}, ${$('#municipality').val()}, na freguesia ${$('#parish').val()}</b>, ` +
         ($('#street_number').val()
           ? `aproximadamente junto à porta com o <b>número ${$('#street_number').val()}</b>, `
           : '') + // optional
-        `deparei-me com ${anomalyDescription}.`
+        `deparei-me com o seguinte problema: <b>${anomalyDescription}</b>.`
 
       var msg3 = 'Pode-se comprovar esta situação através' +
         ' ' + ((app.photos.getPhotosUriOnFileSystem().length === 1) ? 'da fotografia anexa' : 'das fotografias anexas') +

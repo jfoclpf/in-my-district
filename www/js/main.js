@@ -20,8 +20,9 @@ app.main = (function (thisModule) {
     androidApps: {
       thisApp: 'https://play.google.com/store/apps/details?id=com.form.parking.violation'
     },
-    openStreetMaps: {
-      nominatimReverse: 'https://nominatim.openstreetmap.org/reverse'
+    geoApi: {
+      nominatimReverse: 'https://nominatim.openstreetmap.org/reverse',
+      ptApi: 'http://geo-pt-api.joaopimentel.com'
     }
   }
 

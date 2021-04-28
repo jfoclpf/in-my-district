@@ -14,22 +14,33 @@ app.anomalies = (function (thisModule) {
   }
 
   function populatesAnomaliesSelect () {
-    var keys = []
-    for (var key in anomalies) {
-      if (Object.prototype.hasOwnProperty.call(anomalies, key)) {
-        keys.push(key)
-      }
-    }
+    $.getJSON('../json/anomalies.json', function (data) {
+      anomalies = data
+      $.each(data, function (key, val) {
+        $('#anomaly1').append(`<option value="${val.description}">${val.description}</option>`)
+      })
 
-    $('#anomalies').append('<option></option>')
-    for (var i = 0; i < keys.length; i++) {
-      key = keys[i]
-      $('#anomalies').append(`<option value="${key}">${anomalies[key].select}</option>`)
-    }
+      $('#anomaly1').change(function () {
+        const selectedMainAnomaly = $(this).find('option:selected').val()
+        $('#anomaly2').empty()
+        $.each(data, function (index, val) {
+          if (val.description === selectedMainAnomaly) {
+            $.each(val.list, function (index2, val2) {
+              $('#anomaly2').append(`<option value="${val2}">${val2}</option>`)
+            })
+            return false // breaks loop
+          }
+        })
+      }).change()
+    })
   }
 
-  function getSelectedAnomaly () {
-    return $('#anomalies').val()
+  function getSelectedMainAnomaly () {
+    return $('#anomaly1').val()
+  }
+
+  function getSelectedSecondaryAnomaly () {
+    return $('#anomaly2').val()
   }
 
   function getShortDescription (code) {
@@ -51,7 +62,8 @@ app.anomalies = (function (thisModule) {
   /* === Public methods to be returned === */
   thisModule.getAnomalies = getAnomalies
   thisModule.populatesAnomaliesSelect = populatesAnomaliesSelect
-  thisModule.getSelectedAnomaly = getSelectedAnomaly
+  thisModule.getSelectedMainAnomaly = getSelectedMainAnomaly
+  thisModule.getSelectedSecondaryAnomaly = getSelectedSecondaryAnomaly
   thisModule.getShortDescription = getShortDescription
   thisModule.getDescription = getDescription
 

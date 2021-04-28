@@ -10,7 +10,7 @@ app.dbServerLink = (function (thisModule) {
     const carPlate = app.form.getCarPlate()
     const dateYYYY_MM_DD = app.form.getDateYYYY_MM_DD()
     const timeHH_MM = app.form.getTimeHH_MM()
-    const locality = app.form.getLocality()
+    const municipality = app.form.getMunicipality()
 
     // generates file names array for images
     const randomString = getRandomString(10) // serves to uniquely identify the filenames
@@ -19,7 +19,7 @@ app.dbServerLink = (function (thisModule) {
     var numberOfImages = imagesArray.length
     for (let i = 0; i < 4; i++) {
       if (i < numberOfImages) {
-        const fileName = `${DEBUG ? 'debug_' : ''}${carPlate}_n${i + 1}_${dateYYYY_MM_DD}_${timeHH_MM}_${locality}_${randomString}.jpg`
+        const fileName = `${DEBUG ? 'debug_' : ''}${carPlate}_n${i + 1}_${dateYYYY_MM_DD}_${timeHH_MM}_${municipality}_${randomString}.jpg`
         imgFileNames.push(fileName)
       } else {
         imgFileNames.push('')
@@ -38,12 +38,14 @@ app.dbServerLink = (function (thisModule) {
       carro_modelo: app.form.getCarModel(),
       data_data: app.form.getDateYYYY_MM_DD(),
       data_hora: app.form.getTimeHH_MM(),
-      data_concelho: app.form.getLocality(),
+      data_concelho: app.form.getMunicipality(),
+      data_freguesia: app.form.getParish(),
       data_local: app.form.getStreetName(),
       data_num_porta: app.form.getStreetNumber(),
       data_coord_latit: app.localization.getCoordinates().latitude,
       data_coord_long: app.localization.getCoordinates().longitude,
-      base_legal: app.anomalies.getSelectedAnomaly(),
+      anomaly1: app.anomalies.getSelectedMainAnomaly(),
+      anomaly2: app.anomalies.getSelectedSecondaryAnomaly(),
       autoridade: app.form.getAuthority()
     }
 

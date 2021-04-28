@@ -54,14 +54,19 @@
     </div>
 
     <div class="form-group col-xs-12 col-sm-6 col-md-3 ">
-      <label for="locality">Concelho ou Localidade da ocorrência</label>
-      <p>Caso introduza manualmente, coloque sempre o Concelho</p>
+      <label for="municipality">Concelho</label>
       <input size="35" class="form-control input-lg mandatory"
-             id="locality" name="Localidade da ocorrência" placeholder="Oeiras" type="text" required>
+             id="municipality" name="Localidade da ocorrência" placeholder="Oeiras" type="text" required>
     </div>
 
     <div class="form-group col-xs-12 col-sm-6 col-md-3 ">
-      <label for="street">Local da ocorrência</label>
+      <label for="parish">Freguesia</label>
+      <input size="35" class="form-control input-lg mandatory"
+             id="parish" name="Localidade da ocorrência" placeholder="Oeiras" type="text" required>
+    </div>
+
+    <div class="form-group col-xs-12 col-sm-6 col-md-3 ">
+      <label for="street">Local (rua, avenida, praceta, etc.)</label>
       <input size="35" class="form-control input-lg mandatory"
              id="street" name="Local da ocorrência" placeholder="Rua do Ouro" type="text" required>
     </div>
@@ -78,23 +83,25 @@
    <h3>Anomalia</h3>
 
    <div class="row">
-      <div class="form-group col-xs-12 col-sm-6 col-md-3 ">
-        <label for="anomalies">Tipo de Anomalia</label>
+      <div id="anomalies" class="form-group col-xs-12 col-sm-6 col-md-3 ">
         <select class="form-control input-lg mandatory"
-                id="anomalies" name="Tipo de Ocorrência">
+                id="anomaly1" name="Tipo Principal de Ocorrência">
+        </select>
+        <select class="form-control input-lg mandatory"
+                id="anomaly2" name="Tipo Secundário de Ocorrência">
         </select>
       </div>
     </div>
 
     <hr>
 
-    <h3>Município provável</h3>
+    <h3>Contacto</h3>
 
     <div class="row">
       <div class="form-group col-xs-12 col-sm-6 col-md-3 ">
-        <p>Esta lista é atualizada em função do Concelho da ocorrência</p>
+        <p>Esta lista é atualizada em função do município da ocorrência</p>
         <select class="form-control input-lg mandatory"
-                id="authority" name="Autoridade">
+                id="authority" name="Autoridade governativa">
         </select>
       </div>
   </div>

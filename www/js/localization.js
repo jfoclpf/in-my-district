@@ -39,7 +39,7 @@ app.localization = (function (thisModule) {
     var longitude = position.coords.longitude
     Longitude = longitude
     console.log('latitude, longitude: ', latitude, longitude)
-    getAuthoritiesFromOSM(latitude, longitude) // Pass the latitude and longitude to get address.
+    getLocale(latitude, longitude) // Pass the latitude and longitude to get address.
   }
 
   // to be used from outside of this module
@@ -63,43 +63,69 @@ app.localization = (function (thisModule) {
   /* Get address by coordinates */
   thisModule.MUNICIPALITIES = [] // array of possible authorities applicable for that area
 
-  function getAuthoritiesFromOSM (latitude, longitude) {
-    $.ajax({
-      url: app.main.urls.openStreetMaps.nominatimReverse,
-      data: {
-        lat: latitude,
-        lon: longitude,
-        format: 'json',
-        namedetails: 1,
-        'accept-language': 'pt'
-      },
-      dataType: 'json',
-      type: 'GET',
-      async: true,
-      crossDomain: true
-    }).done(function (res) {
-      const address = res.address
-      console.log(address)
-      getAuthoritiesFromAddress(address)
-    }).fail(function (err) {
-      console.error(err)
-      PositionError()
+  function getLocale (latitude, longitude) {
+    // makes two parallel async GET requests
+    Promise.allSettled([
+      $.ajax({
+        url: app.main.urls.geoApi.nominatimReverse,
+        data: {
+          lat: latitude,
+          lon: longitude,
+          format: 'json',
+          namedetails: 1,
+          'accept-language': 'pt'
+        },
+        dataType: 'json',
+        type: 'GET',
+        async: true,
+        crossDomain: true
+      }),
+      $.ajax({
+        url: app.main.urls.geoApi.ptApi,
+        data: {
+          lat: latitude,
+          lon: longitude
+        },
+        dataType: 'json',
+        type: 'GET',
+        async: true,
+        crossDomain: true
+      })
+    ]).then(function (resp1, resp2) {
+      if (resp1) {
+
+      } else {
+        console.error(app.main.urls.geoApi.nominatimReverse + ' returns empty or error')
+        PositionError()
+      }
+      console.log(resp1, resp2)
+      const addressFromOSM = resp1[0].address
+      var addressFromGeoPtApi = resp2[0]
+      console.log(addressFromOSM, addressFromGeoPtApi)
+
+      getAuthoritiesFromAddress(addressFromOSM, addressFromGeoPtApi)
+      fillFormWithAddress(addressFromOSM, addressFromGeoPtApi)
     })
   }
 
-  function getAuthoritiesFromAddress (address) {
+  function fillFormWithAddress (addressFromOSM) {
+    if (addressFromOSM) {
+      if (addressFromOSM.road) {
+        $('#street').val(addressFromOSM.road) // nome da rua/avenida/etc.
+      }
+
+      if (addressFromOSM.house_number) {
+        $('#street_number').val(addressFromOSM.house_number)
+      }
+    }
+    GPSLoadingOnFields(false)
+  }
+
+  function getAuthoritiesFromAddress (addressFromOSM) {
     thisModule.MUNICIPALITIES = []
     var geoNames = [] // array of possible names for the locale, for example ["Lisboa", "Odivelas"]
 
-    if (address) {
-      if (address.road) {
-        $('#street').val(address.road) // nome da rua/avenida/etc.
-      }
-
-      if (address.house_number) {
-        $('#street_number').val(address.house_number)
-      }
-
+    if (addressFromOSM) {
       // get relevant address details to find police authority
       // see: https://nominatim.org/release-docs/latest/api/Output/#addressdetails
       var relevantAddressDetails = [
@@ -109,16 +135,16 @@ app.localization = (function (thisModule) {
       ]
 
       for (let i = 0; i < relevantAddressDetails.length; i++) {
-        if (address[relevantAddressDetails[i]]) {
-          geoNames.push(address[relevantAddressDetails[i]])
+        if (addressFromOSM[relevantAddressDetails[i]]) {
+          geoNames.push(addressFromOSM[relevantAddressDetails[i]])
         }
       }
 
       // from the Postal Code got from OMS
       // tries to get locality using the offline Data Base (see file contacts.js)
       var localityFromDB, municipalityFromDB
-      if (address.postcode) {
-        const dataFromDB = getDataFromPostalCode(address.postcode)
+      if (addressFromOSM.postcode) {
+        const dataFromDB = getDataFromPostalCode(addressFromOSM.postcode)
 
         localityFromDB = dataFromDB.locality
         console.log('locality from DB is ' + localityFromDB)
@@ -132,50 +158,16 @@ app.localization = (function (thisModule) {
           geoNames.push(municipalityFromDB)
         }
       }
-
-      if (address.municipality) {
-        $('#locality').val(address.municipality)
-      } else if (address.city) {
-        $('#locality').val(address.city)
-      } else if (address.town) {
-        $('#locality').val(address.town)
-      } else if (address.suburb) {
-        $('#locality').val(address.suburb)
-      } else if (municipalityFromDB) {
-        $('#locality').val(municipalityFromDB)
-      } else if (localityFromDB) {
-        $('#locality').val(localityFromDB)
-      }
     } else {
-      geoNames.push($('#locality').val())
+      geoNames.push($('#municipality').val())
+      geoNames.push($('#parish').val())
     }
 
     geoNames = app.functions.cleanArray(geoNames) // removes empty strings
     console.log('geoNames :', geoNames)
-    // to check JS apply, see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/apply
-    thisModule.MUNICIPALITIES.push.apply(thisModule.MUNICIPALITIES, app.contactsFunctions.getPMcontacts(geoNames))
-    thisModule.MUNICIPALITIES.push.apply(thisModule.MUNICIPALITIES, app.contactsFunctions.getGNRcontacts(geoNames))
-    thisModule.MUNICIPALITIES.push.apply(thisModule.MUNICIPALITIES, app.contactsFunctions.getPSPcontacts(geoNames))
-
-    var PSPGeral = {
-      authority: 'Polícia',
-      authorityShort: 'Polícia de Segurança Pública',
-      nome: 'Geral',
-      contacto: 'contacto@psp.pt'
-    }
-    var GNRGeral = {
-      authority: 'Guarda Nacional Republicana',
-      authorityShort: 'GNR',
-      nome: 'Comando Geral',
-      contacto: 'gnr@gnr.pt'
-    }
-    thisModule.MUNICIPALITIES.push(PSPGeral)
-    thisModule.MUNICIPALITIES.push(GNRGeral)
 
     console.log('MUNICIPALITIES :', thisModule.MUNICIPALITIES)
     populateAuthoritySelect(thisModule.MUNICIPALITIES)
-
-    GPSLoadingOnFields(false)
   }
 
   function populateAuthoritySelect (arrayAuthorities) {
@@ -230,16 +222,10 @@ app.localization = (function (thisModule) {
   // removes the loading gif from input fields
   function GPSLoadingOnFields (bool) {
     if (bool) {
-      $('#locality').addClass('loading')
-      $('#street').addClass('loading')
-      $('#street_number').addClass('loading')
+      $('#municipality, #parish, #street, #street_number').addClass('loading')
     } else {
-      $('#street').removeClass('loading')
-      $('#street').trigger('input')
-      $('#street_number').removeClass('loading')
-      $('#street_number').trigger('input')
-      $('#locality').removeClass('loading')
-      $('#locality').trigger('input')
+      $('#municipality, #parish, #street, #street_number').removeClass('loading')
+      $('#municipality, #parish, #street, #street_number').trigger('input')
     }
   }
 
