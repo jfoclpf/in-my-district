@@ -3,6 +3,7 @@
    the user should see a historic of complaints previously submitted
    These complaints are anonymously stored in the database        */
 
+/* eslint no-var: off */
 /* eslint camelcase: off */
 /* global app, $, device, cordova */
 
