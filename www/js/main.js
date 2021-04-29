@@ -22,7 +22,7 @@ app.main = (function (thisModule) {
     },
     geoApi: {
       nominatimReverse: 'https://nominatim.openstreetmap.org/reverse',
-      ptApi: 'http://geo-pt-api.joaopimentel.com'
+      ptApi: 'https://geo-pt-api.joaopimentel.com'
     }
   }
 
@@ -122,7 +122,6 @@ app.main = (function (thisModule) {
 
   function onResume () {
     console.log('onResume')
-    app.authentication.onAppResume()
   }
 
   // request user to evaluate this app on Play Store

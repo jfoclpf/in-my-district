@@ -1,7 +1,7 @@
 /* eslint camelcase: off */
 
 /* eslint no-var: off */
-/* global app, $ */
+/* global app, cordova, $ */
 
 app.anomalies = (function (thisModule) {
   // campos "description" e "law_article" devem ser condicentes gramaticalmente com a mensagem que será gerada
@@ -14,7 +14,7 @@ app.anomalies = (function (thisModule) {
   }
 
   function populatesAnomaliesSelect () {
-    $.getJSON('../json/anomalies.json', function (data) {
+    $.getJSON(cordova.file.applicationDirectory + 'www/json/anomalies.json', function (data) {
       anomalies = data
       $.each(data, function (key, val) {
         $('#anomaly1').append(`<option value="${val.description}">${val.description}</option>`)

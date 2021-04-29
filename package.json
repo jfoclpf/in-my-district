@@ -75,7 +75,9 @@
       "cordova-plugin-inappbrowser": {},
       "cordova-plugin-is-debug": {},
       "cordova-plugin-app-version": {},
-      "cordova-plugin-simple-image-resizer": {},
+      "cordova-plugin-simple-image-resizer": {
+        "ANDROID_EXIFINTERFACES_VERSION": "27.+"
+      },
       "cordova-plugin-network-information": {},
       "cordova-plugin-x-socialsharing": {
         "PHOTO_LIBRARY_ADD_USAGE_DESCRIPTION": "Esta app necessita de acesso à biblioteca de fotos para fazer uso de fotos tiradas a ocorrências.",
@@ -83,7 +85,9 @@
       },
       "cordova-plugin-androidx-adapter": {},
       "cordova-plugin-mobile-ocr": {},
-      "cordova-plugin-camera": {},
+      "cordova-plugin-camera": {
+        "ANDROID_SUPPORT_V4_VERSION": "27.+"
+      },
       "cordova-plugin-file": {}
     },
     "platforms": [

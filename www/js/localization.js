@@ -91,37 +91,57 @@ app.localization = (function (thisModule) {
         async: true,
         crossDomain: true
       })
-    ]).then(function (resp1, resp2) {
-      if (resp1) {
-
-      } else {
-        console.error(app.main.urls.geoApi.nominatimReverse + ' returns empty or error')
+    ]).then(function (res) {
+      if (res[0].status !== 'fulfilled') {
+        console.error(app.main.urls.geoApi.nominatimReverse + ' returns empty')
         PositionError()
-      }
-      console.log(resp1, resp2)
-      const addressFromOSM = resp1[0].address
-      var addressFromGeoPtApi = resp2[0]
-      console.log(addressFromOSM, addressFromGeoPtApi)
+      } else {
+        var addressFromGeoPtApi
+        if (res[1].status !== 'fulfilled') {
+          console.error(app.main.urls.geoApi.ptApi + ' returns empty')
+        } else {
+          addressFromGeoPtApi = res[1].value
+        }
 
-      getAuthoritiesFromAddress(addressFromOSM, addressFromGeoPtApi)
-      fillFormWithAddress(addressFromOSM, addressFromGeoPtApi)
+        const addressFromOSM = res[0].value.address
+        console.log('getLocale: ', addressFromOSM, addressFromGeoPtApi)
+        getAuthoritiesFromAddress(addressFromOSM, addressFromGeoPtApi)
+        fillFormWithAddress(addressFromOSM, addressFromGeoPtApi)
+      }
     })
   }
 
-  function fillFormWithAddress (addressFromOSM) {
+  function fillFormWithAddress (addressFromOSM, addressFromGeoPtApi) {
     if (addressFromOSM) {
       if (addressFromOSM.road) {
         $('#street').val(addressFromOSM.road) // nome da rua/avenida/etc.
       }
-
       if (addressFromOSM.house_number) {
         $('#street_number').val(addressFromOSM.house_number)
       }
     }
+
+    if (addressFromGeoPtApi) {
+      if (addressFromGeoPtApi.concelho) {
+        $('#municipality').val(addressFromGeoPtApi.concelho)
+      }
+      if (addressFromGeoPtApi.freguesia) {
+        $('#parish').val(addressFromGeoPtApi.freguesia)
+      }
+    } else if (addressFromOSM) {
+      if (addressFromOSM.municipality) {
+        $('#municipality').val(addressFromOSM.municipality)
+      } else if (addressFromOSM.city) {
+        $('#municipality').val(addressFromOSM.city)
+      } else if (addressFromOSM.town) {
+        $('#municipality').val(addressFromOSM.town)
+      }
+    }
+
     GPSLoadingOnFields(false)
   }
 
-  function getAuthoritiesFromAddress (addressFromOSM) {
+  function getAuthoritiesFromAddress (addressFromOSM, addressFromGeoPtApi) {
     thisModule.MUNICIPALITIES = []
     var geoNames = [] // array of possible names for the locale, for example ["Lisboa", "Odivelas"]
 
@@ -158,7 +178,17 @@ app.localization = (function (thisModule) {
           geoNames.push(municipalityFromDB)
         }
       }
+
+      if (addressFromGeoPtApi) {
+        if (addressFromGeoPtApi.concelho) {
+          geoNames.push(addressFromGeoPtApi.concelho)
+        }
+        if (addressFromGeoPtApi.freguesia) {
+          geoNames.push(addressFromGeoPtApi.freguesia)
+        }
+      }
     } else {
+      // get data which the user directly typed in
       geoNames.push($('#municipality').val())
       geoNames.push($('#parish').val())
     }
