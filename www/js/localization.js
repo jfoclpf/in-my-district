@@ -98,7 +98,8 @@ app.localization = (function (thisModule) {
       } else {
         var addressFromGeoPtApi
         if (res[1].status !== 'fulfilled') {
-          console.error(app.main.urls.geoApi.ptApi + ' returns empty')
+          // this happens when user is not in Portugal
+          console.warn(app.main.urls.geoApi.ptApi + ' returns empty')
         } else {
           addressFromGeoPtApi = res[1].value
         }

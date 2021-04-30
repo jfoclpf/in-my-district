@@ -5,6 +5,7 @@ h1 {
 #header_title {
   font-size: 180%;
   font-weight: 500;
+  white-space: nowrap;
 }
 
 #content {
