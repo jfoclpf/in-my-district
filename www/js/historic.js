@@ -99,12 +99,12 @@ app.historic = (function (thisModule) {
           </div>
           <div>
             <b>Infração</b>: ${app.anomalies.getShortDescription(el.base_legal)}<br>
-            <b>Autoridade</b>: ${el.autoridade}
+            <b>Autoridade</b>: ${el.municipio}
           </div>
         </div>`
       )
 
-      if (historicData[i].processada_por_autoridade) {
+      if (historicData[i].processada_por_municipio) {
         $(`#historic button[data-index="${i}"].history-refresh-button`).hide()
         $(`#historic button[data-index="${i}"].history-check-button`).removeClass('btn-primary').addClass('btn-success')
       }
@@ -118,7 +118,7 @@ app.historic = (function (thisModule) {
         theme: 'dark_blue',
         class: 'ja_300px',
         closeBtn: false,
-        content: 'Deseja enviar um lembrete à autoridade respetiva a propósito desta ocurrência?',
+        content: 'Deseja enviar um lembrete ao municipio respetivo a propósito desta ocurrência?',
         btns: [
           {
             text: 'Sim',
@@ -275,7 +275,7 @@ app.historic = (function (thisModule) {
       setTimeout(() => {
         progressAlert.closeAlert()
         cordova.plugins.email.open({
-          to: app.contactsFunctions.getEmailByFullName(occurrence.autoridade),
+          to: app.contacts.getEmailOfMunicipality(occurrence.municipio),
           attachments: attachments, // file paths or base64 data streams
           subject: emailSubject, // subject of the email
           body: app.text.getReminderMessage(occurrence), // email body (for HTML, set isHtml to true)

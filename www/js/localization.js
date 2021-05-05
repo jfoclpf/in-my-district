@@ -60,9 +60,6 @@ app.localization = (function (thisModule) {
     GPSLoadingOnFields(false)
   }
 
-  /* Get address by coordinates */
-  thisModule.MUNICIPALITIES = [] // array of possible authorities applicable for that area
-
   function getLocale (latitude, longitude) {
     // makes two parallel async GET requests
     Promise.allSettled([
@@ -81,10 +78,11 @@ app.localization = (function (thisModule) {
         crossDomain: true
       }),
       $.ajax({
-        url: app.main.urls.geoApi.ptApi,
+        url: app.main.urls.geoApi.ptApi + '/gps',
         data: {
           lat: latitude,
-          lon: longitude
+          lon: longitude,
+          detalhes: 1
         },
         dataType: 'json',
         type: 'GET',
@@ -92,21 +90,24 @@ app.localization = (function (thisModule) {
         crossDomain: true
       })
     ]).then(function (res) {
+      // from app.main.urls.geoApi.nominatimReverse
       if (res[0].status !== 'fulfilled') {
         console.error(app.main.urls.geoApi.nominatimReverse + ' returns empty')
         PositionError()
       } else {
         var addressFromGeoPtApi
+        // from app.main.urls.geoApi.ptApi
         if (res[1].status !== 'fulfilled') {
           // this happens when user is not in Portugal
           console.warn(app.main.urls.geoApi.ptApi + ' returns empty')
         } else {
           addressFromGeoPtApi = res[1].value
+          app.contacts.setMunicipalityWithObject(addressFromGeoPtApi.detalhesMunicipio)
+          app.contacts.setParishWithObject(addressFromGeoPtApi.detalhesFreguesia)
         }
 
         const addressFromOSM = res[0].value.address
         console.log('getLocale: ', addressFromOSM, addressFromGeoPtApi)
-        getAuthoritiesFromAddress(addressFromOSM, addressFromGeoPtApi)
         fillFormWithAddress(addressFromOSM, addressFromGeoPtApi)
       }
     })
@@ -139,115 +140,9 @@ app.localization = (function (thisModule) {
       }
     }
 
+    app.contacts.setMunicipalityWithName($('#municipality').val())
+
     GPSLoadingOnFields(false)
-  }
-
-  function getAuthoritiesFromAddress (addressFromOSM, addressFromGeoPtApi) {
-    thisModule.MUNICIPALITIES = []
-    var geoNames = [] // array of possible names for the locale, for example ["Lisboa", "Odivelas"]
-
-    if (addressFromOSM) {
-      // get relevant address details to find police authority
-      // see: https://nominatim.org/release-docs/latest/api/Output/#addressdetails
-      var relevantAddressDetails = [
-        'state_district', 'county',
-        'municipality', 'city', 'town', 'village',
-        'city_district', 'district', 'borough', 'suburb', 'subdivision'
-      ]
-
-      for (let i = 0; i < relevantAddressDetails.length; i++) {
-        if (addressFromOSM[relevantAddressDetails[i]]) {
-          geoNames.push(addressFromOSM[relevantAddressDetails[i]])
-        }
-      }
-
-      // from the Postal Code got from OMS
-      // tries to get locality using the offline Data Base (see file contacts.js)
-      var localityFromDB, municipalityFromDB
-      if (addressFromOSM.postcode) {
-        const dataFromDB = getDataFromPostalCode(addressFromOSM.postcode)
-
-        localityFromDB = dataFromDB.locality
-        console.log('locality from DB is ' + localityFromDB)
-        if (localityFromDB) {
-          geoNames.push(localityFromDB)
-        }
-
-        municipalityFromDB = dataFromDB.municipality
-        console.log('municipality from DB is ' + municipalityFromDB)
-        if (municipalityFromDB) {
-          geoNames.push(municipalityFromDB)
-        }
-      }
-
-      if (addressFromGeoPtApi) {
-        if (addressFromGeoPtApi.concelho) {
-          geoNames.push(addressFromGeoPtApi.concelho)
-        }
-        if (addressFromGeoPtApi.freguesia) {
-          geoNames.push(addressFromGeoPtApi.freguesia)
-        }
-      }
-    } else {
-      // get data which the user directly typed in
-      geoNames.push($('#municipality').val())
-      geoNames.push($('#parish').val())
-    }
-
-    geoNames = app.functions.cleanArray(geoNames) // removes empty strings
-    console.log('geoNames :', geoNames)
-
-    console.log('MUNICIPALITIES :', thisModule.MUNICIPALITIES)
-    populateAuthoritySelect(thisModule.MUNICIPALITIES)
-  }
-
-  function populateAuthoritySelect (arrayAuthorities) {
-    $('#authority').empty() // empty select options
-    $.each(arrayAuthorities, function (index, value) {
-      $('#authority').append($('<option>', {
-        value: index,
-        text: value.authorityShort + ' - ' + value.nome
-      }))
-    })
-  }
-
-  // GPS/Google Postal Code -> Localities.postalCode -> Localities.municipality ->  Municipalities.code -> Municipalities.name -> PM_Contacts.nome
-  function getDataFromPostalCode (postalCode) {
-    var toReturn
-
-    postalCode = postalCode.substring(0, 4) // gets first 4 characters
-    if (postalCode.length !== 4) {
-      toReturn = {
-        locality: '',
-        municipality: ''
-      }
-      return toReturn
-    }
-
-    console.log('getDataFromPostalCode: ' + postalCode, typeof postalCode)
-
-    var key, locality, municipality, municipalityCode
-
-    for (key in app.contacts.Localities) {
-      if (app.contacts.Localities[key].postalCode === postalCode) {
-        locality = app.contacts.Localities[key].locality
-        municipalityCode = app.contacts.Localities[key].municipality
-        break
-      }
-    }
-
-    for (key in app.contacts.Municipalities) {
-      if (app.contacts.Municipalities[key].code === municipalityCode) {
-        municipality = app.contacts.Municipalities[key].name
-        break
-      }
-    }
-
-    toReturn = {
-      locality: $.trim(locality),
-      municipality: $.trim(municipality)
-    }
-    return toReturn
   }
 
   // removes the loading gif from input fields
@@ -295,7 +190,6 @@ app.localization = (function (thisModule) {
   thisModule.getGeolocation = getGeolocation
   thisModule.getPosition = getPosition
   thisModule.getCoordinates = getCoordinates
-  thisModule.getAuthoritiesFromAddress = getAuthoritiesFromAddress
   thisModule.convertDMSStringInfoToDD = convertDMSStringInfoToDD
 
   return thisModule

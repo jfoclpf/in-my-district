@@ -46,7 +46,7 @@ app.dbServerLink = (function (thisModule) {
       data_coord_long: app.localization.getCoordinates().longitude,
       anomaly1: app.anomalies.getSelectedMainAnomaly(),
       anomaly2: app.anomalies.getSelectedSecondaryAnomaly(),
-      autoridade: app.form.getAuthority()
+      municipio: app.contacts.getCurrentMunicipality().entidade
     }
 
     $.ajax({

@@ -46,10 +46,6 @@ app.form = (function (thisModule) {
     return $('#street_number').val() ? $('#street_number').val() : ''
   }
 
-  function getAuthority () {
-    return $('#authority option:selected').text()
-  }
-
   /* ********************************************************************** */
   /* ******************* IS FORM CORRECTLY FILLED  ************************ */
   // returns true if all the fields and inputs in the form are filled in and ready to write the message
@@ -112,6 +108,15 @@ app.form = (function (thisModule) {
     }
 
     // from here the inputs are correctly written
+
+    if (!app.contacts.isMunicipalityNameValid($('#municipality').val()) && !DEBUG) {
+      $.jAlert({
+        title: 'Erro no Município!',
+        theme: 'red',
+        content: 'O município que inseriu não existe: ' + $('#municipality').val()
+      })
+      return false
+    }
 
     if (app.photos.getPhotosUriOnFileSystem().length === 0) {
       $.jAlert({
@@ -222,16 +227,50 @@ app.form = (function (thisModule) {
 
   /* ********************************************************************** */
   /* ********************* LOCAL OF OCCURRENCE **************************** */
-  $('#municipality, #parish').on('input', function () {
-    if ($(this).val() === '' && !DEBUG) {
-      $(this).css('border-color', 'red')
-    } else {
+  $('#municipality').on('input', function (event) {
+    event.stopImmediatePropagation()
+    if (DEBUG) {
       $(this).css('border-color', '')
+      return
+    }
+
+    const name = $(this).val().trim()
+
+    if (name && /^[A-zÀ-ú\s-]+$/.test(name) && app.contacts.setMunicipalityWithName(name)) {
+      $(this).css('border-color', '')
+    } else {
+      $(this).css('border-color', 'red')
     }
   })
 
-  $('#municipality, #parish').focusout(function () {
-    app.localization.getAuthoritiesFromAddress()
+  $('#parish').on('input', function (event) {
+    event.stopImmediatePropagation()
+    if (DEBUG) {
+      $(this).css('border-color', '')
+      return
+    }
+
+    const name = $(this).val().trim()
+
+    if (name && /^[A-zÀ-ú\s-]+$/.test(name)) {
+      $.ajax({
+        url: app.main.urls.geoApi.ptApi + '/freguesia',
+        data: {
+          nome: name
+        },
+        dataType: 'json',
+        type: 'GET',
+        async: true,
+        crossDomain: true
+      }).done(function (data) {
+        console.log(data)
+        $(this).css('border-color', '')
+      }).fail(function () {
+        $(this).css('border-color', 'red')
+      })
+    } else {
+      $(this).css('border-color', 'red')
+    }
   })
 
   $('#street').on('input', function () {
@@ -252,7 +291,6 @@ app.form = (function (thisModule) {
   thisModule.getParish = getParish
   thisModule.getStreetName = getStreetName
   thisModule.getStreetNumber = getStreetNumber
-  thisModule.getAuthority = getAuthority
   /* ======================================== */
   thisModule.isMessageReady = isMessageReady
 

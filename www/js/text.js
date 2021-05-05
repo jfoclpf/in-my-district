@@ -21,7 +21,7 @@ app.text = (function (thisModule) {
         }
       }
 
-      var msgInit = getRandomGreetings() + ' da ' + getNameOfCurrentSelectedMunicipality() + ';'
+      var msgInit = getRandomGreetings() + ' da ' + getNameOfCurrentMunicipality() + ';'
 
       var msg1 = `Eu, <b>${$('#name').val()}</b>, ` +
         `com o <b>${$('#id_type').val()}</b> com o número <b>${$('#id_number').val()}</b> ` +
@@ -72,7 +72,7 @@ app.text = (function (thisModule) {
 
   function getMailMessageWithCMD (option) {
     if (option === 'body') {
-      var mainMessage = getRandomGreetings() + ' da ' + getNameOfCurrentSelectedMunicipality() + ';<br><br>' +
+      var mainMessage = getRandomGreetings() + ' da ' + getNameOfCurrentMunicipality() + ';<br><br>' +
         'Envio em anexo ficheiro PDF com uma denúncia de estacionamento ao abrigo do n.º 5 do art. 170.º do Código da Estrada.<br><br>'
 
       mainMessage += 'Refira-se ainda que o PDF em anexo tem o meu certificado digital emitido pela Agência para a Modernização Administrativa, <b>o que é equivalente, de acordo com a Lei, à minha presenção nas instalações de V. Exas</b>.<br><br>' +
@@ -98,15 +98,8 @@ app.text = (function (thisModule) {
     }
   }
 
-  function getNameOfCurrentSelectedMunicipality () {
-    // Authority
-    var municipality, municipalityName
-    var index = $('#authority').val()
-
-    municipality = app.localization.MUNICIPALITIES[index].authority
-    municipalityName = app.localization.MUNICIPALITIES[index].nome
-
-    return municipality + ', ' + municipalityName
+  function getNameOfCurrentMunicipality () {
+    return 'Câmara Municipal de ' + app.contacts.getCurrentMunicipality()
   }
 
   function getRandomGreetings () {

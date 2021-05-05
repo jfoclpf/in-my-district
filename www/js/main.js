@@ -3,7 +3,7 @@
 /* eslint no-var: off */
 /* global $, cordova */
 
-var DEBUG = true
+var DEBUG = false
 
 var app = {}
 
@@ -83,6 +83,7 @@ app.main = (function (thisModule) {
 
     app.form.init()
     app.sidebar.init()
+    app.contacts.init()
     app.functions.addFunctionsToPlugins()
 
     // information stored in variable window.localStorage
@@ -191,7 +192,7 @@ app.main = (function (thisModule) {
     console.log(JSON.stringify(attachments, 0, 3))
 
     cordova.plugins.email.open({
-      to: app.contactsFunctions.getEmailOfCurrentSelectedAuthority(), // email addresses for TO field
+      to: app.contacts.getCurrentMunicipality().email, // email addresses for TO field
       attachments: attachments,
       subject: app.text.getMainMessage('subject'), // subject of the email
       body: app.text.getMainMessage('body'), // email body (for HTML, set isHtml to true)
