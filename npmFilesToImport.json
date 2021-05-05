@@ -50,9 +50,5 @@
   "crypto-js": {
     "from": ["crypto-js.js"],
     "to": ["js", "res", "crypto-js.js"]
-  },
-  "google-android-app-ids": {
-    "from": ["dist", "google-app-ids.json"],
-    "to": ["js", "res", "google-app-ids.json"]
   }
 }
