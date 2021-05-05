@@ -22,28 +22,36 @@ app.form = (function (thisModule) {
   }
 
   function getFullAddress () {
+    var fullAddress
+
     const streetNumber = getStreetNumber()
     if (streetNumber) {
-      return `${getStreetName()} n. ${streetNumber}, ${getMunicipality()}, na freguesia ${getParish()}`
+      fullAddress = `${getStreetName()} n. ${streetNumber}, ${getMunicipality()}`
     } else {
-      return `${getStreetName()}, ${getMunicipality()}, na freguesia ${getParish()}`
+      fullAddress = `${getStreetName()}, ${getMunicipality()}`
     }
+
+    if (app.contacts.getCurrentParish()) {
+      fullAddress += `, na freguesia ${getParish()}`
+    }
+
+    return fullAddress
   }
 
   function getMunicipality () {
-    return $('#municipality').val()
+    return $('#municipality').val() || ''
   }
 
   function getParish () {
-    return $('#parish').val()
+    return $('#parish').val() || ''
   }
 
   function getStreetName () {
-    return $('#street').val()
+    return $('#street').val() || ''
   }
 
   function getStreetNumber () {
-    return $('#street_number').val() ? $('#street_number').val() : ''
+    return $('#street_number').val() || ''
   }
 
   /* ********************************************************************** */
@@ -122,7 +130,7 @@ app.form = (function (thisModule) {
       $.jAlert({
         title: 'Erro nas fotos!',
         theme: 'red',
-        content: 'Adicione pelo menos uma foto do veículo em causa'
+        content: 'Adicione pelo menos uma foto da ocorrência'
       })
       return false
     }
@@ -236,22 +244,27 @@ app.form = (function (thisModule) {
 
     const name = $(this).val().trim()
 
+    // must be any character (even with diacritics), white-space or hyphen
     if (name && /^[A-zÀ-ú\s-]+$/.test(name) && app.contacts.setMunicipalityWithName(name)) {
       $(this).css('border-color', '')
     } else {
+      app.contacts.setMunicipalityWithObject(null)
       $(this).css('border-color', 'red')
     }
   })
 
   $('#parish').on('input', function (event) {
     event.stopImmediatePropagation()
+    const $this = $(this)
+
     if (DEBUG) {
-      $(this).css('border-color', '')
+      $this.css('border-color', '')
       return
     }
 
-    const name = $(this).val().trim()
+    const name = $this.val().trim()
 
+    // must be any character (even with diacritics), white-space or hyphen
     if (name && /^[A-zÀ-ú\s-]+$/.test(name)) {
       $.ajax({
         url: app.main.urls.geoApi.ptApi + '/freguesia',
@@ -263,13 +276,15 @@ app.form = (function (thisModule) {
         async: true,
         crossDomain: true
       }).done(function (data) {
-        console.log(data)
-        $(this).css('border-color', '')
+        console.log('freguesia: ', data)
+        app.contacts.setParishWithObject(data)
+        $this.css('border-color', '')
       }).fail(function () {
-        $(this).css('border-color', 'red')
+        app.contacts.setParishWithObject(null)
+        $this.css('border-color', 'red')
       })
     } else {
-      $(this).css('border-color', 'red')
+      $this.css('border-color', 'red')
     }
   })
 

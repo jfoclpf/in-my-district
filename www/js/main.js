@@ -184,15 +184,22 @@ app.main = (function (thisModule) {
 
   // CMD -> Chave Móvel Digital
   function sendEMailMessage () {
-    app.dbServerLink.submitNewEntryToDB()
+    // app.dbServerLink.submitNewEntryToDB()
 
     var imagesArray = app.photos.getPhotosForEmailAttachment()
     // console.log(JSON.stringify(imagesArray, 0, 3))
     const attachments = imagesArray.map((path, i) => cordova.plugins.email.adaptPhotoInfoForEmailAttachment(path, i))
     console.log(JSON.stringify(attachments, 0, 3))
 
+    var emailTo
+    if (app.contacts.getCurrentParish() && app.contacts.getCurrentParish().email) {
+      emailTo = [app.contacts.getCurrentMunicipality().email, app.contacts.getCurrentParish().email]
+    } else {
+      emailTo = app.contacts.getCurrentMunicipality().email
+    }
+
     cordova.plugins.email.open({
-      to: app.contacts.getCurrentMunicipality().email, // email addresses for TO field
+      to: emailTo, // email addresses for TO field
       attachments: attachments,
       subject: app.text.getMainMessage('subject'), // subject of the email
       body: app.text.getMainMessage('body'), // email body (for HTML, set isHtml to true)
