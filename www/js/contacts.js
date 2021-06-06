@@ -5,26 +5,51 @@
 
 app.contacts = (function (thisModule) {
 
-  var municipalities = []
+  var municipalities = [] // array of objects, ex: {"nome":"Abrantes", "freguesias":[ "Bemposta", etc.] }
   var numberOfMunicipalities
 
-  var currentMunicipality
-  var currentParish
+  var currentMunicipality = {}
+  var currentParish = {}
 
   function init () {
-    $.getJSON(cordova.file.applicationDirectory + 'www/json/Municipiosdadosgerias.json', function (data) {
-      municipalities = data.d
-      numberOfMunicipalities = municipalities.length
-      console.log('municipalities: ', municipalities)
-      console.log('numberOfMunicipalities: ', numberOfMunicipalities)
+    const url = app.main.urls.geoApi.ptApi + '/municipios/freguesias'
+    $.ajax({
+      url: url,
+      dataType: 'json',
+      type: 'GET',
+      async: true,
+      crossDomain: true
+    }).done(function (data) {
+      municipalities = data
+      numberOfMunicipalities = data.length
+    }).fail(function (err) {
+      console.err('Error fetching from ' + url, err)
     })
   }
 
   function setMunicipalityWithName (name) {
     const _name = name.trim().toLowerCase()
     for (let i = 0; i < numberOfMunicipalities; i++) {
-      if (municipalities[i].entidade.trim().toLowerCase() === _name) {
-        currentMunicipality = municipalities[i]
+      if (municipalities[i].nome.trim().toLowerCase() === _name) {
+        // get details of selected municipality
+        const url = app.main.urls.geoApi.ptApi + '/municipio'
+        $.ajax({
+          url: url,
+          data: {
+            nome: municipalities[i].nome
+          },
+          dataType: 'json',
+          type: 'GET',
+          async: true,
+          crossDomain: true
+        }).done(function (data) {
+          currentMunicipality = data
+          currentMunicipality.nome = municipalities[i].nome
+          currentMunicipality.freguesias = municipalities[i].freguesias
+          console.log('Municipality info fetched: ', currentMunicipality)
+        }).fail(function (err) {
+          console.err('Error fetching from ' + url, err)
+        })
         return true
       }
     }
@@ -50,21 +75,13 @@ app.contacts = (function (thisModule) {
   function isMunicipalityNameValid (name) {
     const _name = name.trim().toLowerCase()
     for (let i = 0; i < numberOfMunicipalities; i++) {
-      if (municipalities[i].entidade.trim().toLowerCase() === _name) {
+      if (municipalities[i].nome.trim().toLowerCase() === _name) {
         return true
       }
     }
     return false
   }
 
-  function getEmailOfMunicipalityByName (name) {
-    const _name = name.trim().toLowerCase()
-    for (let i = 0; i < numberOfMunicipalities; i++) {
-      if (municipalities[i].entidade.trim().toLowerCase() === _name) {
-        return municipalities[i].email
-      }
-    }
-  }
 
   thisModule.init = init
   thisModule.setMunicipalityWithName = setMunicipalityWithName
@@ -73,7 +90,6 @@ app.contacts = (function (thisModule) {
   thisModule.getCurrentMunicipality = getCurrentMunicipality
   thisModule.getCurrentParish = getCurrentParish
   thisModule.isMunicipalityNameValid = isMunicipalityNameValid
-  thisModule.getEmailOfMunicipalityByName = getEmailOfMunicipalityByName
 
   return thisModule
 })(app.contacts || {})

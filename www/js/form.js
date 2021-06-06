@@ -5,9 +5,6 @@
 
 app.form = (function (thisModule) {
   function init () {
-    if (app.functions.isThis_iOS()) {
-      $('#plateDiv').hide()
-    }
   }
 
   /* ********************************************************************** */
@@ -237,10 +234,6 @@ app.form = (function (thisModule) {
   /* ********************* LOCAL OF OCCURRENCE **************************** */
   $('#municipality').on('input', function (event) {
     event.stopImmediatePropagation()
-    if (DEBUG) {
-      $(this).css('border-color', '')
-      return
-    }
 
     const name = $(this).val().trim()
 

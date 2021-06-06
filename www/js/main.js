@@ -3,7 +3,7 @@
 /* eslint no-var: off */
 /* global $, cordova */
 
-var DEBUG = false
+var DEBUG = true
 
 var app = {}
 
@@ -22,7 +22,7 @@ app.main = (function (thisModule) {
     },
     geoApi: {
       nominatimReverse: 'https://nominatim.openstreetmap.org/reverse',
-      ptApi: 'https://geo-pt-api.joaopimentel.com'
+      ptApi: 'https://geoptapi.org' // check https://www.geoptapi.org/
     }
   }
 
@@ -60,7 +60,7 @@ app.main = (function (thisModule) {
       }
       init()
     }, function (err) {
-      console.error(err)
+      console.warn('IsDebug plugin unavailable or not working', err)
       init()
     })
   }
