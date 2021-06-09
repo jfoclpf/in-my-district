@@ -81,8 +81,7 @@ app.localization = (function (thisModule) {
         url: app.main.urls.geoApi.ptApi + '/gps',
         data: {
           lat: latitude,
-          lon: longitude,
-          detalhes: 1
+          lon: longitude
         },
         dataType: 'json',
         type: 'GET',
@@ -124,9 +123,11 @@ app.localization = (function (thisModule) {
     if (addressFromGeoPtApi) {
       if (addressFromGeoPtApi.concelho) {
         $('#municipality').val(addressFromGeoPtApi.concelho.trim().toLowerCase())
+          .trigger('change', [true]) // triger with parameter, true to refer init
       }
       if (addressFromGeoPtApi.freguesia) {
-        $('#parish').val(addressFromGeoPtApi.freguesia)
+        $('#parish').val(addressFromGeoPtApi.freguesia.trim().toLowerCase())
+          .trigger('change')
       }
     } else if (addressFromOSM) {
       if (addressFromOSM.municipality) {

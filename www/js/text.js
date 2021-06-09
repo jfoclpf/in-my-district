@@ -7,9 +7,12 @@ app.text = (function (thisModule) {
   // main message
   function getMainMessage (option) {
     if (option === 'body') {
-      var msgInit = `${getRandomGreetings()} da Câmara Municipal de ${app.contacts.getCurrentMunicipality().entidade};`
+      const municipality = $('#municipality option:selected').text().trim()
+      const parish = $('#parish option:selected').text().trim()
+
+      var msgInit = `${getRandomGreetings()} da Câmara Municipal de ${municipality};`
       if (app.contacts.getCurrentParish()) {
-        msgInit += `<br>${getRandomGreetings()} da Junta de Freguesia de ${app.contacts.getCurrentParish().nome};`
+        msgInit += `<br>${getRandomGreetings()} da Junta de Freguesia de ${parish};`
       }
 
       var msg1 = `Eu, <b>${$('#name').val().trim()}</b>, ` +
@@ -20,12 +23,12 @@ app.text = (function (thisModule) {
 
       var msg2 = `No passado dia <b>${$.datepicker.formatDate("dd' de 'MM' de 'yy", $('#date').datepicker('getDate'))}</b>` +
         ($('#time').val() ? ' pelas <b>' + $('#time').val() + '</b>' : '') + // optional
-        `, na <b>${$('#street').val().trim()}, ${$('#municipality').val().trim()}</b>, ` +
-        (app.contacts.getCurrentParish() ? `na freguesia de <b>${$('#parish').val().trim()}</b>, ` : '') + // optional
+        `, na <b>${$('#street').val().trim()}, ${municipality}</b>, ` +
+        (app.contacts.getCurrentParish() ? `na freguesia de <b>${parish}</b>, ` : '') + // optional
         ($('#street_number').val()
           ? `aproximadamente junto à porta com o <b>número ${$('#street_number').val().trim()}</b>, `
           : '') + // optional
-        `deparei-me com o seguinte problema relacionado com <b>${$('#anomaly1').val()}: ${$('#anomaly2').val()}</b>.`
+        `deparei-me com o seguinte problema relacionado com <b>${$('#anomaly1 option:selected').text()}: ${$('#anomaly2 option:selected').text()}</b>.`
 
       var msg3 = 'Pode-se comprovar esta situação através' +
         ' ' + ((app.photos.getPhotosUriOnFileSystem().length === 1) ? 'da fotografia anexa' : 'das fotografias anexas') +

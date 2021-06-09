@@ -244,7 +244,7 @@ app.form = (function (thisModule) {
   /* ********************************************************************** */
   /* ********************* LOCAL OF OCCURRENCE **************************** */
   // when the select of municipalities is changed, updates the select of parishes
-  $('#municipality').change(function (event) {
+  $('#municipality').change(function (event, trigeredByLocalization) {
     const municipality = $(this).val().trim().toLowerCase()
     app.contacts.setMunicipality(municipality)
 
@@ -254,6 +254,9 @@ app.form = (function (thisModule) {
         $.each(val.freguesias, function (key2, parish) {
           $('#parish').append(`<option value="${parish.trim().toLowerCase()}">${parish.trim()}</option>`)
         })
+        if (!trigeredByLocalization) {
+          $('#parish').change() // trigers event
+        }
         return false // break loop, since the municipality was already found
       }
     })
