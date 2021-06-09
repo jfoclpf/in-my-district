@@ -102,8 +102,6 @@ app.localization = (function (thisModule) {
           console.warn(app.main.urls.geoApi.ptApi + ' returns empty')
         } else {
           addressFromGeoPtApi = res[1].value
-          app.contacts.setMunicipalityWithObject(addressFromGeoPtApi.detalhesMunicipio)
-          app.contacts.setParishWithObject(addressFromGeoPtApi.detalhesFreguesia)
         }
 
         const addressFromOSM = res[0].value.address
@@ -125,22 +123,20 @@ app.localization = (function (thisModule) {
 
     if (addressFromGeoPtApi) {
       if (addressFromGeoPtApi.concelho) {
-        $('#municipality').val(addressFromGeoPtApi.concelho)
+        $('#municipality').val(addressFromGeoPtApi.concelho.trim().toLowerCase())
       }
       if (addressFromGeoPtApi.freguesia) {
         $('#parish').val(addressFromGeoPtApi.freguesia)
       }
     } else if (addressFromOSM) {
       if (addressFromOSM.municipality) {
-        $('#municipality').val(addressFromOSM.municipality)
+        $('#municipality').val(addressFromOSM.municipality.trim().toLowerCase())
       } else if (addressFromOSM.city) {
-        $('#municipality').val(addressFromOSM.city)
+        $('#municipality').val(addressFromOSM.city.trim().toLowerCase())
       } else if (addressFromOSM.town) {
-        $('#municipality').val(addressFromOSM.town)
+        $('#municipality').val(addressFromOSM.town.trim().toLowerCase())
       }
     }
-
-    app.contacts.setMunicipalityWithName($('#municipality').val())
 
     GPSLoadingOnFields(false)
   }

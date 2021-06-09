@@ -81,7 +81,10 @@ app.main = (function (thisModule) {
     // for the plugin cordova-plugin-inappbrowser
     window.open = cordova.InAppBrowser.open
 
-    app.form.init()
+    app.form.init(() => {
+      // this is used to get address on form, and for maps section
+      app.localization.loadMapsApi()
+    })
     app.sidebar.init()
     app.contacts.init()
     app.functions.addFunctionsToPlugins()
@@ -99,9 +102,6 @@ app.main = (function (thisModule) {
         $(this).css('border-color', 'red')
       }
     })
-
-    // this is used to get address on form, and for maps section
-    app.localization.loadMapsApi()
 
     // app.map.init()
 

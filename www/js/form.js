@@ -4,7 +4,28 @@
 /* global app, $, DEBUG */
 
 app.form = (function (thisModule) {
-  function init () {
+  // array of municipalities with parishes, ex: {"nome":"Abrantes", "freguesias":[ "Bemposta", etc.] }
+  var municipalities = []
+
+  function init (callback) {
+    const url = app.main.urls.geoApi.ptApi + '/municipios/freguesias'
+    $.ajax({
+      url: url,
+      dataType: 'json',
+      type: 'GET',
+      async: true,
+      crossDomain: true
+    }).done(function (data) {
+      municipalities = data
+
+      $('#municipality').empty()
+      $.each(municipalities, function (key, val) {
+        $('#municipality').append(`<option value="${val.nome.trim().toLowerCase()}">${val.nome.trim()}</option>`)
+      })
+      callback()
+    }).fail(function (err) {
+      console.err('Error fetching from ' + url, err)
+    })
   }
 
   /* ********************************************************************** */
@@ -113,16 +134,6 @@ app.form = (function (thisModule) {
     }
 
     // from here the inputs are correctly written
-
-    if (!app.contacts.isMunicipalityNameValid($('#municipality').val()) && !DEBUG) {
-      $.jAlert({
-        title: 'Erro no Município!',
-        theme: 'red',
-        content: 'O município que inseriu não existe: ' + $('#municipality').val()
-      })
-      return false
-    }
-
     if (app.photos.getPhotosUriOnFileSystem().length === 0) {
       $.jAlert({
         title: 'Erro nas fotos!',
@@ -232,53 +243,26 @@ app.form = (function (thisModule) {
 
   /* ********************************************************************** */
   /* ********************* LOCAL OF OCCURRENCE **************************** */
-  $('#municipality').on('input', function (event) {
-    event.stopImmediatePropagation()
+  // when the select of municipalities is changed, updates the select of parishes
+  $('#municipality').change(function (event) {
+    const municipality = $(this).val().trim().toLowerCase()
+    app.contacts.setMunicipality(municipality)
 
-    const name = $(this).val().trim()
-
-    // must be any character (even with diacritics), white-space or hyphen
-    if (name && /^[A-zÀ-ú\s-]+$/.test(name) && app.contacts.setMunicipalityWithName(name)) {
-      $(this).css('border-color', '')
-    } else {
-      app.contacts.setMunicipalityWithObject(null)
-      $(this).css('border-color', 'red')
-    }
+    $.each(municipalities, function (key, val) {
+      if (val.nome.trim().toLowerCase() === municipality) {
+        $('#parish').empty()
+        $.each(val.freguesias, function (key2, parish) {
+          $('#parish').append(`<option value="${parish.trim().toLowerCase()}">${parish.trim()}</option>`)
+        })
+        return false // break loop, since the municipality was already found
+      }
+    })
   })
 
-  $('#parish').on('input', function (event) {
-    event.stopImmediatePropagation()
-    const $this = $(this)
-
-    if (DEBUG) {
-      $this.css('border-color', '')
-      return
-    }
-
-    const name = $this.val().trim()
-
-    // must be any character (even with diacritics), white-space or hyphen
-    if (name && /^[A-zÀ-ú\s-]+$/.test(name)) {
-      $.ajax({
-        url: app.main.urls.geoApi.ptApi + '/freguesia',
-        data: {
-          nome: name
-        },
-        dataType: 'json',
-        type: 'GET',
-        async: true,
-        crossDomain: true
-      }).done(function (data) {
-        console.log('freguesia: ', data)
-        app.contacts.setParishWithObject(data)
-        $this.css('border-color', '')
-      }).fail(function () {
-        app.contacts.setParishWithObject(null)
-        $this.css('border-color', 'red')
-      })
-    } else {
-      $this.css('border-color', 'red')
-    }
+  $('#parish').change(function (event) {
+    const parish = $(this).val().trim().toLowerCase()
+    const municipality = $('#municipality').val().trim().toLowerCase()
+    app.contacts.setParish(parish, municipality)
   })
 
   $('#street').on('input', function () {
