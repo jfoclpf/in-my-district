@@ -40,7 +40,7 @@ app.text = (function (thisModule) {
       return message
     } else if (option === 'subject') {
       const address = app.form.getFullAddress()
-      return `Anomalia com ${$('#anomaly1').val()} (${$('#anomaly2').val()}) na ${address}`
+      return `Anomalia com ${$('#anomaly1 option:selected').text()} (${$('#anomaly2 option:selected').text()}) na ${address}`
     } else {
       console.error('Error in getMainMessage(option) wth option=' + option)
     }
@@ -61,12 +61,9 @@ app.text = (function (thisModule) {
   function getRandomGreetings () {
     var greetingsInitial = [
       'Excelentíssimos senhores',
-      'Excelentíssimos agentes',
       'Prezados senhores',
-      'Prezados agentes',
       'Caros senhores',
-      'Ex.mos Senhores',
-      'Ex.mos Senhores Agentes'
+      'Ex.mos Senhores'
     ]
 
     return greetingsInitial[Math.floor(Math.random() * greetingsInitial.length)]

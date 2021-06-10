@@ -57,11 +57,11 @@ app.form = (function (thisModule) {
   }
 
   function getMunicipality () {
-    return $('#municipality').val() || ''
+    return $('#municipality option:selected').text().trim() || ''
   }
 
   function getParish () {
-    return $('#parish').val() || ''
+    return $('#parish option:selected').text().trim() || ''
   }
 
   function getStreetName () {
