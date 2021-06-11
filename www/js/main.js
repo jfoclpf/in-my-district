@@ -134,9 +134,13 @@ app.main = (function (thisModule) {
     const minimumOccurencesToRequestUserToEvaluteApp = 5
     app.historic.requestNumberOfHistoricOccurrences(
       (err, result) => {
-        if (!err && result > minimumOccurencesToRequestUserToEvaluteApp) {
+        if (err) {
+          console.error('error getting minimumOccurences', err)
+          return
+        }
+
+        if (result > minimumOccurencesToRequestUserToEvaluteApp) {
           var msg = 'Reparámos que tem usado esta APP, que é gratuita, de código aberto e sem publicidade. Fizemo-lo dentro do espírito de serviço público.<br><br>' +
-            'Contudo vários utilizadores movidos por uma lógica vingativa, presumivelmente automobilistas cujas ações foram reportadas, têm dado nota negativa (nota 1) a esta APP na Play Store.<br><br>' +
             'Ajude-nos avaliando o nosso trabalho cívico. Muito obrigados'
 
           $.jAlert({
@@ -182,7 +186,6 @@ app.main = (function (thisModule) {
     }
   })
 
-  // CMD -> Chave Móvel Digital
   function sendEMailMessage () {
     // app.dbServerLink.submitNewEntryToDB()
 

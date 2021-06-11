@@ -16,7 +16,7 @@ app.historic = (function (thisModule) {
   function updateHistoric () {
     const uuid = device.uuid
 
-    console.log('Fetching historic with uuid ' + uuid)
+    console.log(`Fetching historic from ${requestHistoricUrl} with uuid ${uuid}`)
     $.ajax({
       url: requestHistoricUrl,
       type: 'GET',
@@ -50,11 +50,11 @@ app.historic = (function (thisModule) {
       headers: app.dbServerLink.getAjaxHttpHeaderKeys(),
       success: function (data) {
         console.log('Returned: ', data)
-        if (data) {
+        if (data && (typeof data === 'object' || Array.isArray(data))) {
           console.success('Historic obtained from database with success.')
           callback(null, data.length)
         } else {
-          callback(Error('Empty historic data'))
+          callback(Error('Empty or invalid historic data'))
         }
       },
       error: function (error) {
