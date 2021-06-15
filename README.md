@@ -38,17 +38,10 @@ O ADB é usado para testar a APP no seu telemóvel Android
 ### Android
 
  1. Clone este projeto `git clone https://github.com/jfoclpf/in-my-district.git`
- 2. Entre na pasta recém criada `cd form-for-parking-violation`
+ 2. Entre na pasta recém criada `cd in-my-district`
  3. Adicione a plataforma: `cordova platform add android`.
  3. Corra `cordova build android` para construir o projeto na sua máquina. Em Android cria o ficheiro APK na pasta `platforms/android/build/outputs/apk`
 
-### iOS
-```
-git clone https://github.com/jfoclpf/in-my-district.git
-cd form-for-parking-violation
-cordova platform add ios
-open platforms/ios/Denúncia\ Estacionamento.xcworkspace/
-```
 
 ### Testar num smartphone
 
