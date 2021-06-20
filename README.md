@@ -9,8 +9,7 @@ Aplicação móvel para comunicar ao seu município anomalias no seu bairro, com
 
 O código está desenhado em Javascript para ser corrido num smartphone. Para tal faz uso da plataforma <a href="https://cordova.apache.org/">Apache Cordova</a>.
 
-* A APP para Android está <a href="https://play.google.com/store/apps/details?id=com.form.parking.violation">aqui</a>.
-* A APP para iOS está <a href="https://itunes.apple.com/pt/app/aqui-n%C3%A3o/id1335652238?mt=8">aqui</a>.
+* A APP para Android está <a href="https://play.google.com/store/apps/details?id=com.in.my.district">aqui</a>.
 
 ## Requisitos
 
@@ -39,17 +38,10 @@ O ADB é usado para testar a APP no seu telemóvel Android
 ### Android
 
  1. Clone este projeto `git clone https://github.com/jfoclpf/in-my-district.git`
- 2. Entre na pasta recém criada `cd form-for-parking-violation`
+ 2. Entre na pasta recém criada `cd in-my-district`
  3. Adicione a plataforma: `cordova platform add android`.
  3. Corra `cordova build android` para construir o projeto na sua máquina. Em Android cria o ficheiro APK na pasta `platforms/android/build/outputs/apk`
 
-### iOS
-```
-git clone https://github.com/jfoclpf/in-my-district.git
-cd form-for-parking-violation
-cordova platform add ios
-open platforms/ios/Denúncia\ Estacionamento.xcworkspace/
-```
 
 ### Testar num smartphone
 
