@@ -2,6 +2,10 @@ h1 {
   text-align: center
 }
 
+select {
+  max-width: 500px;
+}
+
 #header_title {
   font-size: 180%;
   font-weight: 500;
