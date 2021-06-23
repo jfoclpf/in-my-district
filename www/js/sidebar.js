@@ -33,12 +33,11 @@ app.sidebar = (function (thisModule) {
       app.sidebar.toggleSidebar(false)
     })
 
-    $('#historic_show').remove()
-    /* $('#historic_show').click(function () {
+    $('#historic_show').click(function () {
       app.historic.updateHistoric()
       showSection('historic')
       app.sidebar.toggleSidebar(false)
-    }) */
+    })
 
     $('#map_section_show').remove()
     /* $('#map_section_show').click(function () {
