@@ -49,9 +49,8 @@ app.text = (function (thisModule) {
   // called by historic module
   function getReminderMessage (occurrence) {
     var text = `${getRandomGreetings()} da ${occurrence.autoridade}<br><br>` +
-      `No seguimento da anamoalia já enviada anteriormente a V. Exas. a propósito da violação do Código da Estrada perpetrada pelo condutor do veículo ${occurrence.carro_marca} ${occurrence.carro_modelo} com a matrícula ${occurrence.carro_matricula}, ` +
-      `na ${occurrence.data_local} n. ${occurrence.data_num_poveículorta}, ${occurrence.data_concelho}, no dia ${(new Date(occurrence.data_data)).toLocaleDateString('pt-PT')} às ${occurrence.data_hora.slice(0, 5)}, ` +
-      `veículo esse que se encontrava ${app.anomalies.getDescription(occurrence.base_legal)} em violação ${app.anomalies.getLawArticle(occurrence.base_legal)}, ` +
+      `No seguimento da anamoalia já enviada anteriormente a V. Exas. relacionada com ${occurrence.anomaly1}, mais precisamente com ${occurrence.anomaly2} ` +
+      `na ${occurrence.data_local} n. ${occurrence.data_num_porta}, ${occurrence.data_concelho}, no dia ${(new Date(occurrence.data_data)).toLocaleDateString('pt-PT')} às ${occurrence.data_hora.slice(0, 5)}, ` +
       `vinha por este meio inquirir V. Exas. sobre o estado do processo respetivo, considerando que já decorreram ${Math.round(((new Date()) - new Date(occurrence.data_data)) / (1000 * 60 * 60 * 24))} dias desde a data da ocorrência.<br><br>` +
       `Fico a aguardar resposta de V. Exas.<br><br>${getRegards()}`
 
