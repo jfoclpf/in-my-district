@@ -36,27 +36,15 @@ app.anomalies = (function (thisModule) {
   }
 
   function getSelectedMainAnomaly () {
-    return $('#anomaly1').val()
+    return $('#anomaly1 option:selected').text()
   }
 
   function getSelectedSecondaryAnomaly () {
+    return $('#anomaly2 option:selected').text()
+  }
+
+  function getAnomalyCode () {
     return $('#anomaly2').val()
-  }
-
-  function getShortDescription (code) {
-    for (const key in anomalies) {
-      if (key === code) {
-        return anomalies[key].select
-      }
-    }
-  }
-
-  function getDescription (code) {
-    for (const key in anomalies) {
-      if (key === code) {
-        return anomalies[key].description
-      }
-    }
   }
 
   /* === Public methods to be returned === */
@@ -64,8 +52,7 @@ app.anomalies = (function (thisModule) {
   thisModule.populatesAnomaliesSelect = populatesAnomaliesSelect
   thisModule.getSelectedMainAnomaly = getSelectedMainAnomaly
   thisModule.getSelectedSecondaryAnomaly = getSelectedSecondaryAnomaly
-  thisModule.getShortDescription = getShortDescription
-  thisModule.getDescription = getDescription
+  thisModule.getAnomalyCode = getAnomalyCode
 
   return thisModule
 })(app.anomalies || {})

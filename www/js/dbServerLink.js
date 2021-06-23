@@ -7,10 +7,10 @@ app.dbServerLink = (function (thisModule) {
   const uploadOccurenceUrl = app.main.urls.databaseServer.uploadOccurence
 
   function submitNewEntryToDB () {
-    const carPlate = app.form.getCarPlate()
     const dateYYYY_MM_DD = app.form.getDateYYYY_MM_DD()
     const timeHH_MM = app.form.getTimeHH_MM()
     const municipality = app.form.getMunicipality()
+    const freguesia = app.form.getParish()
 
     // generates file names array for images
     const randomString = getRandomString(10) // serves to uniquely identify the filenames
@@ -19,7 +19,7 @@ app.dbServerLink = (function (thisModule) {
     var numberOfImages = imagesArray.length
     for (let i = 0; i < 4; i++) {
       if (i < numberOfImages) {
-        const fileName = `${DEBUG ? 'debug_' : ''}${carPlate}_n${i + 1}_${dateYYYY_MM_DD}_${timeHH_MM}_${municipality}_${randomString}.jpg`
+        const fileName = `${DEBUG ? 'debug_' : ''}n${i + 1}_${dateYYYY_MM_DD}_${timeHH_MM}_${municipality}_${freguesia}_${randomString}.jpg`
         imgFileNames.push(fileName)
       } else {
         imgFileNames.push('')
@@ -33,20 +33,19 @@ app.dbServerLink = (function (thisModule) {
       foto2: imgFileNames[1],
       foto3: imgFileNames[2],
       foto4: imgFileNames[3],
-      carro_matricula: app.form.getCarPlate(),
-      carro_marca: app.form.getCarMake(),
-      carro_modelo: app.form.getCarModel(),
       data_data: app.form.getDateYYYY_MM_DD(),
       data_hora: app.form.getTimeHH_MM(),
-      data_concelho: app.form.getMunicipality(),
-      data_freguesia: app.form.getParish(),
+      data_concelho: municipality,
+      data_freguesia: freguesia,
       data_local: app.form.getStreetName(),
       data_num_porta: app.form.getStreetNumber(),
       data_coord_latit: app.localization.getCoordinates().latitude,
       data_coord_long: app.localization.getCoordinates().longitude,
       anomaly1: app.anomalies.getSelectedMainAnomaly(),
       anomaly2: app.anomalies.getSelectedSecondaryAnomaly(),
-      municipio: app.contacts.getCurrentMunicipality().entidade
+      anomaly_code: app.anomalies.getAnomalyCode(),
+      email_concelho: app.contacts.getCurrentMunicipality().email,
+      email_freguesia: app.contacts.getCurrentParish().email
     }
 
     $.ajax({
@@ -90,15 +89,15 @@ app.dbServerLink = (function (thisModule) {
   }
 
   // for a certain occurence it sets that it was dealt, or not, by authority
-  function setProcessedByAuthorityStatus (occurence, status, callback) {
+  function setSolvedOccurrenceStatus (occurence, status, callback) {
     var databaseObj = Object.assign({}, occurence) // cloning Object
 
-    databaseObj.processada_por_autoridade = status ? 1 : 0
+    databaseObj.ocorrencia_resolvida = status ? 1 : 0
 
     $.ajax({
       url: uploadOccurenceUrl,
       type: 'POST',
-      data: JSON.stringify({ dbCommand: 'setProcessedByAuthorityStatus', databaseObj: databaseObj }),
+      data: JSON.stringify({ dbCommand: 'setSolvedOccurrenceStatus', databaseObj: databaseObj }),
       contentType: 'application/json; charset=utf-8',
       dataType: 'json',
       crossDomain: true,
@@ -156,7 +155,7 @@ app.dbServerLink = (function (thisModule) {
   }
 
   thisModule.submitNewEntryToDB = submitNewEntryToDB
-  thisModule.setProcessedByAuthorityStatus = setProcessedByAuthorityStatus
+  thisModule.setSolvedOccurrenceStatus = setSolvedOccurrenceStatus
   thisModule.setEntryAsDeletedInDatabase = setEntryAsDeletedInDatabase
   thisModule.getAjaxHttpHeaderKeys = getAjaxHttpHeaderKeys
 

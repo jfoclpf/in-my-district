@@ -158,7 +158,7 @@ app.historic = (function (thisModule) {
               onClick: function () {
                 $thisButton.siblings('.history-refresh-button').hide()
                 $thisButton.removeClass('btn-primary').addClass('btn-success')
-                app.dbServerLink.setProcessedByAuthorityStatus(historicData[i], true)
+                app.dbServerLink.setSolvedOccurrenceStatus(historicData[i], true)
               }
             },
             {
@@ -182,7 +182,7 @@ app.historic = (function (thisModule) {
               onClick: function () {
                 $thisButton.siblings('.history-refresh-button').show()
                 $thisButton.removeClass('btn-success').addClass('btn-primary')
-                app.dbServerLink.setProcessedByAuthorityStatus(historicData[i], false)
+                app.dbServerLink.setSolvedOccurrenceStatus(historicData[i], false)
               }
             },
             {
