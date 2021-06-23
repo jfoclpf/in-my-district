@@ -38,15 +38,6 @@ app.post(submissionsUrl, function (req, res) {
   var databaseObj = req.body.databaseObj
   debug('with databaseObj: ', databaseObj)
 
-  // for backward compatibility, wherein it was req.body === databaseObj
-  if (!serverCommand && req.body.hasOwnProperty('foto1')) {
-    if (req.body.hasOwnProperty('processada_por_autoridade')) {
-      serverCommand = 'setProcessedByAuthorityStatus'
-    } else {
-      serverCommand = 'submitNewEntryToDB'
-    }
-  }
-
   if (!serverCommand || !databaseObj) {
     debug('Bad request')
     res.status(501).send('property serverCommand or databaseObj of reqquest does not exist')
@@ -54,25 +45,25 @@ app.post(submissionsUrl, function (req, res) {
   }
 
   debug('\nInserting user data into ' +
-                'database table ' + DBInfo.database + '->' + DBInfo.db_tables.denuncias)
+                'database table ' + DBInfo.database + '->' + DBInfo.db_tables.ocorrencias)
 
   var query
   switch (serverCommand) {
     case 'submitNewEntryToDB': // (new entry in table) builds sql query to insert user data
       databaseObj.table_row_uuid = generateUuid()
-      query = `INSERT INTO ${DBInfo.db_tables.denuncias} SET ${db.escape(databaseObj)}`
+      query = `INSERT INTO ${DBInfo.db_tables.ocorrencias} SET ${db.escape(databaseObj)}`
       break
-    case 'setProcessedByAuthorityStatus':
-      // (update) when field 'processada_por_autoridade' is present in the request (client) it means just an update of a previous existing entry/line
-      query = `UPDATE ${DBInfo.db_tables.denuncias} SET processada_por_autoridade=${db.escape(databaseObj.processada_por_autoridade)} ` +
+    case 'setSolvedOccurrenceStatus':
+      // (update) when field 'ocorrencia_resolvida' is present in the request (client) it means just an update of a previous existing entry/line
+      query = `UPDATE ${DBInfo.db_tables.ocorrencias} SET ocorrencia_resolvida=${db.escape(databaseObj.ocorrencia_resolvida)} ` +
               `WHERE PROD=${db.escape(databaseObj.PROD)} AND uuid=${db.escape(databaseObj.uuid)} ` +
-              `AND foto1=${db.escape(databaseObj.foto1)} AND carro_matricula=${db.escape(databaseObj.carro_matricula)}`
+              `AND foto1=${db.escape(databaseObj.foto1)}`
       break
     case 'setEntryAsDeletedInDatabase':
       // (update) when field 'deleted_by_admin' is present in the request (client) it means just an update of a previous existing entry/line
-      query = `UPDATE ${DBInfo.db_tables.denuncias} SET deleted_by_admin=${db.escape(databaseObj.deleted_by_admin)} ` +
+      query = `UPDATE ${DBInfo.db_tables.ocorrencias} SET deleted_by_admin=${db.escape(databaseObj.deleted_by_admin)} ` +
               `WHERE PROD=${db.escape(databaseObj.PROD)} AND uuid=${db.escape(databaseObj.uuid)} ` +
-              `AND foto1=${db.escape(databaseObj.foto1)} AND carro_matricula=${db.escape(databaseObj.carro_matricula)}`
+              `AND foto1=${db.escape(databaseObj.foto1)}`
       break
     default:
       debug('Bad request on dbCommand: ' + serverCommand)
@@ -104,7 +95,7 @@ app.post(submissionsUrl, function (req, res) {
           next(Error(err))
         } else {
           debug('User data successfully added into ' +
-                'database table ' + DBInfo.database + '->' + DBInfo.db_tables.denuncias + '\n\n')
+                'database table ' + DBInfo.database + '->' + DBInfo.db_tables.ocorrencias + '\n\n')
           debug('Result from db query is : ', results)
           res.send(results)
           next()
@@ -144,16 +135,16 @@ app.get(requestHistoricUrl, function (req, res) {
   }
 
   debug('\nGetting entries from' +
-    'database table ' + DBInfo.database + '->' + DBInfo.db_tables.denuncias)
+    'database table ' + DBInfo.database + '->' + DBInfo.db_tables.ocorrencias)
 
   var query
   if (uuid) {
     // get the all entries for a specific user (ex: to generate historic for user)
-    query = `SELECT * FROM ${DBInfo.db_tables.denuncias} WHERE uuid=${db.escape(uuid)} AND deleted_by_admin=0 ORDER BY data_data ASC`
+    query = `SELECT * FROM ${DBInfo.db_tables.ocorrencias} WHERE uuid=${db.escape(uuid)} AND deleted_by_admin=0 ORDER BY data_data ASC`
   } else {
     // get all production entries for all users except admin (ex: to generate a map of all entries)
-    query = `SELECT * FROM ${DBInfo.db_tables.denuncias} WHERE PROD=1 AND uuid!='87332d2a0aa5e634' AND deleted_by_admin=0 ` +
-      `ORDER BY ${DBInfo.db_tables.denuncias}.uuid  ASC, ${DBInfo.db_tables.denuncias}.data_data ASC`
+    query = `SELECT * FROM ${DBInfo.db_tables.ocorrencias} WHERE PROD=1 AND uuid!='87332d2a0aa5e634' AND deleted_by_admin=0 ` +
+      `ORDER BY ${DBInfo.db_tables.ocorrencias}.uuid  ASC, ${DBInfo.db_tables.ocorrencias}.data_data ASC`
   }
 
   debug(sqlFormatter.format(query))

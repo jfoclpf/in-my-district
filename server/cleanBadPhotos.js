@@ -29,7 +29,7 @@ module.exports = (_imgDirectory) => {
 // goes through the db and find inexistanf images, if so, delete them
 function cleanBadPhotos () {
   // get all production entries
-  var query = `SELECT * FROM ${DBInfo.db_tables.denuncias} WHERE PROD=1 AND uuid!='87332d2a0aa5e634'` // android uuid of the main developer should be ignored
+  var query = `SELECT * FROM ${DBInfo.db_tables.ocorrencias} WHERE PROD=1 AND uuid!='87332d2a0aa5e634'` // android uuid of the main developer should be ignored
 
   debug(sqlFormatter.format(query))
 
@@ -105,8 +105,8 @@ function processDBentry (entry, callback) {
 
   if (deleteEntry) {
     debug('Entry is to be deleted since no photos are available: ', entry)
-    const query = `DELETE from ${DBInfo.db_tables.denuncias} ` +
-      `WHERE carro_matricula='${entry.carro_matricula}' AND uuid='${entry.uuid}' AND foto1='${entry.foto1}'`
+    const query = `DELETE from ${DBInfo.db_tables.ocorrencias} ` +
+      `WHERE uuid='${entry.uuid}' AND foto1='${entry.foto1}'`
     debug(sqlFormatter.format(query))
 
     db.query(query, (err, results, fields) => {

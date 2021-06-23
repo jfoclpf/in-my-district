@@ -29,8 +29,8 @@ module.exports = (_imgDirectory) => {
 // goes through the db and find inexistanf images, if so, delete them
 function removeDuplicates () {
   // get all production entries grouped by uuid and then for each uuid ordered by date
-  var query = `SELECT * FROM ${DBInfo.db_tables.denuncias} WHERE PROD=1 AND uuid!='87332d2a0aa5e634' ` +
-    `ORDER BY ${DBInfo.db_tables.denuncias}.uuid  ASC, ${DBInfo.db_tables.denuncias}.data_data ASC`
+  var query = `SELECT * FROM ${DBInfo.db_tables.ocorrencias} WHERE PROD=1 AND uuid!='87332d2a0aa5e634' ` +
+    `ORDER BY ${DBInfo.db_tables.ocorrencias}.uuid  ASC, ${DBInfo.db_tables.ocorrencias}.data_data ASC`
 
   debug(sqlFormatter.format(query))
 
@@ -97,22 +97,22 @@ function getEntriesToBeDeleted (results) {
   // due to the mysql query, results are already grouped by uuid, and then ordered by date
   for (var i = 1; i < results.length; i++) {
     // previous entry
-    const previousPlate = results[i - 1].carro_matricula
-    const previousAuthority = results[i - 1].autoridade
-    const previousViolationType = results[i - 1].base_legal
-    const previousUuid = results[i - 1].uuid
+    const previousA = results[i - 1].data_hora
+    const previousB = results[i - 1].data_freguesia
+    const previousC = results[i - 1].uuid
+    const previousD = results[i - 1].anomaly_code
     const previousPhotos = [results[i - 1].foto1, results[i - 1].foto2, results[i - 1].foto3, results[i - 1].foto4]
     // current entry
-    const currentPlate = results[i].carro_matricula
-    const currentAuthority = results[i].autoridade
-    const currentViolationType = results[i].base_legal
-    const currentUuid = results[i].uuid
+    const currentA = results[i].data_hora
+    const currentB = results[i].data_freguesia
+    const currentC = results[i].uuid
+    const currentD = results[i].anomaly_code
     const currentPhotos = [results[i].foto1, results[i].foto2, results[i].foto3, results[i].foto4]
 
-    if (currentPlate === previousPlate &&
-        previousAuthority === currentAuthority &&
-        previousViolationType === currentViolationType &&
-        previousUuid === currentUuid) {
+    if (previousA === currentA &&
+        previousB === currentB &&
+        previousC === currentC &&
+        previousD === currentD) {
       // check if photo1 is the same
       if (fs.existsSync(previousPhotos[0]) && fs.existsSync(currentPhotos[0]) &&
           areTwoPhotosEqual(previousPhotos[0], currentPhotos[0])) {
@@ -137,9 +137,9 @@ function areTwoPhotosEqual (photoA, photoB) {
 
 function deleteEntry (entry, callback) {
   debug('Entry is to be deleted: ', entry)
-  const query = `DELETE from ${DBInfo.db_tables.denuncias} ` +
-    `WHERE carro_matricula='${entry.carro_matricula}' AND uuid='${entry.uuid}' AND foto1='${entry.foto1}' ` +
-    `AND autoridade='${entry.autoridade}' AND base_legal='${entry.base_legal}'`
+  const query = `DELETE from ${DBInfo.db_tables.ocorrencias} ` +
+    `WHERE uuid='${entry.uuid}' AND foto1='${entry.foto1}' ` +
+    `AND data_concelho='${entry.data_concelho}' AND data_freguesia='${entry.data_freguesia}'`
   debug(sqlFormatter.format(query))
 
   db.query(query, (err, results, fields) => {
