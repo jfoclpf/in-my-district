@@ -162,7 +162,7 @@ app.main = (function (thisModule) {
       })
   }
 
-  // when user clicks "generate_email"
+  // when user clicks "gerar texto"
   $('#generate_message').click(function () {
     if (!app.form.isMessageReady()) {
       return
@@ -187,7 +187,7 @@ app.main = (function (thisModule) {
   })
 
   function sendEMailMessage () {
-    // app.dbServerLink.submitNewEntryToDB()
+    app.dbServerLink.submitNewEntryToDB()
 
     var imagesArray = app.photos.getPhotosForEmailAttachment()
     // console.log(JSON.stringify(imagesArray, 0, 3))

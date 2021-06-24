@@ -75,10 +75,7 @@ app.historic = (function (thisModule) {
       return
     }
 
-    $('#historic').append(`
-      <h4>Histórico de ocorrências</h4>
-      <span class="note">Pressione nas ocorrências para ver as imagens</span>
-    `)
+    $('#historic').append('<h4>Histórico de ocorrências</h4')
 
     // since the results are stored as they are submitted, they are ordered by time
     // we want to show on top the most recent ones, i.e., the last on the array
@@ -88,7 +85,7 @@ app.historic = (function (thisModule) {
         <div class="p-3 border-element historic_element" data-index="${i}">
           <div class="row">
             <div class="col-9">
-              <b>Ocorrência</b>: ${el.carro_marca} ${el.carro_modelo} <span style="white-space: nowrap;">[${el.carro_matricula}]</span><br>
+              <b>Ocorrência</b>: ${el.anomaly1} - ${el.anomaly2}<br>
               <b>Local</b>: ${el.data_local} n. ${el.data_num_porta}, ${el.data_concelho}<br>
               <b>Data</b>: ${(new Date(el.data_data)).toLocaleDateString('pt-PT')} às ${el.data_hora.slice(0, 5)}<br>
             </div>
@@ -97,9 +94,14 @@ app.historic = (function (thisModule) {
               <button aria-label="Marcar ocorrência como tratada" class="btn btn-primary btn-sm m-1 history-check-button" data-index="${i}"><i class="fa fa-check"></i></button>
             </div>
           </div>
-          <div>
-            <b>Infração</b>: ${app.anomalies.getShortDescription(el.base_legal)}<br>
-            <b>Autoridade</b>: ${el.municipio}
+          <div class="row">
+            <div class="col-9">
+              <b>Município</b>: ${el.data_concelho}<br>
+              <b>Freguesia</b>: ${el.data_freguesia}<br>
+            </div>
+            <div class="col">
+              <button aria-label="Mostrar fotos" class="btn btn-primary btn-sm m-1 history-show-photo-button"><i class="fa fa-picture-o"></i></button>
+            </div>
           </div>
         </div>`
       )
@@ -118,7 +120,7 @@ app.historic = (function (thisModule) {
         theme: 'dark_blue',
         class: 'ja_300px',
         closeBtn: false,
-        content: 'Deseja enviar um lembrete ao municipio respetivo a propósito desta ocurrência?',
+        content: 'Deseja enviar um lembrete ao municipio e junta de freguesia respetivos a propósito desta ocorrência?',
         btns: [
           {
             text: 'Sim',
@@ -202,7 +204,7 @@ app.historic = (function (thisModule) {
       const i = parseInt($(this).data('index'))
 
       if ($(this).find('img').length === 0) { // no image found, adds images
-        const $photos = $('<div class="historic_photos"></div>')
+        const $photos = $('<div class="historic_photos mt-2"></div>')
         $(this).append($photos)
 
         // DB has 4 fields for images for the same DB entry: foto1, foto2, foto3 and foto4
@@ -270,12 +272,12 @@ app.historic = (function (thisModule) {
       }
       console.log(JSON.stringify(attachments, 0, 3))
 
-      var emailSubject = `[${occurrence.carro_matricula}] na ${occurrence.data_local}, ${occurrence.data_concelho} - Inquirição sobre estado processual da denúncia de estacionamento anteriormente efetuada`
+      var emailSubject = `Anomalia com ${occurrence.anomaly1}, ${occurrence.anomaly2} na ${occurrence.data_local}, ${occurrence.data_concelho} - Inquirição sobre estado processual da ocorrência`
 
       setTimeout(() => {
         progressAlert.closeAlert()
         cordova.plugins.email.open({
-          to: app.contacts.getEmailOfMunicipality(occurrence.municipio),
+          to: [occurrence.email_concelho, occurrence.email_freguesia],
           attachments: attachments, // file paths or base64 data streams
           subject: emailSubject, // subject of the email
           body: app.text.getReminderMessage(occurrence), // email body (for HTML, set isHtml to true)

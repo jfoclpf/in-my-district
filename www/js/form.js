@@ -244,7 +244,7 @@ app.form = (function (thisModule) {
   /* ********************************************************************** */
   /* ********************* LOCAL OF OCCURRENCE **************************** */
   // when the select of municipalities is changed, updates the select of parishes
-  $('#municipality').change(function (event, trigeredByLocalization) {
+  $('#municipality').change(function (event, addressFromAPI) {
     const municipality = $(this).val().trim().toLowerCase()
     app.contacts.setMunicipality(municipality)
 
@@ -254,7 +254,9 @@ app.form = (function (thisModule) {
         $.each(val.freguesias, function (key2, parish) {
           $('#parish').append(`<option value="${parish.trim().toLowerCase()}">${parish.trim()}</option>`)
         })
-        if (!trigeredByLocalization) {
+
+        // does not trigger parish select, if address was got from an API, because API will also set parish
+        if (!addressFromAPI) {
           $('#parish').change() // trigers event
         }
         return false // break loop, since the municipality was already found

@@ -48,10 +48,12 @@ app.text = (function (thisModule) {
 
   // called by historic module
   function getReminderMessage (occurrence) {
-    var text = `${getRandomGreetings()} da ${occurrence.autoridade}<br><br>` +
+    var text = `${getRandomGreetings()} do Municipio de ${occurrence.data_concelho} e da Junta de Freguesia de ${occurrence.data_freguesia}<br><br>` +
       `No seguimento da anamoalia já enviada anteriormente a V. Exas. relacionada com ${occurrence.anomaly1}, mais precisamente com ${occurrence.anomaly2} ` +
-      `na ${occurrence.data_local} n. ${occurrence.data_num_porta}, ${occurrence.data_concelho}, no dia ${(new Date(occurrence.data_data)).toLocaleDateString('pt-PT')} às ${occurrence.data_hora.slice(0, 5)}, ` +
-      `vinha por este meio inquirir V. Exas. sobre o estado do processo respetivo, considerando que já decorreram ${Math.round(((new Date()) - new Date(occurrence.data_data)) / (1000 * 60 * 60 * 24))} dias desde a data da ocorrência.<br><br>` +
+      `na ${occurrence.data_local}${occurrence.data_num_porta ? ' junto ao n. ' + occurrence.data_num_porta : ''}, ${occurrence.data_concelho}, ` +
+      `no dia ${(new Date(occurrence.data_data)).toLocaleDateString('pt-PT')} às ${occurrence.data_hora.slice(0, 5)}, ` +
+      'vinha por este meio inquirir V. Exas. sobre o estado do processo respetivo, considerando que já decorreram ' +
+      `${Math.round(((new Date()) - new Date(occurrence.data_data)) / (1000 * 60 * 60 * 24))} dias desde a data da ocorrência.<br><br>` +
       `Fico a aguardar resposta de V. Exas.<br><br>${getRegards()}`
 
     return text

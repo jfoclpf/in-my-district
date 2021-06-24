@@ -92,6 +92,7 @@ app.localization = (function (thisModule) {
       // from app.main.urls.geoApi.nominatimReverse
       if (res[0].status !== 'fulfilled') {
         console.error(app.main.urls.geoApi.nominatimReverse + ' returns empty')
+        GPSLoadingOnFields(false)
         PositionError()
       } else {
         var addressFromGeoPtApi
@@ -123,7 +124,7 @@ app.localization = (function (thisModule) {
     if (addressFromGeoPtApi) {
       if (addressFromGeoPtApi.concelho) {
         $('#municipality').val(addressFromGeoPtApi.concelho.trim().toLowerCase())
-          .trigger('change', [true]) // triger with parameter, true to refer init
+          .trigger('change', [true]) // triger with parameter, true to refer addressFromAPI
       }
       if (addressFromGeoPtApi.freguesia) {
         $('#parish').val(addressFromGeoPtApi.freguesia.trim().toLowerCase())
@@ -137,6 +138,11 @@ app.localization = (function (thisModule) {
       } else if (addressFromOSM.town) {
         $('#municipality').val(addressFromOSM.town.trim().toLowerCase())
       }
+    }
+
+    // if nothing was found for municipality on APIs, simply select first element
+    if (!$('#municipality').val()) {
+      $('#municipality').val($('#municipality option:first').val()).trigger('change')
     }
 
     GPSLoadingOnFields(false)
