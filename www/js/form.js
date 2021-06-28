@@ -24,7 +24,16 @@ app.form = (function (thisModule) {
       })
       callback()
     }).fail(function (err) {
-      console.err('Error fetching from ' + url, err)
+      console.error('Error fetching from ' + url, err)
+      InternetError()
+    })
+  }
+
+  function InternetError () {
+    $.jAlert({
+      title: 'Erro na obtenção dos municípios e juntas de freguesia!',
+      theme: 'red',
+      content: 'Confirme se tem acesso à Internet. Poderá também ser uma anomalia com o servidor desta APP.'
     })
   }
 

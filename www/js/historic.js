@@ -15,6 +15,7 @@ app.historic = (function (thisModule) {
 
   function updateHistoric () {
     const uuid = device.uuid
+    setLoadingIcon()
 
     console.log(`Fetching historic from ${requestHistoricUrl} with uuid ${uuid}`)
     $.ajax({
@@ -33,6 +34,7 @@ app.historic = (function (thisModule) {
       error: function (error) {
         console.error('There was an error getting the historic for the following uuid: ' + uuid)
         console.error(error)
+        InternetError()
       }
     })
   }
@@ -58,9 +60,23 @@ app.historic = (function (thisModule) {
       error: function (error) {
         console.error('There was an error getting the historic for the following uuid: ' + uuid)
         console.error(error)
+        InternetError()
         callback(error)
       }
     })
+  }
+
+  function InternetError () {
+    $.jAlert({
+      title: 'Erro na obtenção do histórico!',
+      theme: 'red',
+      content: 'Confirme se tem acesso à Internet. Poderá também ser uma anomalia com o servidor desta APP.'
+    })
+  }
+
+  // empties the historic div and replaces with a loading gif
+  function setLoadingIcon () {
+    $('#historic').empty().append($('<div></div>').addClass('historic-loading'))
   }
 
   function insertFetchedDataIntoHistoric () {
