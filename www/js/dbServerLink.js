@@ -1,6 +1,6 @@
 /* eslint no-var: off */
 /* eslint camelcase: "off" */
-/* global app, device, $, CryptoComm, DEBUG */
+/* global app, device, $, DEBUG */
 
 app.dbServerLink = (function (thisModule) {
   const uploadImagesUrl = app.main.urls.databaseServer.uploadImages
@@ -140,24 +140,9 @@ app.dbServerLink = (function (thisModule) {
     })
   }
 
-  function getAjaxHttpHeaderKeys () {
-    if (typeof CryptoComm === 'function') {
-      const values = CryptoComm()
-      var ajaxHeaders = {
-        'x-key-v1': values.v1,
-        'x-key-v2': values.v2,
-        'x-key-v3': values.v3
-      }
-      return ajaxHeaders
-    } else {
-      return {}
-    }
-  }
-
   thisModule.submitNewEntryToDB = submitNewEntryToDB
   thisModule.setSolvedOccurrenceStatus = setSolvedOccurrenceStatus
   thisModule.setEntryAsDeletedInDatabase = setEntryAsDeletedInDatabase
-  thisModule.getAjaxHttpHeaderKeys = getAjaxHttpHeaderKeys
 
   return thisModule
 })(app.dbServerLink || {})
