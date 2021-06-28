@@ -24,9 +24,9 @@ cd platforms/android/app/build/outputs/bundle/release/
 jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore autocosts.keystore -storepass $PASS app-release.aab autocosts &&
 
 cd ../../../../../../..
-rm -f dist/formParkingViolation.aab
+rm -f dist/inMyDistrict.aab
 
-cp platforms/android/app/build/outputs/bundle/release/app-release.aab dist/formParkingViolation.aab
+cp platforms/android/app/build/outputs/bundle/release/app-release.aab dist/inMyDistrict.aab
 
 GREEN=$(tput setaf 2)
-printf "\n\n${GREEN}File created at: dist/formParkingViolation.aab\n\n"
+printf "\n\n${GREEN}File created at: dist/inMyDistrict.aab\n\n"

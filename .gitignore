@@ -29,7 +29,7 @@ plugins/**/tests/
 **/resources/signing
 
 # where the build script stores the apk
-dist/formParkingViolation.*
+dist/inMyDistrict.*
 
 # keys and credentials
 www/js/credentials.js

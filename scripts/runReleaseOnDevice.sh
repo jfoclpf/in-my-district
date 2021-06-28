@@ -13,7 +13,7 @@ cd ..        # root directory of the project
 # detect if device is connected
 adb get-state 1>/dev/null 2>&1 && printf "\033[32mDEVICE ATTACHED\033[0m\n\n" || { printf "\033[31m No device attached\n\n"; exit 1; }
 
-adb uninstall com.form.parking.violation
+adb uninstall com.in.my.district
 
 # extract $PASS
 source keys/keyPassword
@@ -27,7 +27,7 @@ cd platforms/android/app/build/outputs/apk/release/
 
 jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore autocosts.keystore -storepass $PASS app-release-unsigned.apk autocosts
 
-zipalign -v 4 app-release-unsigned.apk formParkingViolation.apk
+zipalign -v 4 app-release-unsigned.apk inMyDistrict.apk
 
 cd ../../../../../../..
 
