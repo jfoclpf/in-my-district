@@ -29,6 +29,10 @@ const app = express()
 app.use(bodyParser.json())
 app.use(cors())
 
+app.get('/', function (req, res) {
+  res.status(200).send('Server online')
+})
+
 // to upload anew or update the data of an occurence
 app.post(submissionsUrl, function (req, res) {
   var db = mysql.createConnection(DBInfo)
