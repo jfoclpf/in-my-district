@@ -122,9 +122,9 @@ app.post(submissionsUrl, function (req, res) {
       console.error('There was an error: ', err)
       db1.end()
     } else {
-      db1 = null
       debug('Submission successfully')
     }
+    db1 = null
   })
 })
 
@@ -197,9 +197,9 @@ app.get(requestHistoricUrl, function (req, res) {
       console.error('There was an error: ', err)
       db2.end()
     } else {
-      db2 = null
       debug('Request successfully')
     }
+    db2 = null
   })
 })
 
