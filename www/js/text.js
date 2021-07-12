@@ -16,7 +16,8 @@ app.text = (function (thisModule) {
       }
 
       var msg1 = `Eu, <b>${$('#name').val().trim()}</b>, ` +
-        `com o <b>${$('#id_type').val()}</b> com o número <b>${$('#id_number').val()}</b> ` +
+        `com o <b>${$('#id_type').val()}</b> com o número <b>${$('#id_number').val()}</b>, ` +
+        `com o Número de Identificação Fiscal (NIF) <b>${$('#nif').val()}</b> ` +
         `e com residência em <b>${$('#address').val().trim()}, ${$('#postal_code').val()}, ${$('#address_city').val().trim()}</b>, ` +
         'venho por este meio comunicar a V. Exas. a seguinte anomalia e irregularidade, ' +
         'para que a mesma seja resolvida pelos serviços de V. Exas o mais rapidamente quanto possível.'
