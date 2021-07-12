@@ -94,6 +94,17 @@ app.personalInfo = (function (thisModule) {
   })
 
   /* ********************************************************************** */
+  /* ******************** NIF THE USER *************************** */
+
+  $('#nif').on('input', function () {
+    if (($(this).val() === '' || !/^\d+$/.test($(this).val())) && !DEBUG) {
+      $(this).css('border-color', 'red')
+    } else {
+      $(this).css('border-color', '')
+    }
+  })
+
+  /* ********************************************************************** */
   /* ******************** ADDRESS OF THE USER ***************************** */
   $('#address').on('input', function () {
     if ($(this).val() === '' && !DEBUG) {
