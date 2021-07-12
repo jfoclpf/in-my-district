@@ -89,9 +89,10 @@ app.form = (function (thisModule) {
       return true
     }
 
-    var to_break = false
+    var to_break = false // this is true when one mandatory form field is empty or invalid
+    var invalidPersonalInfo = false // at least one field of personal info is not filled or it is invalid
+    var countEmptyFields = 0 // numer of invalid or empty mandatory user form fields
     var error_string = ''
-    var count = 0
 
     // loops through mandatory fields
     $('.mandatory').each(function () {
@@ -99,26 +100,33 @@ app.form = (function (thisModule) {
       if (val == null || val === undefined || val === '' || (val).length === 0 || (val).replace(/^\s+|\s+$/g, '').length === 0) {
         console.log('Error on #' + $(this).attr('id'))
         error_string += '- ' + $(this).attr('name') + '<br>'
-        count++
-        to_break = true
+        countEmptyFields++
+        to_break = true // at elast one element invalid, main function should return false
+        if ($(this).hasClass('personal_info')) {
+          invalidPersonalInfo = true
+        }
       }
     })
 
     console.log('#generate_message goes', to_break)
     if (to_break) {
-      if (count === 1) {
-        $.jAlert({
-          title: 'Erro!',
-          theme: 'red',
-          content: 'Preencha o seguinte campo obrigatório:<br>' + error_string
-        })
-      } else {
-        $.jAlert({
-          title: 'Erro!',
-          theme: 'red',
-          content: 'Preencha os seguintes campos obrigatórios:<br>' + error_string
-        })
+      let jAlertErrMsg = ''
+
+      if (invalidPersonalInfo) {
+        jAlertErrMsg += 'Ao abrigo da alínea b) do artigo 102.º do Código do Procedimento Administrativo, ' +
+          'os seus dados de identificação necessitam de ser fornecidos, ' +
+          'para que possa submeter esta ocorrência junto de uma autoridade pública.<br><br>'
       }
+      if (countEmptyFields === 1) {
+        jAlertErrMsg += `Preencha o seguinte campo obrigatório:<br>${error_string}`
+      } else {
+        jAlertErrMsg += `Preencha os seguintes campos obrigatórios:<br>${error_string}`
+      }
+      $.jAlert({
+        title: 'Erro!',
+        theme: 'red',
+        content: jAlertErrMsg
+      })
       return false
     }
 
