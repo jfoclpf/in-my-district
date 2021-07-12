@@ -3,7 +3,7 @@
 /* eslint no-var: off */
 /* global $, cordova */
 
-var DEBUG = false
+var DEBUG = true
 
 var app = {}
 

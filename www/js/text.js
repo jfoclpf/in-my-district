@@ -10,33 +10,34 @@ app.text = (function (thisModule) {
       const municipality = $('#municipality option:selected').text().trim()
       const parish = $('#parish option:selected').text().trim()
 
-      var msgInit = `${getRandomGreetings()} da Câmara Municipal de ${municipality};`
+      var message = `${getRandomGreetings()} da Câmara Municipal de ${municipality};`
       if (app.contacts.getCurrentParish()) {
-        msgInit += `<br>${getRandomGreetings()} da Junta de Freguesia de ${parish};`
+        message += `<br>${getRandomGreetings()} da Junta de Freguesia de ${parish};`
       }
 
-      var msg1 = `Eu, <b>${$('#name').val().trim()}</b>, ` +
-        `com o <b>${$('#id_type').val()}</b> com o número <b>${$('#id_number').val()}</b>, ` +
+      message += '<br><br>'
+
+      message += `Eu, <b>${$('#name').val().trim()}</b>, ` +
+        `detentor do <b>${$('#id_type').val()}</b> com o número <b>${$('#id_number').val()}</b>, ` +
         `com o Número de Identificação Fiscal (NIF) <b>${$('#nif').val()}</b> ` +
         `e com residência em <b>${$('#address').val().trim()}, ${$('#postal_code').val()}, ${$('#address_city').val().trim()}</b>, ` +
         'venho por este meio comunicar a V. Exas. a seguinte anomalia e irregularidade, ' +
-        'para que a mesma seja resolvida pelos serviços de V. Exas o mais rapidamente quanto possível.'
+        'para que a mesma seja resolvida pelos serviços de V. Exas o mais rapidamente quanto possível.<br><br>'
 
-      var msg2 = `No passado dia <b>${$.datepicker.formatDate("dd' de 'MM' de 'yy", $('#date').datepicker('getDate'))}</b>` +
+      message += `No passado dia <b>${$.datepicker.formatDate("dd' de 'MM' de 'yy", $('#date').datepicker('getDate'))}</b>` +
         ($('#time').val() ? ' pelas <b>' + $('#time').val() + '</b>' : '') + // optional
         `, na <b>${$('#street').val().trim()}, ${municipality}</b>, ` +
         (app.contacts.getCurrentParish() ? `na freguesia de <b>${parish}</b>, ` : '') + // optional
         ($('#street_number').val()
           ? `aproximadamente junto à porta com o <b>número ${$('#street_number').val().trim()}</b>, `
           : '') + // optional
-        `deparei-me com o seguinte problema relacionado com <b>${$('#anomaly1 option:selected').text()}: ${$('#anomaly2 option:selected').text()}</b>.`
+        `deparei-me com o seguinte problema relacionado com <b>${$('#anomaly1 option:selected').text()}: ${$('#anomaly2 option:selected').text()}</b>.<br><br>`
 
-      var msg3 = 'Pode-se comprovar esta situação através' +
+      message += 'Pode-se comprovar esta situação através' +
         ' ' + ((app.photos.getPhotosUriOnFileSystem().length === 1) ? 'da fotografia anexa' : 'das fotografias anexas') +
-        ' ' + 'à presente mensagem eletrónica. ' +
-        'Juro pela minha honra que a informação supra citada é verídica.'
+        ' ' + 'à presente mensagem eletrónica.<br><br>'
 
-      var message = msgInit + '<br><br>' + msg1 + '<br><br>' + msg2 + '<br><br>' + msg3 + '<br><br>' + getRegards() + '<br>'
+      message += getRegards() + '<br>'
 
       return message
     } else if (option === 'subject') {
