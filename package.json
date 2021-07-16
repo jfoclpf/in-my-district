@@ -47,7 +47,7 @@
     "express": "^4.17.1",
     "express-fileupload": "^1.2.1",
     "express-handlebars": "^5.2.0",
-    "fs": "0.0.1-security",
+    "fs": "0.0.2",
     "jAlert": "^4.9.1",
     "jquery": "^3.5.1",
     "leaflet": "^1.7.1",
