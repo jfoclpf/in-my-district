@@ -116,17 +116,11 @@ app.photos = (function (thisModule) {
       // if the photo EXIF info has GPS information
       if (metadata.gpsLatitude && metadata.gpsLatitudeRef &&
                metadata.gpsLongitude && metadata.gpsLongitudeRef) {
-        var Lat = app.localization.convertDMSStringInfoToDD(metadata.gpsLatitude, metadata.gpsLatitudeRef)
-        var Long = app.localization.convertDMSStringInfoToDD(metadata.gpsLongitude, metadata.gpsLongitudeRef)
+        const lat = app.localization.convertDMSStringInfoToDD(metadata.gpsLatitude, metadata.gpsLatitudeRef)
+        const lon = app.localization.convertDMSStringInfoToDD(metadata.gpsLongitude, metadata.gpsLongitudeRef)
 
-        var postion = {
-          coords: {
-            latitude: Lat,
-            longitude: Long
-          }
-        }
-        console.log(postion)
-        app.localization.getPosition(postion)
+        console.log('Coordinates fetched from photo: ', lat, lon)
+        app.localization.getLocale(lat, lon, () => {})
       }
     }
   }

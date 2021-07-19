@@ -70,12 +70,19 @@ input[type="number"] {
 }
 
 /* Images section */
-#main_form img{
+#main_form img.anomaly-photo {
   border: 2px solid black !important;
   border-radius: 10px !important;
   padding: 0 !important;
   width: 100%;
   display: none;
+}
+
+#main_form_map {
+  height: 200px;
+  width: 100%;
+  margin: 0;
+  padding: 0;
 }
 
 #historic img {

@@ -6,40 +6,34 @@
 app.localization = (function (thisModule) {
   var Latitude, Longitude
 
-  function loadMapsApi () {
-    if (!navigator.onLine) {
-      console.log('Device Navigator not online')
-    } else {
-      console.log('Device Navigator is online')
-      getGeolocation()
-    }
-  }
-
   // botão get address by GPS (Atualizar)
   $('#getCurrentAddresBtn').click(function () {
-    getGeolocation()
+    app.form.GPSLoadingOnFields(true)
+    app.localization.getGeolocation((err) => {
+      app.form.GPSLoadingOnFields(false)
+      if (err) {
+        console.error(err)
+      }
+    })
     app.functions.updateDateAndTime()
   })
 
-  /* Geo location functions */
-  function getGeolocation () {
+  // Get GPS coordinates and then get address
+  function getGeolocation (callback) {
     // detect if has Internet AND if the GoogleMaps API is loaded
     if (navigator.onLine) {
-      GPSLoadingOnFields(true) // truns on loading icon on the fields
       var options = { timeout: 30000, enableHighAccuracy: true }
-      navigator.geolocation.getCurrentPosition(getPosition, PositionError, options)
+      navigator.geolocation.getCurrentPosition((position) => {
+        const latitude = Latitude = position.coords.latitude
+        const longitude = Longitude = position.coords.longitude
+        console.log('latitude, longitude: ', latitude, longitude)
+        getLocale(latitude, longitude, callback) // get address from coordinates
+      },
+      PositionError, options)
     } else {
       PositionError()
+      callback(Error('position error'))
     }
-  }
-
-  function getPosition (position) {
-    var latitude = position.coords.latitude
-    Latitude = latitude
-    var longitude = position.coords.longitude
-    Longitude = longitude
-    console.log('latitude, longitude: ', latitude, longitude)
-    getLocale(latitude, longitude) // Pass the latitude and longitude to get address.
   }
 
   // to be used from outside of this module
@@ -57,10 +51,10 @@ app.localization = (function (thisModule) {
       theme: 'red',
       content: 'Confirme se tem o GPS ligado e autorizado, e se tem acesso à Internet. Caso contrário pode introduzir manualmente o Concelho, Local (rua, travessa, etc.) e número de porta da ocorrência.'
     })
-    GPSLoadingOnFields(false)
   }
 
-  function getLocale (latitude, longitude) {
+  // get address from coordinates
+  function getLocale (latitude, longitude, callback) {
     // makes two parallel async GET requests
     Promise.allSettled([
       $.ajax({
@@ -91,9 +85,8 @@ app.localization = (function (thisModule) {
     ]).then(function (res) {
       // from app.main.urls.geoApi.nominatimReverse
       if (res[0].status !== 'fulfilled') {
-        console.error(app.main.urls.geoApi.nominatimReverse + ' returns empty')
-        GPSLoadingOnFields(false)
         PositionError()
+        callback(Error(app.main.urls.geoApi.nominatimReverse + ' returns empty'))
       } else {
         var addressFromGeoPtApi
         // from app.main.urls.geoApi.ptApi
@@ -107,7 +100,10 @@ app.localization = (function (thisModule) {
         const addressFromOSM = res[0].value.address
         console.log('getLocale: ', addressFromOSM, addressFromGeoPtApi)
         fillFormWithAddress(addressFromOSM, addressFromGeoPtApi)
+        callback()
       }
+    }).catch((err) => {
+      callback(Error(err))
     })
   }
 
@@ -144,18 +140,6 @@ app.localization = (function (thisModule) {
     if (!$('#municipality').val()) {
       $('#municipality').val($('#municipality option:first').val()).trigger('change')
     }
-
-    GPSLoadingOnFields(false)
-  }
-
-  // removes the loading gif from input fields
-  function GPSLoadingOnFields (bool) {
-    if (bool) {
-      $('#municipality, #parish, #street, #street_number').addClass('loading')
-    } else {
-      $('#municipality, #parish, #street, #street_number').removeClass('loading')
-      $('#municipality, #parish, #street, #street_number').trigger('input')
-    }
   }
 
   // converts latitude, longitude coordinates from Degrees Minutes Second (DMS) to Decimal Degrees (DD)
@@ -189,9 +173,8 @@ app.localization = (function (thisModule) {
   }
 
   /* === Public methods to be returned === */
-  thisModule.loadMapsApi = loadMapsApi
   thisModule.getGeolocation = getGeolocation
-  thisModule.getPosition = getPosition
+  thisModule.getLocale = getLocale
   thisModule.getCoordinates = getCoordinates
   thisModule.convertDMSStringInfoToDD = convertDMSStringInfoToDD
 

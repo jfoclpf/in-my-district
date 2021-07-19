@@ -1,13 +1,14 @@
 /* eslint no-var: off */
 /* eslint camelcase: off */
 
-/* global app, $, DEBUG */
+/* global app, $, L, DEBUG */
 
 app.form = (function (thisModule) {
   // array of municipalities with parishes, ex: {"nome":"Abrantes", "freguesias":[ "Bemposta", etc.] }
   var municipalities = []
+  var mainFormMap
 
-  function init (callback) {
+  function init () {
     const url = app.main.urls.geoApi.ptApi + '/municipios/freguesias'
     $.ajax({
       url: url,
@@ -22,10 +23,19 @@ app.form = (function (thisModule) {
       $.each(municipalities, function (key, val) {
         $('#municipality').append(`<option value="${val.nome.trim().toLowerCase()}">${val.nome.trim()}</option>`)
       })
-      callback()
+
+      GPSLoadingOnFields(true)
+      // this is used to get address on form
+      app.localization.getGeolocation((err) => {
+        GPSLoadingOnFields(false)
+        initMainFormMap()
+        if (err) {
+          console.error(err)
+        }
+      })
     }).fail(function (err) {
-      console.error('Error fetching from ' + url, err)
       InternetError()
+      console.error('Error fetching from ' + url, err)
     })
   }
 
@@ -295,6 +305,51 @@ app.form = (function (thisModule) {
     }
   })
 
+  function initMainFormMap (callback) {
+    // get coordinates for the map center
+    var currentLocation = app.localization.getCoordinates() // current position of user
+    var latitude, longitude
+    if (currentLocation.latitude && currentLocation.longitude) {
+      latitude = currentLocation.latitude
+      longitude = currentLocation.longitude
+    } else {
+      // coordinates of Lisbon
+      latitude = 38.736946
+      longitude = -9.142685
+    }
+
+    const mapOptions = {
+      center: [latitude, longitude],
+      zoom: 8,
+      zoomControl: false,
+      attributionControl: false,
+      closePopupOnClick: false
+    }
+
+    mainFormMap = L.map('main_form_map', mapOptions)
+
+    // add the OpenStreetMap tiles
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      minZoom: 6,
+      subdomains: ['a', 'b', 'c']
+    }).addTo(mainFormMap)
+
+    setInterval(function () {
+      mainFormMap.invalidateSize()
+    }, 500)
+  }
+
+  // removes the loading gif from input fields
+  function GPSLoadingOnFields (bool) {
+    if (bool) {
+      $('#municipality, #parish, #street, #street_number').addClass('loading')
+    } else {
+      $('#municipality, #parish, #street, #street_number').removeClass('loading')
+      $('#municipality, #parish, #street, #street_number').trigger('input')
+    }
+  }
+
   thisModule.init = init
   /* === Public methods to be returned === */
   /* === Form field fetching functions === */
@@ -305,6 +360,8 @@ app.form = (function (thisModule) {
   thisModule.getParish = getParish
   thisModule.getStreetName = getStreetName
   thisModule.getStreetNumber = getStreetNumber
+  thisModule.initMainFormMap = initMainFormMap
+  thisModule.GPSLoadingOnFields = GPSLoadingOnFields
   /* ======================================== */
   thisModule.isMessageReady = isMessageReady
 

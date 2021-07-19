@@ -81,10 +81,7 @@ app.main = (function (thisModule) {
     // for the plugin cordova-plugin-inappbrowser
     window.open = cordova.InAppBrowser.open
 
-    app.form.init(() => {
-      // this is used to get address on form, and for maps section
-      app.localization.loadMapsApi()
-    })
+    app.form.init()
     app.sidebar.init()
     app.contacts.init()
     app.functions.addFunctionsToPlugins()
@@ -118,7 +115,14 @@ app.main = (function (thisModule) {
   // ##############################################################################################################
 
   function onOnline () {
-    app.localization.loadMapsApi()
+    app.form.GPSLoadingOnFields(true)
+    // this is used to get address on form
+    app.localization.getGeolocation((err) => {
+      app.form.GPSLoadingOnFields(false)
+      if (err) {
+        console.error(err)
+      }
+    })
   }
 
   function onResume () {
