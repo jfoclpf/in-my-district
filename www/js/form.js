@@ -338,7 +338,7 @@ app.form = (function (thisModule) {
 
     const mapOptions = {
       center: [latitude, longitude],
-      zoom: 8,
+      zoom: 18,
       zoomControl: false,
       attributionControl: false,
       closePopupOnClick: false
