@@ -1,12 +1,13 @@
 /* eslint no-var: off */
 /* eslint camelcase: off */
 
-/* global app, $, L, DEBUG */
+/* global app, cordova, $, L, DEBUG */
 
 app.form = (function (thisModule) {
   // array of municipalities with parishes, ex: {"nome":"Abrantes", "freguesias":[ "Bemposta", etc.] }
   var municipalities = []
   var mainFormMap
+  var anomalyMapMarker // map marker referring to the place where the anomaly is located
 
   function init () {
     const url = app.main.urls.geoApi.ptApi + '/municipios/freguesias'
@@ -23,19 +24,19 @@ app.form = (function (thisModule) {
       $.each(municipalities, function (key, val) {
         $('#municipality').append(`<option value="${val.nome.trim().toLowerCase()}">${val.nome.trim()}</option>`)
       })
-
-      GPSLoadingOnFields(true)
-      // this is used to get address on form
-      app.localization.getGeolocation((err) => {
-        GPSLoadingOnFields(false)
-        initMainFormMap()
-        if (err) {
-          console.error(err)
-        }
-      })
     }).fail(function (err) {
       InternetError()
       console.error('Error fetching from ' + url, err)
+    })
+
+    GPSLoadingOnFields(true)
+    // this is used to get address on form
+    app.localization.getGeolocation((err) => {
+      GPSLoadingOnFields(false)
+      initMainFormMap()
+      if (err) {
+        console.error(err)
+      }
     })
   }
 
@@ -259,6 +260,23 @@ app.form = (function (thisModule) {
   }
 
   /* ********************************************************************** */
+  /* ********************* UPDATE LOCALE BUTTON *************************** */
+
+  // botão get address by GPS (Atualizar)
+  $('#getCurrentAddresBtn').click(function () {
+    GPSLoadingOnFields(true)
+    app.localization.getGeolocation((err, coordinates) => {
+      GPSLoadingOnFields(false)
+      if (err) {
+        console.error(err)
+      } else {
+        updatesFormMapToNewCoordinates(coordinates.latitude, coordinates.longitude)
+      }
+    })
+    app.functions.updateDateAndTime()
+  })
+
+  /* ********************************************************************** */
   /* ********************* DATE OF OCCURRENCE ***************************** */
   $.datepicker.setDefaults({
     dateFormat: 'dd-mm-yy',
@@ -335,9 +353,32 @@ app.form = (function (thisModule) {
       subdomains: ['a', 'b', 'c']
     }).addTo(mainFormMap)
 
+    const mapIcon = L.icon({
+      iconUrl: cordova.file.applicationDirectory + 'www/img/map_icon.png',
+      iconSize: [50, 50],
+      iconAnchor: [25, 50]
+    })
+
+    anomalyMapMarker = L.marker([latitude, longitude], {
+      draggable: true,
+      autoPan: true,
+      icon: mapIcon
+    }).addTo(mainFormMap)
+
+    anomalyMapMarker.on('moveend', function (e) {
+      const newCoord = e.target.getLatLng()
+      // get address from coordinates and fill address in the main form fields
+      app.localization.getAddressForForm(newCoord.lat, newCoord.lng)
+    })
+
     setInterval(function () {
       mainFormMap.invalidateSize()
     }, 500)
+  }
+
+  function updatesFormMapToNewCoordinates (latitude, longitude) {
+    mainFormMap.panTo(new L.LatLng(latitude, longitude))
+    anomalyMapMarker.setLatLng(new L.LatLng(latitude, longitude))
   }
 
   // removes the loading gif from input fields

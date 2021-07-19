@@ -6,18 +6,6 @@
 app.localization = (function (thisModule) {
   var Latitude, Longitude
 
-  // botão get address by GPS (Atualizar)
-  $('#getCurrentAddresBtn').click(function () {
-    app.form.GPSLoadingOnFields(true)
-    app.localization.getGeolocation((err) => {
-      app.form.GPSLoadingOnFields(false)
-      if (err) {
-        console.error(err)
-      }
-    })
-    app.functions.updateDateAndTime()
-  })
-
   // Get GPS coordinates and then get address
   function getGeolocation (callback) {
     // detect if has Internet AND if the GoogleMaps API is loaded
@@ -27,7 +15,7 @@ app.localization = (function (thisModule) {
         const latitude = Latitude = position.coords.latitude
         const longitude = Longitude = position.coords.longitude
         console.log('latitude, longitude: ', latitude, longitude)
-        getLocale(latitude, longitude, callback) // get address from coordinates
+        getAddressForForm(latitude, longitude, callback) // get address from coordinates
       },
       PositionError, options)
     } else {
@@ -53,8 +41,14 @@ app.localization = (function (thisModule) {
     })
   }
 
-  // get address from coordinates
-  function getLocale (latitude, longitude, callback) {
+  // get address from coordinates and fill address in the main form fields
+  function getAddressForForm (latitude, longitude, mainCallback) {
+    const callback = function (err, res) {
+      if (typeof mainCallback === 'function') {
+        mainCallback(err, res)
+      }
+    }
+
     // makes two parallel async GET requests
     Promise.allSettled([
       $.ajax({
@@ -98,9 +92,9 @@ app.localization = (function (thisModule) {
         }
 
         const addressFromOSM = res[0].value.address
-        console.log('getLocale: ', addressFromOSM, addressFromGeoPtApi)
+        console.log('getAddressForForm: ', addressFromOSM, addressFromGeoPtApi)
         fillFormWithAddress(addressFromOSM, addressFromGeoPtApi)
-        callback()
+        callback(null, { latitude, longitude })
       }
     }).catch((err) => {
       callback(Error(err))
@@ -109,12 +103,8 @@ app.localization = (function (thisModule) {
 
   function fillFormWithAddress (addressFromOSM, addressFromGeoPtApi) {
     if (addressFromOSM) {
-      if (addressFromOSM.road) {
-        $('#street').val(addressFromOSM.road) // nome da rua/avenida/etc.
-      }
-      if (addressFromOSM.house_number) {
-        $('#street_number').val(addressFromOSM.house_number)
-      }
+      $('#street').val(addressFromOSM.road || '') // nome da rua/avenida/etc.
+      $('#street_number').val(addressFromOSM.house_number || '')
     }
 
     if (addressFromGeoPtApi) {
@@ -174,7 +164,7 @@ app.localization = (function (thisModule) {
 
   /* === Public methods to be returned === */
   thisModule.getGeolocation = getGeolocation
-  thisModule.getLocale = getLocale
+  thisModule.getAddressForForm = getAddressForForm
   thisModule.getCoordinates = getCoordinates
   thisModule.convertDMSStringInfoToDD = convertDMSStringInfoToDD
 

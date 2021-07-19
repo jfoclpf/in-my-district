@@ -120,7 +120,7 @@ app.photos = (function (thisModule) {
         const lon = app.localization.convertDMSStringInfoToDD(metadata.gpsLongitude, metadata.gpsLongitudeRef)
 
         console.log('Coordinates fetched from photo: ', lat, lon)
-        app.localization.getLocale(lat, lon, () => {})
+        app.localization.getAddressForForm(lat, lon)
       }
     }
   }
