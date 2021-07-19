@@ -355,8 +355,8 @@ app.form = (function (thisModule) {
 
     const mapIcon = L.icon({
       iconUrl: cordova.file.applicationDirectory + 'www/img/map_icon.png',
-      iconSize: [50, 50],
-      iconAnchor: [25, 50]
+      iconSize: [80, 80],
+      iconAnchor: [40, 80]
     })
 
     anomalyMapMarker = L.marker([latitude, longitude], {
