@@ -1,8 +1,7 @@
 /* eslint no-var: off */
 /* eslint camelcase: off */
 
-/* global app, cordova, $, L, DEBUG */
-
+/* global app, cordova, $, L, leafletImage, DEBUG */
 app.form = (function (thisModule) {
   // array of municipalities with parishes, ex: {"nome":"Abrantes", "freguesias":[ "Bemposta", etc.] }
   var municipalities = []
@@ -381,6 +380,17 @@ app.form = (function (thisModule) {
     anomalyMapMarker.setLatLng(new L.LatLng(latitude, longitude))
   }
 
+  function getScreenshotFromMap (callback) {
+    leafletImage(mainFormMap, function (err, canvas) {
+      if (err) {
+        callback(Error(`Error on leafletImage: ${err}`))
+      } else {
+        // see https://github.com/katzer/cordova-plugin-email-composer#attach-base64-encoded-content
+        callback(null, canvas.toDataURL().replace(/^data:image\/png;base64,/, 'base64:icon.png//'))
+      }
+    })
+  }
+
   // removes the loading gif from input fields
   function GPSLoadingOnFields (bool) {
     if (bool) {
@@ -402,6 +412,7 @@ app.form = (function (thisModule) {
   thisModule.getStreetName = getStreetName
   thisModule.getStreetNumber = getStreetNumber
   thisModule.initMainFormMap = initMainFormMap
+  thisModule.getScreenshotFromMap = getScreenshotFromMap
   thisModule.GPSLoadingOnFields = GPSLoadingOnFields
   /* ======================================== */
   thisModule.isMessageReady = isMessageReady

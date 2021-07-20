@@ -198,19 +198,28 @@ app.main = (function (thisModule) {
     const attachments = imagesArray.map((path, i) => cordova.plugins.email.adaptPhotoInfoForEmailAttachment(path, i))
     console.log(JSON.stringify(attachments, 0, 3))
 
-    var emailTo
-    if (app.contacts.getCurrentParish() && app.contacts.getCurrentParish().email) {
-      emailTo = [app.contacts.getCurrentMunicipality().email, app.contacts.getCurrentParish().email]
-    } else {
-      emailTo = app.contacts.getCurrentMunicipality().email
-    }
+    // fetch screenshot of form's map
+    app.form.getScreenshotFromMap(function (err, res) {
+      if (err) {
+        console.error(err)
+      } else {
+        attachments.push(res)
+      }
 
-    cordova.plugins.email.open({
-      to: emailTo, // email addresses for TO field
-      attachments: attachments,
-      subject: app.text.getMainMessage('subject'), // subject of the email
-      body: app.text.getMainMessage('body'), // email body (for HTML, set isHtml to true)
-      isHtml: true // indicats if the body is HTML or plain text
+      var emailTo
+      if (app.contacts.getCurrentParish() && app.contacts.getCurrentParish().email) {
+        emailTo = [app.contacts.getCurrentMunicipality().email, app.contacts.getCurrentParish().email]
+      } else {
+        emailTo = app.contacts.getCurrentMunicipality().email
+      }
+
+      cordova.plugins.email.open({
+        to: emailTo, // email addresses for TO field
+        attachments: attachments,
+        subject: app.text.getMainMessage('subject'), // subject of the email
+        body: app.text.getMainMessage('body'), // email body (for HTML, set isHtml to true)
+        isHtml: true // indicats if the body is HTML or plain text
+      })
     })
   }
 
