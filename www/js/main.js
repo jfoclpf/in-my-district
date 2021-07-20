@@ -182,7 +182,7 @@ app.main = (function (thisModule) {
     }, 1000)
   })
 
-  // botão de gerar email
+  // botão de enviar email
   $('#send_email_btn').click(function () {
     // it popups the alerts according to needed fields
     if (app.form.isMessageReady()) {
