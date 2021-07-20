@@ -50,5 +50,9 @@
   "crypto-js": {
     "from": ["crypto-js.js"],
     "to": ["js", "res", "crypto-js.js"]
+  },
+  "leaflet-image": {
+    "from": ["leaflet-image.js"],
+    "to": ["js", "res", "leaflet-image.js"]
   }
 }
