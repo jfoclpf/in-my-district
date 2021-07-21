@@ -31,7 +31,7 @@ jobs:
         sudo update-java-alternatives -s $(sudo update-java-alternatives -l | grep 8 | cut -d " " -f1) || echo OK
         javac -version
     - name: Install Apache Cordova
-      run: npm install -g cordova
+      run: sudo npm install -g cordova
     - name: Add Android Platform
       run: cordova platform add android
     - run: npm test
