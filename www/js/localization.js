@@ -11,11 +11,8 @@ app.localization = (function (thisModule) {
     // detect if has Internet AND if the GoogleMaps API is loaded
     if (navigator.onLine) {
       var options = { timeout: 30000, enableHighAccuracy: true }
-      navigator.geolocation.getCurrentPosition((position) => {
-        const latitude = Latitude = position.coords.latitude
-        const longitude = Longitude = position.coords.longitude
-        console.log('latitude, longitude: ', latitude, longitude)
-        getAddressForForm(latitude, longitude, callback) // get address from coordinates
+      navigator.geolocation.getCurrentPosition(function (position) {
+        getAddressForForm(position.coords.latitude, position.coords.longitude, callback) // get address from coordinates
       },
       PositionError, options)
     } else {
@@ -43,6 +40,10 @@ app.localization = (function (thisModule) {
 
   // get address from coordinates and fill address in the main form fields
   function getAddressForForm (latitude, longitude, mainCallback) {
+    console.log(`latitude, longitude: ${latitude}, ${longitude}`)
+    Latitude = latitude
+    Longitude = longitude
+
     const callback = function (err, res) {
       if (typeof mainCallback === 'function') {
         mainCallback(err, res)
