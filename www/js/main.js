@@ -108,6 +108,7 @@ app.main = (function (thisModule) {
 
     if (!DEBUG) {
       requestUserAppEvaluation()
+      initialWelcomePopup()
     }
   }
 
@@ -127,6 +128,36 @@ app.main = (function (thisModule) {
 
   function onResume () {
     console.log('onResume')
+  }
+
+  function initialWelcomePopup () {
+    if (JSON.parse(window.localStorage.getItem('didUserAlreadySeeWelcomePopup'))) {
+      return
+    }
+
+    const msg = 'Bem-vindo! Ao abrigo da alínea b) do art.º 102.º do Código do Procedimento Administrativo, ' +
+      'terá de se identificar para proceder a uma denúncia. ' +
+      '<b>Não guardamos, não enviamos nem processamos os seus dados pessoais.</b><br><br>' +
+      'Esta APP ocupa um espaço residual (cerca de 2mb, semelhante a uma foto) no seu dispositivo. ' +
+      'Não funciona em pano de fundo nem consome quaisquer recursos quando não é usada.\n' +
+      'Desinstalar esta APP não lhe resolverá qualquer problema de espaço ou recursos. ' +
+      'Contudo a APP pode ser sempre útil para qualquer ocasião.'
+
+    $.jAlert({
+      content: msg,
+      theme: 'dark_blue',
+      closeBtn: false,
+      btns: [
+        {
+          text: 'Compreendo',
+          theme: 'green',
+          class: 'jButtonAlert',
+          onClick: function () {
+            window.localStorage.setItem('didUserAlreadySeeWelcomePopup', 'true')
+          }
+        }
+      ]
+    })
   }
 
   // request user to evaluate this app on Play Store
