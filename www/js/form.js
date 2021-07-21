@@ -386,7 +386,7 @@ app.form = (function (thisModule) {
         callback(Error(`Error on leafletImage: ${err}`))
       } else {
         // see https://github.com/katzer/cordova-plugin-email-composer#attach-base64-encoded-content
-        callback(null, canvas.toDataURL().replace(/^data:image\/png;base64,/, 'base64:icon.png//'))
+        callback(null, canvas.toDataURL().replace(/^data:image\/png;base64,/, 'base64:local.png//'))
       }
     })
   }
