@@ -19,8 +19,8 @@ app.file = (function (thisModule) {
     }
   }
 
-  // ex: from "file:///storage/emulated/0/Android/data/com.form.parking.violation/cache/1525698243664.jpg"
-  // output[0] == "file:///storage/emulated/0/Android/data/com.form.parking.violation/cache"
+  // ex: from "file:///storage/emulated/0/Android/data/com.in.my.district/cache/1525698243664.jpg"
+  // output[0] == "file:///storage/emulated/0/Android/data/com.in.my.district/cache"
   // output[1] == "1525698243664.jpg"
   function getFilenameFromURL (url) {
     if (!url) {
@@ -39,7 +39,7 @@ app.file = (function (thisModule) {
   }
 
   /* use it like this, for example:
-  copyFile("file:///storage/emulated/0/Android/data/com.form.parking.violation/cache/IMG-20180505-WA0004.jpg", "myImg.jpg", LocalFileSystem.TEMPORARY);
+  copyFile("file:///storage/emulated/0/Android/data/com.in.my.district/cache/IMG-20180505-WA0004.jpg", "myImg.jpg", LocalFileSystem.TEMPORARY);
   see https://stackoverflow.com/a/50221986/1243247 */
   function _copyFile (baseFileURI, destPathName, fileSystem) {
     console.log('Copying from: ' + baseFileURI)

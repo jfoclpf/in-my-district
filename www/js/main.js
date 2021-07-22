@@ -18,7 +18,7 @@ app.main = (function (thisModule) {
       requestHistoric: 'https://in-my-district.joaopimentel.com/serverapp_get_historic' // to request all historic ocurrences of current user
     },
     androidApps: {
-      thisApp: 'https://play.google.com/store/apps/details?id=com.form.parking.violation'
+      thisApp: 'https://play.google.com/store/apps/details?id=com.in.my.district'
     },
     geoApi: {
       nominatimReverse: 'https://nominatim.openstreetmap.org/reverse',
