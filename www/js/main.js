@@ -90,7 +90,13 @@ app.main = (function (thisModule) {
     app.personalInfo.loadsPersonalInfo()
 
     // populates HTML select according to the information on anomalies.js file
-    app.anomalies.populatesAnomaliesSelect()
+    app.anomalies.populatesAnomaliesSelect((err) => {
+      if (err) {
+        console.error(err)
+      } else {
+        app.map.init()
+      }
+    })
 
     app.functions.updateDateAndTime()
 
@@ -99,8 +105,6 @@ app.main = (function (thisModule) {
         $(this).css('border-color', 'red')
       }
     })
-
-    // app.map.init()
 
     if (DEBUG) {
       app.functions.setDebugValues()

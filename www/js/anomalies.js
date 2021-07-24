@@ -13,7 +13,7 @@ app.anomalies = (function (thisModule) {
     return anomalies
   }
 
-  function populatesAnomaliesSelect () {
+  function populatesAnomaliesSelect (callback) {
     $.getJSON(cordova.file.applicationDirectory + 'www/json/anomalies.json', function (data) {
       anomalies = data
       $.each(data, function (key, val) {
@@ -32,6 +32,10 @@ app.anomalies = (function (thisModule) {
           }
         })
       }).change()
+
+      callback()
+    }).fail(function (err) {
+      callback(Error(err))
     })
   }
 

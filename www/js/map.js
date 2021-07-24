@@ -13,24 +13,23 @@ app.map = (function (thisModule) {
   const requestImageUrl = app.main.urls.databaseServer.requestImage
 
   var map
-  var markersGroups // groups of markers, by type of occurence
+  var markersGroups // groups of markers, by type of anomaly
   var allDbEntries // all entries fetched from database
   var isMapInitiated = false
 
   function init () {
     // populate select box to select map view, i.e, filter ocurrences/drops in the map
     markersGroups = {
-      all: { select: 'Todas as ocorrências' },
-      mine: { select: 'Apenas as minhas denúncias' }
+      all: { select: 'Todas as anomalias' },
+      mine: { select: 'As que eu denunciei' }
     }
 
     // populates yet with type of anomalies: faixa_bus, baixa_bus, etc.
     const anomalies = app.anomalies.getAnomalies()
-    for (const key in anomalies) {
-      if (anomalies.hasOwnProperty(key)) {
-        markersGroups[key] = {}
-        markersGroups[key].select = anomalies[key].select
-      }
+    for (const anomaly of anomalies) {
+      const anomaly1Code = anomaly.list[0].code.slice(0, 2) // ex: "PA", "HU", etc.
+      markersGroups[anomaly1Code] = {}
+      markersGroups[anomaly1Code].select = anomaly.topic
     }
 
     // to get all entries to show on the map, it does it in the init in the background
@@ -230,8 +229,9 @@ app.map = (function (thisModule) {
 
       marker.bindPopup(popup)
 
-      if (markersGroups[el.base_legal]) {
-        markersGroups[el.base_legal].markerClusterGroup.addLayer(marker)
+      const anomaly1Code = el.anomaly_code.slice(0, 2) // ex: "PA", "HU", etc.
+      if (markersGroups[anomaly1Code]) {
+        markersGroups[anomaly1Code].markerClusterGroup.addLayer(marker)
       }
       if (el.uuid === device.uuid) {
         markersGroups.mine.markerClusterGroup.addLayer(marker)
