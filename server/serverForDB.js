@@ -134,12 +134,6 @@ app.get(requestHistoricUrl, function (req, res) {
 
   const uuid = req.query.uuid
 
-  const userAgent = req.get('user-agent')
-  if (userAgent !== 'APP/com.in.my.district') {
-    res.send('')
-    return
-  }
-
   debug('\nGetting entries from' +
     'database table ' + DBInfo.database + '->' + DBInfo.db_tables.ocorrencias)
 
