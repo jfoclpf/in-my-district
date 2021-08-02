@@ -21,7 +21,7 @@ const mysql = require('mysql') // module to get info from database
 const debug = require('debug')('server:main')
 const sqlFormatter = require('sql-formatter')
 
-const DBInfo = JSON.parse(fs.readFileSync('credentials.json', 'utf8')).database
+const DBInfo = JSON.parse(fs.readFileSync(path.join(__dirname, 'credentials.json'), 'utf8')).database
 debug(DBInfo)
 
 const app = express()
