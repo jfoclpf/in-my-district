@@ -33,7 +33,7 @@ dist/inMyDistrict.*
 
 # keys and credentials
 www/js/credentials.js
-server/DBcredentials.json
+server/credentials.json
 keys/
 
 #upload script to server
