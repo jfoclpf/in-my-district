@@ -3,6 +3,7 @@
   "displayName": "In my District!",
   "version": "1.2.3",
   "description": "Report to your municipality certain irregularities in your neighborhood or district",
+  "homepage": "https://nomeubairro.app/",
   "main": "index.js",
   "scripts": {
     "test": "standard && node test/convertHbsToHtml.js && html-validate test/www/index.html && printf '\\n\\nTest OK\\n\\n'",
