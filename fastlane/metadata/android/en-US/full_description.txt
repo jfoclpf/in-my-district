@@ -1,0 +1,1 @@
+Mobile application for reporting anomalies in the neighbourhoods of Portugal, such as potholes in the pavement or uncollected rubbish.
