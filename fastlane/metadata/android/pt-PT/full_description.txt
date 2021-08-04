@@ -1,0 +1,2 @@
+Esta aplicação permite-lhe reportar ao seu Município ou à sua Junta de Freguesia de Portugal uma anomalia no seu bairro, como por exemplo buracos no passeio ou candeeiros públicos danificados. Funciona apenas para Portugal (Continente e Regiões Autónomas).
+Esta APP é gratuita, ou seja, não cobramos qualquer valor pela utilização da APP, não tem publicidade e é de código aberto.
