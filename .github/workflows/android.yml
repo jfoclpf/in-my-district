@@ -33,5 +33,7 @@ jobs:
     - name: Install Apache Cordova
       run: sudo npm install -g cordova
     - name: Add Android Platform
-      run: cordova platform add android
+      run: |
+        rm -rf platforms/android
+        cordova platform add android
     - run: npm test
