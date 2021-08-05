@@ -1,13 +1,14 @@
 {
   "name": "in.my.district",
   "displayName": "In my District!",
-  "version": "1.2.7",
+  "version": "1.2.8",
   "description": "Report to your municipality certain irregularities in your neighborhood or district",
   "homepage": "https://nomeubairro.app/",
   "main": "index.js",
   "scripts": {
     "test": "standard && node test/convertHbsToHtml.js && html-validate test/www/index.html && printf '\\n\\nTest OK\\n\\n'",
-    "version": "cordova-set-version --version ${npm_package_version} && git commit -m \"add config.xml\" config.xml && git push origin v${npm_package_version}",
+    "version": "cordova-set-version --version ${npm_package_version} && git add config.xml",
+    "push-version": "git push origin v${npm_package_version}",
     "build-release-apk": "npm test && scripts/buildReleaseAPK.sh",
     "build-release-aab": "npm test && scripts/buildReleaseAAB.sh",
     "run-release-on-device": "scripts/runReleaseOnDevice.sh",
