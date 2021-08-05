@@ -7,7 +7,7 @@
   "main": "index.js",
   "scripts": {
     "test": "standard && node test/convertHbsToHtml.js && html-validate test/www/index.html && printf '\\n\\nTest OK\\n\\n'",
-    "version": "cordova-set-version --version ${npm_package_version} && git add config.xml && git tag v${npm_package_version}",
+    "version": "cordova-set-version --version ${npm_package_version} && git add config.xml",
     "build-release-apk": "npm test && scripts/buildReleaseAPK.sh",
     "build-release-aab": "npm test && scripts/buildReleaseAAB.sh",
     "run-release-on-device": "scripts/runReleaseOnDevice.sh",
