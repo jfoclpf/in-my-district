@@ -19,5 +19,5 @@ if (!options.version) {
 
   const versionCode = semver.major(v) * 10000 + semver.minor(v) * 100 + semver.patch(v)
   packageJsonObj['android-version-code'] = versionCode
-  fs.writeFileSync(packageJsonFile, JSON.stringify(packageJsonObj))
+  fs.writeFileSync(packageJsonFile, JSON.stringify(packageJsonObj, null, 2))
 }
