@@ -4,10 +4,10 @@
   "version": "1.2.3",
   "description": "Report to your municipality certain irregularities in your neighborhood or district",
   "homepage": "https://nomeubairro.app/",
-  "main": "index.js",
+  "android-version-code": 10203,
   "scripts": {
     "test": "standard && node test/convertHbsToHtml.js && html-validate test/www/index.html && printf '\\n\\nTest OK\\n\\n'",
-    "version": "cordova-set-version --version ${npm_package_version} && git add config.xml",
+    "version": "cordova-set-version --version ${npm_package_version} && git add config.xml && node scripts/setAndroidVersionCode.js -v ${npm_package_version} && git add package.json",
     "push-version": "git push && git push origin v${npm_package_version}",
     "build-release-apk": "npm test && scripts/buildReleaseAPK.sh",
     "build-release-aab": "npm test && scripts/buildReleaseAAB.sh",
