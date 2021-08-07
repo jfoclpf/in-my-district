@@ -1,3 +1,8 @@
+/* script used by npm version CLI (see package.json) to update the android version code
+   in the package.json file according to cordova rule. Done originally for the F-Droid
+   see: https://gitlab.com/fdroid/rfp/-/issues/1813#note_644665525
+   and https://cordova.apache.org/docs/en/10.x/guide/platforms/android/#setting-the-version-code */
+
 const fs = require('fs')
 const path = require('path')
 const semver = require('semver')
