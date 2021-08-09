@@ -81,10 +81,6 @@
         "ANDROID_EXIFINTERFACES_VERSION": "27.+"
       },
       "cordova-plugin-network-information": {},
-      "cordova-plugin-x-socialsharing": {
-        "PHOTO_LIBRARY_ADD_USAGE_DESCRIPTION": "Esta app necessita de acesso à biblioteca de fotos para fazer uso de fotos tiradas a ocorrências.",
-        "PHOTO_LIBRARY_USAGE_DESCRIPTION": "Esta app necessita de acesso à biblioteca de fotos para fazer uso de fotos tiradas a ocorrências."
-      },
       "cordova-plugin-androidx-adapter": {},
       "cordova-plugin-camera": {
         "ANDROID_SUPPORT_V4_VERSION": "27.+"
@@ -104,7 +100,6 @@
     "cordova-plugin-camera": "github:apache/cordova-plugin-camera",
     "cordova-plugin-file": "^6.0.2",
     "cordova-plugin-network-information": "github:apache/cordova-plugin-network-information",
-    "cordova-plugin-x-socialsharing": "^6.0.3",
     "fs-extra": "^9.0.1",
     "handlebars": "^4.7.6",
     "html-minifier": "^4.0.0",
