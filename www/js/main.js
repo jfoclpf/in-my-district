@@ -143,7 +143,7 @@ app.main = (function (thisModule) {
       'terá de se identificar para proceder a uma denúncia. ' +
       '<b>Não guardamos, não enviamos nem processamos os seus dados pessoais.</b><br><br>' +
       'Esta APP ocupa um espaço residual (cerca de 2mb, semelhante a uma foto) no seu dispositivo. ' +
-      'Não funciona em pano de fundo nem consome quaisquer recursos quando não é usada.\n' +
+      'Não funciona em plano de fundo nem consome quaisquer recursos quando não é usada.\n' +
       'Desinstalar esta APP não lhe resolverá qualquer problema de espaço ou recursos. ' +
       'Contudo a APP pode ser sempre útil para qualquer ocasião.'
 
