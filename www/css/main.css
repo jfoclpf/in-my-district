@@ -55,7 +55,8 @@ input[type="number"] {
   text-align:left;
   display:block;
   width:100%;
-  font-size:16
+  font-size:16;
+  overflow-wrap: anywhere;
 }
 
 #mail_message{

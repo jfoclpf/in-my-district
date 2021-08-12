@@ -37,7 +37,9 @@ app.text = (function (thisModule) {
         ' ' + ((app.photos.getPhotosUriOnFileSystem().length === 1) ? 'da fotografia anexa' : 'das fotografias anexas') +
         ' ' + 'à presente mensagem eletrónica.<br><br>'
 
-      message += getRegards() + '<br>'
+      message += getRegards() + '<br><br>'
+
+      message += `Local exato da ocorrência: https://www.openstreetmap.org/?mlat=${app.localization.getCoordinates().latitude}&mlon=${app.localization.getCoordinates().longitude}&zoom=18`
 
       return message
     } else if (option === 'subject') {
