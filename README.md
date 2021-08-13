@@ -30,6 +30,14 @@ O código está desenhado em Javascript para ser corrido num smartphone. Para ta
  3. Adicione a plataforma<br>`cordova platform add android`
  3. Corra `cordova build android` para construir o projeto na sua máquina. Em Android cria o ficheiro APK na pasta `platforms/android/build/outputs/apk`
 
+### iOS
+```
+git clone https://github.com/jfoclpf/in-my-district.git
+cd in-my-district
+cordova platform add ios
+open platforms/ios/No\ meu\ Bairro\!.xcworkspace/
+```
+
 ## Contribuições são muito bem-vindas
 
  * Usamos StandardJS para o código
