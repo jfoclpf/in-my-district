@@ -34,6 +34,7 @@ O código está desenhado em Javascript para ser corrido num smartphone. Para ta
 ```
 git clone https://github.com/jfoclpf/in-my-district.git
 cd in-my-district
+cordova platform rm android
 cordova platform add ios
 open platforms/ios/No\ meu\ Bairro\!.xcworkspace/
 ```

@@ -48,4 +48,4 @@ jobs:
         cordova platform add android
     - run: npm test
     - name: Building APK
-      run: cordova build android --production
+      run: cordova build android --release
