@@ -84,14 +84,16 @@
         "ANDROID_SUPPORT_V4_VERSION": "27.+"
       },
       "cordova-plugin-network-information": {},
-      "cordova-plugin-app-version": {}
+      "cordova-plugin-app-version": {},
+      "cordova-plugin-wkwebviewxhrfix": {}
     },
     "platforms": [
-      "browser",
-      "android"
+      "android",
+      "ios"
     ]
   },
   "devDependencies": {
+    "@ahovakimyan/cordova-plugin-wkwebviewxhrfix": "github:AraHovakimyan/cordova-plugin-wkwebviewxhrfix",
     "async": "^3.2.0",
     "command-line-args": "^5.2.0",
     "cordova-android": "^9.1.0",
