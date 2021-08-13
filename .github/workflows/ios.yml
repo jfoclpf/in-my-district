@@ -5,16 +5,16 @@ name: iOS
 on:
   workflow_dispatch:
   push:
-    branches: [ master ]
+    branches: [ main ]
   pull_request:
-    branches: [ master ]
+    branches: [ main ]
 
 jobs:
   ios:
     strategy:
       matrix:
         platform: [macos-latest]
-        node-version: [12.x, 14.x, 16.x]
+        node-version: [lts/*]
         
     runs-on: ${{ matrix.platform }}
 
@@ -32,8 +32,10 @@ jobs:
         javac -version
     - name: Install Apache Cordova
       run: npm install -g cordova
-    - name: Add Android Platform
-      run: cordova platform add ios
+    - name: Add iOS Platform
+      run: |
+        cordova platform rm android
+        cordova platform add ios
     - run: npm test
     - name: Building APP
-      run: cordova build ios --production
+      run: cordova build ios --release
