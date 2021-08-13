@@ -85,7 +85,7 @@
       },
       "cordova-plugin-network-information": {},
       "cordova-plugin-app-version": {},
-      "cordova-plugin-wkwebviewxhrfix": {}
+      "@globules-io/cordova-plugin-ios-xhr": {}
     },
     "platforms": [
       "android",
@@ -93,7 +93,7 @@
     ]
   },
   "devDependencies": {
-    "@ahovakimyan/cordova-plugin-wkwebviewxhrfix": "github:AraHovakimyan/cordova-plugin-wkwebviewxhrfix",
+    "@globules-io/cordova-plugin-ios-xhr": "github:globules-io/cordova-plugin-ios-xhr",
     "async": "^3.2.0",
     "command-line-args": "^5.2.0",
     "cordova-android": "^9.1.0",
