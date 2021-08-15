@@ -241,11 +241,18 @@ app.main = (function (thisModule) {
         attachments.push(res)
       }
 
-      var emailTo
-      if (app.contacts.getCurrentParish() && app.contacts.getCurrentParish().email) {
-        emailTo = [app.contacts.getCurrentMunicipality().email, app.contacts.getCurrentParish().email]
-      } else {
-        emailTo = app.contacts.getCurrentMunicipality().email
+      var emailTo = []
+      // the system already forces the user to chose at least one of municipality or parish checkbox, anyway double-check
+      if (!$('#send_to_municipality_checkbox').is(':checked') && !$('#send_to_parish_checkbox').is(':checked')) {
+        window.alert('Erro, email tem de ser enviado pelo menos para municipio ou junta de freguesa')
+        return
+      }
+
+      if ($('#send_to_municipality_checkbox').is(':checked')) {
+        emailTo.push(app.contacts.getCurrentMunicipality().email)
+      }
+      if ($('#send_to_parish_checkbox').is(':checked')) {
+        emailTo.push(app.contacts.getCurrentParish().email)
       }
 
       cordova.plugins.email.open({

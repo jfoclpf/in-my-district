@@ -29,7 +29,7 @@ app.contacts = (function (thisModule) {
     })
   }
 
-  function setParish (parish, municipality) {
+  function setParish (parish, municipality, callback) {
     $.ajax({
       url: app.main.urls.geoApi.ptApi + '/freguesia',
       data: {
@@ -43,9 +43,11 @@ app.contacts = (function (thisModule) {
     }).done(function (data) {
       console.log('freguesia: ', data)
       currentParish = data
+      callback(null, data)
     }).fail(function (err) {
       console.error(`Could not obtain data for ${parish} in ${municipality}`, err)
       currentParish = null
+      callback(Error(err))
     })
   }
 
@@ -57,11 +59,16 @@ app.contacts = (function (thisModule) {
     return currentParish
   }
 
+  function hasCurrentParishAnEmail () {
+    return currentParish && currentParish.email
+  }
+
   thisModule.init = init
   thisModule.setMunicipality = setMunicipality
   thisModule.setParish = setParish
   thisModule.getCurrentMunicipality = getCurrentMunicipality
   thisModule.getCurrentParish = getCurrentParish
+  thisModule.hasCurrentParishAnEmail = hasCurrentParishAnEmail
 
   return thisModule
 })(app.contacts || {})

@@ -51,6 +51,14 @@ input[type="number"] {
   -moz-appearance: textfield;
 }
 
+input[type=checkbox] {
+  /* All browsers except webkit*/
+  transform: scale(2);
+  /* Webkit browsers*/
+  -webkit-transform: scale(2);
+  margin: 5px 20px 5px 10px;
+}
+
 #message{
   text-align:left;
   display:block;

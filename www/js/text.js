@@ -7,15 +7,19 @@ app.text = (function (thisModule) {
   // main message
   function getMainMessage (option) {
     if (option === 'body') {
+      var message = ''
+
       const municipality = $('#municipality option:selected').text().trim()
       const parish = $('#parish option:selected').text().trim()
 
-      var message = `${getRandomGreetings()} da Câmara Municipal de ${municipality};`
-      if (app.contacts.getCurrentParish()) {
-        message += `<br>${getRandomGreetings()} da Junta de Freguesia de ${parish};`
+      if ($('#send_to_municipality_checkbox').is(':checked')) {
+        message += `${getRandomGreetings()} da Câmara Municipal de ${municipality};<br>`
+      }
+      if ($('#send_to_parish_checkbox').is(':checked')) {
+        message += `${getRandomGreetings()} da Junta de Freguesia de ${parish};<br>`
       }
 
-      message += '<br><br>'
+      message += '<br>'
 
       message += `Eu, <b>${$('#name').val().trim()}</b>, ` +
         `detentor do <b>${$('#id_type').val()}</b> com o número <b>${$('#id_number').val()}</b>, ` +
@@ -39,7 +43,25 @@ app.text = (function (thisModule) {
 
       message += getRegards() + '<br><br>'
 
-      message += `Local exato da ocorrência: https://www.openstreetmap.org/?mlat=${app.localization.getCoordinates().latitude}&mlon=${app.localization.getCoordinates().longitude}&zoom=18`
+      // resumo no final da mensagem
+      if ($('#message_summary').is(':checked')) {
+        message += '__________________________<br><br>' +
+        `<b>Anomalia:</b> ${$('#anomaly1 option:selected').text()}, ${$('#anomaly2 option:selected').text()}<br>` +
+        `<b>Morada:</b> ${$('#street').val().trim()}${$('#street_number').val() ? ', n. ' + $('#street_number').val() : ''}, ${parish}, ${municipality}<br>` +
+        // The 6th decimal digit of latitude and longitude gives a precision of about 10cm, enough for this type of use
+        // see: https://gis.stackexchange.com/a/8674/182228
+        '<b>Local exato:</b> ' +
+        `https://osm.org/?mlat=${
+          app.localization.getCoordinates().latitude.toFixed(6)
+        }&mlon=${
+          app.localization.getCoordinates().longitude.toFixed(6)
+        }&zoom=18 <br>` +
+        `<b>Datectada em</b>: ${$.datepicker.formatDate("dd' de 'MM' de 'yy", $('#date').datepicker('getDate'))}, ${$('#time').val()}<br><br>`
+      }
+
+      if ($('#APP_credits').is(':checked')) {
+        message += 'Mensagem gerada pela aplicação No Meu Bairro! (https://nomeubairro.app)<br>'
+      }
 
       return message
     } else if (option === 'subject') {

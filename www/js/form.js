@@ -311,7 +311,19 @@ app.form = (function (thisModule) {
   $('#parish').change(function (event) {
     const parish = $(this).val().trim().toLowerCase()
     const municipality = $('#municipality').val().trim().toLowerCase()
-    app.contacts.setParish(parish, municipality)
+    app.contacts.setParish(parish, municipality, function (err, parishData) {
+      if (!err) {
+        // if selected parish has no email address,
+        // in form message options force checkboxs to just send to municipality
+        if (!parishData.email) {
+          $('#send_to_municipality_checkbox').prop('checked', true).prop('disabled', true)
+          $('#send_to_parish_checkbox').prop('checked', false).prop('disabled', true)
+        } else {
+          $('#send_to_municipality_checkbox').prop('disabled', false)
+          $('#send_to_parish_checkbox').prop('disabled', false)
+        }
+      }
+    })
   })
 
   $('#street').on('input', function () {
@@ -400,6 +412,21 @@ app.form = (function (thisModule) {
       $('#municipality, #parish, #street, #street_number').trigger('input')
     }
   }
+
+  /* ********************************************************************** */
+  /* ********************* MESSAGE OPTIONS **************************** */
+  // the user must send the message to the municipality, to the perish or both
+
+  $('#send_to_municipality_checkbox').change(function () {
+    if (!this.checked && !$('#send_to_parish_checkbox').is(':checked')) {
+      $('#send_to_parish_checkbox').prop('checked', true)
+    }
+  })
+  $('#send_to_parish_checkbox').change(function () {
+    if (!this.checked && !$('#send_to_municipality_checkbox').is(':checked')) {
+      $('#send_to_municipality_checkbox').prop('checked', true)
+    }
+  })
 
   thisModule.init = init
   /* === Public methods to be returned === */
