@@ -8,12 +8,12 @@
     João Pimentel Ferreira
   </author>
   <content src="index.html"/>
-  <icon height="512" src="res/icon/universal/icon4_512x512_playstore.png" width="512"/>
-  <icon density="xhdpi" height="196" src="res/icon/universal/icon4_XHDPI_196x196_320dpi.png" width="196"/>
-  <icon density="xxxhdpi" height="192" src="res/icon/universal/icon4_XXXHDPI_192x192_640dpi.png" width="192"/>
-  <icon density="xxhdpi" height="144" src="res/icon/universal/icon4_XXHDPI_144x144_480dpi.png" width="144"/>
-  <icon density="hdpi" height="72" src="res/icon/universal/icon4_HDPI_72x72_240dpi.png" width="72"/>
-  <icon density="mdpi" height="48" src="res/icon/universal/icon4_MDPI_48x48_160dpi.png" width="48"/>
+  <icon height="512" src="res/icon/universal/512.png" width="512"/>
+  <icon density="xhdpi" height="196" src="res/icon/universal/196.png" width="196"/>
+  <icon density="xxxhdpi" height="192" src="res/icon/universal/192.png" width="192"/>
+  <icon density="xxhdpi" height="144" src="res/icon/universal/144.png" width="144"/>
+  <icon density="hdpi" height="72" src="res/icon/universal/72.png" width="72"/>
+  <icon density="mdpi" height="48" src="res/icon/universal/48.png" width="48"/>
   <access origin="*"/>
   <allow-navigation href="*"/>
   <allow-intent href="http://*/*"/>
