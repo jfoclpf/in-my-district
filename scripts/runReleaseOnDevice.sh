@@ -13,7 +13,8 @@ cd ..        # root directory of the project
 # detect if device is connected
 adb get-state 1>/dev/null 2>&1 && printf "\033[32mDEVICE ATTACHED\033[0m\n\n" || { printf "\033[31m No device attached\n\n"; exit 1; }
 
-adb uninstall com.in.my.district
+# uninstall if exists
+adb shell pm list packages | grep com.in.my.district && adb uninstall com.in.my.district
 
 # extract $PASS
 source keys/keyPassword
