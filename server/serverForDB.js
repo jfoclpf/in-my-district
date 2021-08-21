@@ -208,8 +208,9 @@ const app2 = express()
 // enable files upload
 app2.use(fileUpload({ createParentPath: true, debug: debugFileTransfer.enabled }))
 app2.use(cors())
-app2.use(bodyParser.json())
-app2.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.json({ limit: '50mb' }))
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }))
+app.use(express.json())
 
 app2.post(imgUploadUrl, async (req, res) => {
   debugFileTransfer('Getting files')
