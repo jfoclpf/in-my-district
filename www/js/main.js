@@ -1,7 +1,7 @@
 /* eslint camelcase: off */
 
 /* eslint no-var: off */
-/* global $, cordova */
+/* global $, cordova, device */
 
 var DEBUG = true
 
@@ -46,7 +46,7 @@ app.main = (function (thisModule) {
     cordova.getAppVersion.getVersionNumber(function (version) {
       console.log('APP version is ' + version)
       thisModule.APPversion = version
-      $('.version').text('versão ' + version)
+      $('.version').text(`${device.platform}, v. ${version}`)
     })
 
     cordova.plugins.IsDebug.getIsDebug(function (isDebug) {
