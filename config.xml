@@ -61,6 +61,12 @@
     <icon src="res/icon/ios/192.png" width="192" height="192"/>
     <icon src="res/icon/ios/512.png" width="512" height="512"/>
     <preference name="iosPersistentFileLocation" value="Library"/>
+    <preference name="NativeXHRLogging" value="full" />
+    <preference name="AllowUntrustedCerts"  value="true" />
+    <preference name="InterceptRemoteRequests" value="all" />
+    <preference name="CustomUserAgent" value="APP/com.in.my.district" />
+    <preference name="allowFileAccessFromFileURLs" value="true" />
+    <preference name="allowUniversalAccessFromFileURLs" value="true" />
     <edit-config target="NSLocationWhenInUseUsageDescription" file="*-Info.plist" mode="merge">
       <string>Necessita da sua localização para indicar o endereço da ocorrência a ser enviada ao seu município</string>
     </edit-config>
