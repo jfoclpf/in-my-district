@@ -231,7 +231,6 @@ app.main = (function (thisModule) {
     var imagesArray = app.photos.getPhotosForEmailAttachment()
     // console.log(JSON.stringify(imagesArray, 0, 3))
     const attachments = imagesArray.map((path, i) => cordova.plugins.email.adaptPhotoInfoForEmailAttachment(path, i))
-    console.log(JSON.stringify(attachments, 0, 3))
 
     // fetch screenshot of form's map
     app.form.getScreenshotFromMap(function (err, res) {
