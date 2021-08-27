@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<widget id="com.in.my.district" version="1.2.11" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.in.my.district" version="1.2.12" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
   <name>No meu Bairro!</name>
   <description>
     Comunique ao seu município anomalias no seu bairro, como buracos na calçada ou lixo por recolher
@@ -61,12 +61,12 @@
     <icon src="res/icon/ios/192.png" width="192" height="192"/>
     <icon src="res/icon/ios/512.png" width="512" height="512"/>
     <preference name="iosPersistentFileLocation" value="Library"/>
-    <preference name="NativeXHRLogging" value="full" />
-    <preference name="AllowUntrustedCerts"  value="true" />
-    <preference name="InterceptRemoteRequests" value="all" />
-    <preference name="CustomUserAgent" value="APP/com.in.my.district" />
-    <preference name="allowFileAccessFromFileURLs" value="true" />
-    <preference name="allowUniversalAccessFromFileURLs" value="true" />
+    <preference name="NativeXHRLogging" value="full"/>
+    <preference name="AllowUntrustedCerts" value="true"/>
+    <preference name="InterceptRemoteRequests" value="all"/>
+    <preference name="CustomUserAgent" value="APP/com.in.my.district"/>
+    <preference name="allowFileAccessFromFileURLs" value="true"/>
+    <preference name="allowUniversalAccessFromFileURLs" value="true"/>
     <edit-config target="NSLocationWhenInUseUsageDescription" file="*-Info.plist" mode="merge">
       <string>Necessita da sua localização para indicar o endereço da ocorrência a ser enviada ao seu município</string>
     </edit-config>
