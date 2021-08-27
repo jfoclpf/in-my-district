@@ -21,7 +21,7 @@
   "author": "João Pimentel Ferreira",
   "license": "GPL-3.0",
   "dependencies": {
-    "@fortawesome/fontawesome-free": "5.15.3",
+    "@fortawesome/fontawesome-free": "5.15.4",
     "body-parser": "^1.19.0",
     "bootstrap": "^4.6.0",
     "cordova": "^10.0.0",
@@ -47,7 +47,7 @@
     "exif-js": "^2.3.0",
     "express": "^4.17.1",
     "express-fileupload": "^1.2.1",
-    "express-handlebars": "^5.3.2",
+    "express-handlebars": "^5.3.3",
     "fs": "0.0.1-security",
     "jAlert": "^4.9.1",
     "jquery": "^3.5.1",
