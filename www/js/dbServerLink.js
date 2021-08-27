@@ -20,7 +20,7 @@ app.dbServerLink = (function (thisModule) {
     for (let i = 0; i < 4; i++) {
       if (i < numberOfImages) {
         const fileName = `${DEBUG ? 'debug_' : ''}n${i + 1}_${dateYYYY_MM_DD}_${timeHH_MM}_${municipality}_${freguesia}_${randomString}.jpg`
-        imgFileNames.push(fileName)
+        imgFileNames.push(encodeURI(fileName))
       } else {
         imgFileNames.push('')
       }
