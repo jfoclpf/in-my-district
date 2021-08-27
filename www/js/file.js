@@ -224,7 +224,7 @@ app.file = (function (thisModule) {
       blob = xhr.response // xhr.response is now a blob object
       var DataBlob = blob
       window.resolveLocalFileSystemURL(cordovaFileSystem, (dirEntry) => {
-        const sanitizedFilename = filename.replace(/[^a-z0-9.]/gi, '_').toLowerCase() // sanitize filename
+        const sanitizedFilename = sanitizeFilename(filename)
         dirEntry.getFile(sanitizedFilename, { create: true }, (file) => {
           file.createWriter((fileWriter) => {
             fileWriter.write(DataBlob)
@@ -306,6 +306,10 @@ app.file = (function (thisModule) {
       })
   }
 
+  function sanitizeFilename (filename) {
+    return filename.replace(/[^a-z0-9.]/gi, '_').toLowerCase()
+  }
+
   thisModule.listDir = listDir
   thisModule.getFilenameFromURL = getFilenameFromURL
   thisModule.copyFile = copyFile
@@ -317,6 +321,7 @@ app.file = (function (thisModule) {
   thisModule.downloadFileToDevice = downloadFileToDevice
   thisModule.uploadFileToServer = uploadFileToServer
   thisModule.resizeImage = resizeImage
+  thisModule.sanitizeFilename = sanitizeFilename
 
   return thisModule
 })(app.file || {})
