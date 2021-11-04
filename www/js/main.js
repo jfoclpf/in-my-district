@@ -202,7 +202,7 @@ app.main = (function (thisModule) {
   }
 
   // when user clicks "gerar texto"
-  $('#generate_message').click(function () {
+  $('#generate_message').on('click', function () {
     if (!app.form.isMessageReady()) {
       return
     }
@@ -218,7 +218,7 @@ app.main = (function (thisModule) {
   })
 
   // botão de enviar email
-  $('#send_email_btn').click(function () {
+  $('#send_email_btn').on('click', function () {
     // it popups the alerts according to needed fields
     if (app.form.isMessageReady()) {
       sendEMailMessage()
