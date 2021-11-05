@@ -26,8 +26,9 @@ app.main = (function (thisModule) {
     }
   }
 
-  $(document).ready(function () {
-    console.log('$(document).ready started')
+  // replaces $(document).ready() which is deprecated
+  $(function () {
+    console.log('DOM is ready')
     wasInit = false
     document.addEventListener('deviceready', onDeviceReady, false)
 
@@ -221,12 +222,33 @@ app.main = (function (thisModule) {
   $('#send_email_btn').on('click', function () {
     // it popups the alerts according to needed fields
     if (app.form.isMessageReady()) {
-      sendEMailMessage()
+      $('#send_email_btn').hide()
+      $('#spinner-send_email_btn').show()
+      sendEMailMessage(function (err) {
+        if (err) {
+          console.error('There was some error: ', err)
+        } else {
+          console.success('Success')
+        }
+        $('#spinner-send_email_btn').hide()
+        $('#send_email_btn').show()
+      })
     }
   })
 
-  function sendEMailMessage () {
-    app.dbServerLink.submitNewEntryToDB()
+  function sendEMailMessage (callback) {
+    const defer1 = $.Deferred()
+    const defer2 = $.Deferred()
+
+    app.dbServerLink.submitNewEntryToDB(function (err) {
+      if (err) {
+        console.error('There was an error submitting entry to database', err)
+        defer1.reject()
+      } else {
+        console.success('Entry submited to dabase with success')
+        defer1.resolve()
+      }
+    })
 
     var imagesArray = app.photos.getPhotosForEmailAttachment()
     // console.log(JSON.stringify(imagesArray, 0, 3))
@@ -260,8 +282,21 @@ app.main = (function (thisModule) {
         subject: app.text.getMainMessage('subject'), // subject of the email
         body: app.text.getMainMessage('body'), // email body (for HTML, set isHtml to true)
         isHtml: true // indicats if the body is HTML or plain text
+      },
+      function () {
+        defer2.resolve()
       })
     })
+
+    $.when(defer1, defer2)
+      .then(
+        function () {
+          callback()
+        },
+        function () {
+          callback(Error('There was some error'))
+        }
+      )
   }
 
   thisModule.sendEMailMessage = sendEMailMessage
