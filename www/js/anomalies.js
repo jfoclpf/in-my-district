@@ -17,7 +17,7 @@ app.anomalies = (function (thisModule) {
         $('#anomaly1').append(`<option value="${val.topic}">${val.topic}</option>`)
       })
 
-      $('#anomaly1').change(function () {
+      $('#anomaly1').on('change', function () {
         const selectedMainAnomaly = $(this).find('option:selected').val()
         $('#anomaly2').empty()
         $.each(data, function (index, val) {
@@ -28,7 +28,7 @@ app.anomalies = (function (thisModule) {
             return false // breaks loop
           }
         })
-      }).change()
+      }).trigger('change')
 
       callback()
     }).fail(function (err) {
