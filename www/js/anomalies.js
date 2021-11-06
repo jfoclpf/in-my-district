@@ -4,9 +4,6 @@
 /* global app, cordova, $ */
 
 app.anomalies = (function (thisModule) {
-  // campos "description" e "law_article" devem ser condicentes gramaticalmente com a mensagem que será gerada
-  // exemplo: "a viatura encontrava-se estacionada" + description + ", em violação" + law_article
-
   var anomalies = {}
 
   function getAnomalies () {
