@@ -262,7 +262,7 @@ app.form = (function (thisModule) {
   /* ********************* UPDATE LOCALE BUTTON *************************** */
 
   // botão get address by GPS (Atualizar)
-  $('#getCurrentAddresBtn').click(function () {
+  $('#getCurrentAddresBtn').on('click', function () {
     GPSLoadingOnFields(true)
     app.localization.getGeolocation((err, coordinates) => {
       GPSLoadingOnFields(false)
