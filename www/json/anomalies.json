@@ -1,7 +1,6 @@
 [
   { 
-    "__comment: text for type 'report'": "Venho por este meio reportar <desc:report>",
-    "__comment: text for type 'request'": "Venho por este meio requerer <desc:request>"
+    "__comment": "Venho por este meio reportar <desc:report> / requerer <desc:request>"
   },
   {
     "topic": "Passeios e Acessibilidades",
