@@ -49,7 +49,7 @@ app.text = (function (thisModule) {
         throw Error('anomaly2 Type of anomaly can be either report or request')
       }
 
-      message += '<br><br>' + 
+      message += '<br><br>' +
         'Pode-se comprovar esta situação através' +
         ' ' + ((app.photos.getPhotosUriOnFileSystem().length === 1) ? 'da fotografia anexa' : 'das fotografias anexas') +
         ' ' + 'à presente mensagem eletrónica.<br><br>' +
