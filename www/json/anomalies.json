@@ -14,7 +14,7 @@
       { "code": "PA06", "desc": "Caleira danificada em passeios", "type": "report" },
       { "code": "PA07", "desc": "Colocação de novo Mobiliário Urbano", "type": "request" },
       { "code": "PA08", "desc": "Colocação de novos pilaretes", "type": "request" },
-      { "code": "PA09", "desc": "Danos e obras coduzidas por Concessionárias", "type": "report" },
+      { "code": "PA09", "desc": "Danos e obras conduzidas por Concessionárias", "type": "report" },
       { "code": "PA10", "desc": "Manutenção de corrimãos, guardas ou gradeamentos", "type": "request" },
       { "code": "PA11", "desc": "Descalcetamento de Passeio", "type": "report" },
       { "code": "PA12", "desc": "Lancil danificado ou em falta", "type": "report" },
