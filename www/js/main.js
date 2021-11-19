@@ -133,6 +133,10 @@ app.main = (function (thisModule) {
 
   function onResume () {
     console.log('onResume')
+
+    // stop loading spinner
+    $('#spinner-send_email_btn').hide()
+    $('#send_email_btn').show()
   }
 
   function initialWelcomePopup () {
@@ -224,40 +228,41 @@ app.main = (function (thisModule) {
     if (app.form.isMessageReady()) {
       $('#send_email_btn').hide()
       $('#spinner-send_email_btn').show()
-      sendEMailMessage(function (err) {
-        if (err) {
-          console.error('There was some error: ', err)
-        } else {
-          console.success('Success')
-        }
+
+      sendEMailMessage()
+
+      setTimeout(() => {
         $('#spinner-send_email_btn').hide()
         $('#send_email_btn').show()
-      })
+      }, 10000)
     }
   })
 
-  function sendEMailMessage (callback) {
-    const defer1 = $.Deferred()
-    const defer2 = $.Deferred()
-
+  function sendEMailMessage () {
     app.dbServerLink.submitNewEntryToDB(function (err) {
       if (err) {
         console.error('There was an error submitting entry to database', err)
-        defer1.reject()
+        window.alert('Erro a inserir ocurrência na base de dados (submitNewEntryToDB)')
       } else {
         console.success('Entry submited to dabase with success')
-        defer1.resolve()
       }
     })
 
-    var imagesArray = app.photos.getPhotosForEmailAttachment()
-    // console.log(JSON.stringify(imagesArray, 0, 3))
-    const attachments = imagesArray.map((path, i) => cordova.plugins.email.adaptPhotoInfoForEmailAttachment(path, i))
+    let attachments
+    try {
+      var imagesArray = app.photos.getPhotosForEmailAttachment()
+      // console.log(JSON.stringify(imagesArray, 0, 3))
+      attachments = imagesArray.map((path, i) => cordova.plugins.email.adaptPhotoInfoForEmailAttachment(path, i))
+    } catch (err) {
+      console.error('Error gathering attachments', err, attachments)
+      window.alert('Erro a obter anexos')
+    }
 
     // fetch screenshot of form's map
     app.form.getScreenshotFromMap(function (err, res) {
       if (err) {
-        console.error(err)
+        console.error('Error on getScreenshotFromMap', err)
+        window.alert('Erro a obter imagem do mapa (getScreenshotFromMap)')
       } else {
         attachments.push(res)
       }
@@ -276,30 +281,20 @@ app.main = (function (thisModule) {
         emailTo.push(app.contacts.getCurrentParish().email)
       }
 
-      cordova.plugins.email.open({
-        to: emailTo, // email addresses for TO field
-        attachments: attachments,
-        subject: app.text.getMainMessage('subject'), // subject of the email
-        body: app.text.getMainMessage('body'), // email body (for HTML, set isHtml to true)
-        isHtml: true // indicats if the body is HTML or plain text
-      },
-      function () {
-        defer2.resolve()
-      })
+      try {
+        cordova.plugins.email.open({
+          to: emailTo, // email addresses for TO field
+          attachments: attachments,
+          subject: app.text.getMainMessage('subject'), // subject of the email
+          body: app.text.getMainMessage('body'), // email body (for HTML, set isHtml to true)
+          isHtml: true // indicats if the body is HTML or plain text
+        })
+      } catch (err) {
+        console.error('Error on cordova.plugins.email', err)
+        window.alert('Erro ao abrir a APP de email:\n' + JSON.stringify(err, null, 2))
+      }
     })
-
-    $.when(defer1, defer2)
-      .then(
-        function () {
-          callback()
-        },
-        function () {
-          callback(Error('There was some error'))
-        }
-      )
   }
-
-  thisModule.sendEMailMessage = sendEMailMessage
 
   return thisModule
 })({})
