@@ -190,7 +190,7 @@ app.form = (function (thisModule) {
   /* ********************************************************************** */
   /* *********************** IMAGES/PHOTOS ******************************** */
   // buttons "Add Image"
-  $('#addImg_1, #addImg_2, #addImg_3, #addImg_4').click(function () {
+  $('#addImg_1, #addImg_2, #addImg_3, #addImg_4').on('click', function () {
     // get id, for example #remImg_2
     var id = $(this).attr('id')
     console.log('photo id: ' + id)
@@ -226,7 +226,7 @@ app.form = (function (thisModule) {
   })
 
   // buttons "Remove Image"
-  $('#remImg_1, #remImg_2, #remImg_3, #remImg_4').click(function () {
+  $('#remImg_1, #remImg_2, #remImg_3, #remImg_4').on('click', function () {
     // get id, for example #remImg_2
     var id = $(this).attr('id')
     // gets the number of the element, by obtaining the last character of the id
@@ -262,7 +262,7 @@ app.form = (function (thisModule) {
   /* ********************* UPDATE LOCALE BUTTON *************************** */
 
   // botão get address by GPS (Atualizar)
-  $('#getCurrentAddresBtn').click(function () {
+  $('#getCurrentAddresBtn').on('click', function () {
     GPSLoadingOnFields(true)
     app.localization.getGeolocation((err, coordinates) => {
       GPSLoadingOnFields(false)
@@ -288,7 +288,7 @@ app.form = (function (thisModule) {
   /* ********************************************************************** */
   /* ********************* LOCAL OF OCCURRENCE **************************** */
   // when the select of municipalities is changed, updates the select of parishes
-  $('#municipality').change(function (event, addressFromAPI) {
+  $('#municipality').on('change', function (event, addressFromAPI) {
     const municipality = $(this).val().trim().toLowerCase()
     app.contacts.setMunicipality(municipality)
 
@@ -301,14 +301,14 @@ app.form = (function (thisModule) {
 
         // does not trigger parish select, if address was got from an API, because API will also set parish
         if (!addressFromAPI) {
-          $('#parish').change() // trigers event
+          $('#parish').trigger('change') // trigers event
         }
         return false // break loop, since the municipality was already found
       }
     })
   })
 
-  $('#parish').change(function (event) {
+  $('#parish').on('change', function (event) {
     const parish = $(this).val().trim().toLowerCase()
     const municipality = $('#municipality').val().trim().toLowerCase()
     app.contacts.setParish(parish, municipality, function (err, parishData) {
@@ -417,12 +417,12 @@ app.form = (function (thisModule) {
   /* ********************* MESSAGE OPTIONS **************************** */
   // the user must send the message to the municipality, to the perish or both
 
-  $('#send_to_municipality_checkbox').change(function () {
+  $('#send_to_municipality_checkbox').on('change', function () {
     if (!this.checked && !$('#send_to_parish_checkbox').is(':checked')) {
       $('#send_to_parish_checkbox').prop('checked', true)
     }
   })
-  $('#send_to_parish_checkbox').change(function () {
+  $('#send_to_parish_checkbox').on('change', function () {
     if (!this.checked && !$('#send_to_municipality_checkbox').is(':checked')) {
       $('#send_to_municipality_checkbox').prop('checked', true)
     }

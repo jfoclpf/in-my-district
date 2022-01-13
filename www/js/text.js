@@ -19,29 +19,42 @@ app.text = (function (thisModule) {
         message += `${getRandomGreetings()} da Junta de Freguesia de ${parish};<br>`
       }
 
-      message += '<br>'
+      message += '<br>' +
 
-      message += `Eu, <b>${$('#name').val().trim()}</b>, ` +
+        `Eu, <b>${$('#name').val().trim()}</b>, ` +
         `detentor do <b>${$('#id_type').val()}</b> com o número <b>${$('#id_number').val()}</b>, ` +
         `com o Número de Identificação Fiscal (NIF) <b>${$('#nif').val()}</b> ` +
         `e com residência em <b>${$('#address').val().trim()}, ${$('#postal_code').val()}, ${$('#address_city').val().trim()}</b>, ` +
         'venho por este meio comunicar a V. Exas. a seguinte anomalia e irregularidade, ' +
-        'para que a mesma seja resolvida pelos serviços de V. Exas o mais rapidamente quanto possível.<br><br>'
+        'para que a mesma seja resolvida pelos serviços de V. Exas o mais rapidamente quanto possível.<br><br>' +
 
-      message += `No passado dia <b>${$.datepicker.formatDate("dd' de 'MM' de 'yy", $('#date').datepicker('getDate'))}</b>` +
+        `No passado dia <b>${$.datepicker.formatDate("dd' de 'MM' de 'yy", $('#date').datepicker('getDate'))}</b>` +
         ($('#time').val() ? ' pelas <b>' + $('#time').val() + '</b>' : '') + // optional
         `, na <b>${$('#street').val().trim()}, ${municipality}</b>, ` +
         (app.contacts.getCurrentParish() ? `na freguesia de <b>${parish}</b>, ` : '') + // optional
         ($('#street_number').val()
           ? `aproximadamente junto à porta com o <b>número ${$('#street_number').val().trim()}</b>, `
           : '') + // optional
-        `deparei-me com o seguinte problema relacionado com <b>${$('#anomaly1 option:selected').text()}: ${$('#anomaly2 option:selected').text()}</b>.<br><br>`
+        `deparei-me com uma anomalia relacionada com <b>${$('#anomaly1 option:selected').text()}</b>, `
 
-      message += 'Pode-se comprovar esta situação através' +
+      // change the text according to the anomaly type, a report or a request
+      // the select uses 2 <optgroup>, one for report and another for request
+      const anomaly2TypeOfAnomaly = $('#anomaly2 option:selected').parent().prop('id')
+      const anomaly2SelectedText = $('#anomaly2 option:selected').text()
+      if (anomaly2TypeOfAnomaly === 'anomaly2-report') {
+        message += `mais precisamente com <b>${anomaly2SelectedText}</b>.`
+      } else if (anomaly2TypeOfAnomaly === 'anomaly2-request') {
+        message += `e por conseguinte venho assim requerer <b>${anomaly2SelectedText}</b>.`
+      } else {
+        throw Error('anomaly2 Type of anomaly can be either report or request')
+      }
+
+      message += '<br><br>' +
+        'Pode-se comprovar esta situação através' +
         ' ' + ((app.photos.getPhotosUriOnFileSystem().length === 1) ? 'da fotografia anexa' : 'das fotografias anexas') +
-        ' ' + 'à presente mensagem eletrónica.<br><br>'
+        ' ' + 'à presente mensagem eletrónica.<br><br>' +
 
-      message += getRegards() + '<br><br>'
+        getRegards() + '<br><br>'
 
       // resumo no final da mensagem
       if ($('#message_summary').is(':checked')) {

@@ -1,14 +1,10 @@
 [![Node.js CI](https://github.com/jfoclpf/in-my-district/actions/workflows/android.yml/badge.svg)](https://github.com/jfoclpf/in-my-district/actions/workflows/android.yml)
 [![Node.js CI](https://github.com/jfoclpf/in-my-district/actions/workflows/ios.yml/badge.svg)](https://github.com/jfoclpf/in-my-district/actions/workflows/ios.yml)
-[![Dependency Status][dependency status_img]][dependency status_url]
 [![js-standard-style][js-standard-style_img]][js-standard-style_url]
 [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/donate?hosted_button_id=J7F3ALLQAFWEJ)
 
 [js-standard-style_img]: https://img.shields.io/badge/code%20style-standard-brightgreen.svg
 [js-standard-style_url]: https://standardjs.com/
-
-[dependency status_img]: https://david-dm.org/jfoclpf/in-my-district.svg
-[dependency status_url]: https://david-dm.org/jfoclpf/in-my-district
 
 # No meu bairro!
 
@@ -16,7 +12,7 @@ Aplicação móvel para comunicar ao seu município anomalias no seu bairro, com
 
 O código está desenhado em Javascript para ser corrido num smartphone. Para tal faz uso da plataforma <a href="https://cordova.apache.org/">Apache Cordova</a>.
 
-* A APP para Android está <a href="https://play.google.com/store/apps/details?id=com.in.my.district">aqui</a>.
+* A APP para Android está aqui : <a href="https://f-droid.org/packages/com.in.my.district/">F-Droid</a>, <a href="https://play.google.com/store/apps/details?id=com.in.my.district">Google Play</a>
 
 ## Como instalar e testar
 ### Requisitos, _debug_ e eventuais problemas

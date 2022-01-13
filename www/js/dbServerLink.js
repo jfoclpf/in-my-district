@@ -6,7 +6,7 @@ app.dbServerLink = (function (thisModule) {
   const uploadImagesUrl = app.main.urls.databaseServer.uploadImages
   const uploadOccurenceUrl = app.main.urls.databaseServer.uploadOccurence
 
-  function submitNewEntryToDB () {
+  function submitNewEntryToDB (callback) {
     const dateYYYY_MM_DD = app.form.getDateYYYY_MM_DD()
     const timeHH_MM = app.form.getTimeHH_MM()
     const municipality = app.form.getMunicipality()
@@ -20,7 +20,8 @@ app.dbServerLink = (function (thisModule) {
     for (let i = 0; i < 4; i++) {
       if (i < numberOfImages) {
         const fileName = `${DEBUG ? 'debug_' : ''}n${i + 1}_${dateYYYY_MM_DD}_${timeHH_MM}_${municipality}_${freguesia}_${randomString}.jpg`
-        imgFileNames.push(fileName)
+        const sanitizedFilename = app.file.sanitizeFilename(fileName)
+        imgFileNames.push(sanitizedFilename)
       } else {
         imgFileNames.push('')
       }
@@ -59,20 +60,37 @@ app.dbServerLink = (function (thisModule) {
         console.success('Values inserted into database with success.')
         console.log('Returned:', data)
         // upload all photos
+        const deferred = []
         for (let i = 0; i < imagesArray.length; i++) {
-          app.file.uploadFileToServer(imagesArray[i], imgFileNames[i], uploadImagesUrl,
-            (err) => {
-              if (err) {
-                console.error(err)
-              } else {
-                console.success(`File ${imgFileNames[i]} uploaded`)
-              }
-            })
+          deferred[i] = $.Deferred();
+          (function (_i) {
+            app.file.uploadFileToServer(imagesArray[_i], imgFileNames[_i], uploadImagesUrl,
+              (err) => {
+                if (err) {
+                  console.error(err)
+                  deferred[_i].reject()
+                } else {
+                  console.success(`File ${imgFileNames[_i]} uploaded`)
+                  deferred[_i].resolve()
+                }
+              })
+          })(i)
         }
+
+        $.when.apply(this, deferred)
+          .then(
+            function () {
+              console.log('All photos uplodead successfully')
+              callback()
+            },
+            function () {
+              callback(Error('There was some error uploading photos'))
+            }
+          )
       },
-      error: function (error) {
-        console.error(`There was an error submitting the following object into the database: ${error.responseText}`, databaseObj)
-        console.error(error)
+      error: function (err) {
+        console.error(`There was an error submitting the following object into the database: ${err.responseText}`, err, databaseObj)
+        callback(Error(err))
       }
     })
   }

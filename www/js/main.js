@@ -26,8 +26,9 @@ app.main = (function (thisModule) {
     }
   }
 
-  $(document).ready(function () {
-    console.log('$(document).ready started')
+  // replaces $(document).ready() which is deprecated
+  $(function () {
+    console.log('DOM is ready')
     wasInit = false
     document.addEventListener('deviceready', onDeviceReady, false)
 
@@ -42,12 +43,6 @@ app.main = (function (thisModule) {
     document.addEventListener('resume', onResume, false)
 
     window.screen.orientation.lock('portrait')
-
-    cordova.getAppVersion.getVersionNumber(function (version) {
-      console.log('APP version is ' + version)
-      thisModule.APPversion = version
-      $('.version').text(`${device.platform}, v. ${version}`)
-    })
 
     cordova.plugins.IsDebug.getIsDebug(function (isDebug) {
       // in release mode the app is not debuggable (in chrome), thus I may stil want to debug with DEBUG=false
@@ -74,6 +69,12 @@ app.main = (function (thisModule) {
 
   // when the page loads (only on smartphone)
   function init () {
+    cordova.getAppVersion.getVersionNumber(function (version) {
+      console.log('APP version is ' + version)
+      thisModule.APPversion = version
+      $('.version').text(`${device.platform}, v. ${version}${DEBUG ? 'd' : 'p'}`)
+    })
+
     console.log('init() started')
     wasInit = true
 
@@ -132,6 +133,10 @@ app.main = (function (thisModule) {
 
   function onResume () {
     console.log('onResume')
+
+    // stop loading spinner
+    $('#spinner-send_email_btn').hide()
+    $('#send_email_btn').show()
   }
 
   function initialWelcomePopup () {
@@ -202,7 +207,7 @@ app.main = (function (thisModule) {
   }
 
   // when user clicks "gerar texto"
-  $('#generate_message').click(function () {
+  $('#generate_message').on('click', function () {
     if (!app.form.isMessageReady()) {
       return
     }
@@ -218,24 +223,46 @@ app.main = (function (thisModule) {
   })
 
   // botão de enviar email
-  $('#send_email_btn').click(function () {
+  $('#send_email_btn').on('click', function () {
     // it popups the alerts according to needed fields
     if (app.form.isMessageReady()) {
+      $('#send_email_btn').hide()
+      $('#spinner-send_email_btn').show()
+
       sendEMailMessage()
+
+      setTimeout(() => {
+        $('#spinner-send_email_btn').hide()
+        $('#send_email_btn').show()
+      }, 10000)
     }
   })
 
   function sendEMailMessage () {
-    app.dbServerLink.submitNewEntryToDB()
+    app.dbServerLink.submitNewEntryToDB(function (err) {
+      if (err) {
+        console.error('There was an error submitting entry to database', err)
+        window.alert('Erro a inserir ocurrência na base de dados (submitNewEntryToDB)')
+      } else {
+        console.success('Entry submited to dabase with success')
+      }
+    })
 
-    var imagesArray = app.photos.getPhotosForEmailAttachment()
-    // console.log(JSON.stringify(imagesArray, 0, 3))
-    const attachments = imagesArray.map((path, i) => cordova.plugins.email.adaptPhotoInfoForEmailAttachment(path, i))
+    let attachments
+    try {
+      var imagesArray = app.photos.getPhotosForEmailAttachment()
+      // console.log(JSON.stringify(imagesArray, 0, 3))
+      attachments = imagesArray.map((path, i) => cordova.plugins.email.adaptPhotoInfoForEmailAttachment(path, i))
+    } catch (err) {
+      console.error('Error gathering attachments', err, attachments)
+      window.alert('Erro a obter anexos')
+    }
 
     // fetch screenshot of form's map
     app.form.getScreenshotFromMap(function (err, res) {
       if (err) {
-        console.error(err)
+        console.error('Error on getScreenshotFromMap', err)
+        window.alert('Erro a obter imagem do mapa (getScreenshotFromMap)')
       } else {
         attachments.push(res)
       }
@@ -254,17 +281,20 @@ app.main = (function (thisModule) {
         emailTo.push(app.contacts.getCurrentParish().email)
       }
 
-      cordova.plugins.email.open({
-        to: emailTo, // email addresses for TO field
-        attachments: attachments,
-        subject: app.text.getMainMessage('subject'), // subject of the email
-        body: app.text.getMainMessage('body'), // email body (for HTML, set isHtml to true)
-        isHtml: true // indicats if the body is HTML or plain text
-      })
+      try {
+        cordova.plugins.email.open({
+          to: emailTo, // email addresses for TO field
+          attachments: attachments,
+          subject: app.text.getMainMessage('subject'), // subject of the email
+          body: app.text.getMainMessage('body'), // email body (for HTML, set isHtml to true)
+          isHtml: true // indicats if the body is HTML or plain text
+        })
+      } catch (err) {
+        console.error('Error on cordova.plugins.email', err)
+        window.alert('Erro ao abrir a APP de email:\n' + JSON.stringify(err, null, 2))
+      }
     })
   }
-
-  thisModule.sendEMailMessage = sendEMailMessage
 
   return thisModule
 })({})
