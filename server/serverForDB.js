@@ -22,7 +22,7 @@ const debug = require('debug')('server:main')
 const sqlFormatter = require('sql-formatter')
 
 const DBInfo = JSON.parse(
-  fs.readFileSync(path.join(__dirname, '..', 'keys', 'serverCredentials.js'), 'utf8'))
+  fs.readFileSync(path.join(__dirname, '..', 'keys', 'serverCredentials.json'), 'utf8'))
   .database
 
 debug(DBInfo)
