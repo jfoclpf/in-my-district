@@ -42,7 +42,7 @@ jobs:
       run: |
         ls -la /usr/local/lib/android/sdk/build-tools/
         cd /usr/local/lib/android/sdk/build-tools/32.0.0/
-        mv d8 dx && cd lib && mv d8.jar dx.jar
+        cp d8 dx && cd lib && cp d8.jar dx.jar
         ls -la /usr/local/lib/android/sdk/build-tools/32.0.0/
     - name: echo PATH
       run: echo "${PATH//:/$'\n'}"
