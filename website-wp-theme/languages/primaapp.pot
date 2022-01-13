@@ -1,0 +1,988 @@
+# Copyright (C) 2020 WPTrees
+# This file is distributed under the GNU General Public License v2 or later.
+msgid ""
+msgstr ""
+"Project-Id-Version: PrimaApp 1.0.4\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/theme/primaapp\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2020-01-25T17:01:41+02:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.4.0\n"
+"X-Domain: primaapp\n"
+
+#. Theme Name of the theme
+msgid "PrimaApp"
+msgstr ""
+
+#. Theme URI of the theme
+msgid "http://wptrees.com/downloads/primaapp/"
+msgstr ""
+
+#. Description of the theme
+msgid "PrimaApp is a simple and clean App Landing Page. It allows you to create a fast yet beautiful landing page for your application. Just Import the demo content and customize how it looks and feel via the simple customizer."
+msgstr ""
+
+#. Author of the theme
+msgid "WPTrees"
+msgstr ""
+
+#. Author URI of the theme
+msgid "https://wptrees.com"
+msgstr ""
+
+#: 404.php:18
+msgid "404"
+msgstr ""
+
+#: 404.php:19
+msgid "Oops! That page can&rsquo;t be found."
+msgstr ""
+
+#. translators: 1: title.
+#: comments.php:35
+msgid "One thought on &ldquo;%1$s&rdquo;"
+msgstr ""
+
+#. translators: 1: comment count number, 2: title.
+#: comments.php:41
+msgctxt "comments title"
+msgid "%1$s thought on &ldquo;%2$s&rdquo;"
+msgid_plural "%1$s thoughts on &ldquo;%2$s&rdquo;"
+msgstr[0] ""
+msgstr[1] ""
+
+#: comments.php:66
+msgid "Comments are closed."
+msgstr ""
+
+#: footer.php:83
+msgid "Go to top"
+msgstr ""
+
+#: functions.php:20
+#: functions.php:24
+msgid "Primary Menu"
+msgstr ""
+
+#: functions.php:21
+msgid "Footer Social Menu"
+msgstr ""
+
+#: functions.php:313
+msgid "PrimaApp Special Links"
+msgstr ""
+
+#: functions.php:319
+msgid "Features"
+msgstr ""
+
+#: functions.php:320
+msgid "Steps"
+msgstr ""
+
+#: functions.php:321
+msgid "Video"
+msgstr ""
+
+#: functions.php:322
+#: inc/front-end/download-section.php:37
+#: inc/front-end/steps-section.php:47
+msgid "Download"
+msgstr ""
+
+#: functions.php:323
+#: inc/front-end/contact-section.php:26
+msgid "Contact us"
+msgstr ""
+
+#: functions.php:359
+msgid "Select all"
+msgstr ""
+
+#: functions.php:363
+#: functions.php:364
+msgid "Add to menu"
+msgstr ""
+
+#: header.php:20
+msgid "Skip to content"
+msgstr ""
+
+#: inc/customizer-parts/color-customizer.php:7
+msgid "Theme main color"
+msgstr ""
+
+#: inc/customizer-parts/color-customizer.php:8
+msgid "Select the main color of the theme"
+msgstr ""
+
+#: inc/customizer-parts/color-customizer.php:20
+msgid "Custom main color"
+msgstr ""
+
+#: inc/customizer-parts/color-customizer.php:21
+msgid "Choose a custom color as theme main color."
+msgstr ""
+
+#: inc/customizer-parts/contact-customizer.php:4
+msgid "Contact Section"
+msgstr ""
+
+#: inc/customizer-parts/contact-customizer.php:10
+#: inc/customizer-parts/download-customizer.php:10
+#: inc/customizer-parts/features-customizer.php:798
+#: inc/customizer-parts/steps-customizer.php:12
+#: inc/customizer-parts/video-customizer.php:10
+msgid "Display This Section"
+msgstr ""
+
+#: inc/customizer-parts/contact-customizer.php:15
+#: inc/customizer-parts/download-customizer.php:15
+#: inc/customizer-parts/features-customizer.php:803
+#: inc/customizer-parts/general-customizer.php:15
+#: inc/customizer-parts/steps-customizer.php:17
+#: inc/customizer-parts/video-customizer.php:15
+msgid "Yes"
+msgstr ""
+
+#: inc/customizer-parts/contact-customizer.php:16
+#: inc/customizer-parts/download-customizer.php:16
+#: inc/customizer-parts/features-customizer.php:804
+#: inc/customizer-parts/general-customizer.php:16
+#: inc/customizer-parts/steps-customizer.php:18
+#: inc/customizer-parts/video-customizer.php:16
+msgid "No"
+msgstr ""
+
+#: inc/customizer-parts/contact-customizer.php:22
+#: inc/customizer-parts/contact-customizer.php:24
+msgid "Contact Section Title"
+msgstr ""
+
+#: inc/customizer-parts/contact-customizer.php:30
+msgid "Contact Section Description"
+msgstr ""
+
+#: inc/customizer-parts/contact-customizer.php:32
+#: inc/customizer-parts/download-customizer.php:32
+#: inc/customizer-parts/steps-customizer.php:45
+#: inc/customizer-parts/video-customizer.php:32
+#: inc/front-end/video-section.php:5
+msgid "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Natus pariatur excepturi impedit distinctio quam hic blanditiis sint accusantium voluptates"
+msgstr ""
+
+#: inc/customizer-parts/contact-customizer.php:38
+msgid "Contact From Shortcode"
+msgstr ""
+
+#: inc/customizer-parts/contact-customizer.php:46
+msgid "Contact Section Background Image"
+msgstr ""
+
+#: inc/customizer-parts/download-customizer.php:4
+msgid "App Download Section"
+msgstr ""
+
+#: inc/customizer-parts/download-customizer.php:22
+#: inc/customizer-parts/download-customizer.php:24
+msgid "Download Section Title"
+msgstr ""
+
+#: inc/customizer-parts/download-customizer.php:30
+msgid "Download Section Description"
+msgstr ""
+
+#: inc/customizer-parts/download-customizer.php:38
+msgid "Download Section Image"
+msgstr ""
+
+#: inc/customizer-parts/download-customizer.php:39
+msgid "The image will be displayed in the download section"
+msgstr ""
+
+#: inc/customizer-parts/download-customizer.php:49
+msgid "Download Button 1 Link"
+msgstr ""
+
+#: inc/customizer-parts/download-customizer.php:57
+msgid "Download Button 1 Image"
+msgstr ""
+
+#: inc/customizer-parts/download-customizer.php:67
+msgid "Download Button 2 Link"
+msgstr ""
+
+#: inc/customizer-parts/download-customizer.php:75
+msgid "Download Button 2 Image"
+msgstr ""
+
+#: inc/customizer-parts/features-customizer.php:792
+#: inc/customizer-parts/slider-customizer.php:108
+#: inc/customizer-parts/slider-customizer.php:132
+msgid "Features Section"
+msgstr ""
+
+#: inc/customizer-parts/features-customizer.php:811
+msgid "Feature %d icon"
+msgstr ""
+
+#: inc/customizer-parts/features-customizer.php:829
+msgid "Feature %d Title"
+msgstr ""
+
+#: inc/customizer-parts/features-customizer.php:846
+msgid "Feature %d Description"
+msgstr ""
+
+#: inc/customizer-parts/footer-customizer.php:5
+msgid "Footer Options"
+msgstr ""
+
+#: inc/customizer-parts/footer-customizer.php:10
+msgid "Footer Logo Section"
+msgstr ""
+
+#: inc/customizer-parts/footer-customizer.php:18
+msgid "Select footer background color"
+msgstr ""
+
+#: inc/customizer-parts/footer-customizer.php:29
+msgid "Select footer site signature background color"
+msgstr ""
+
+#: inc/customizer-parts/footer-customizer.php:40
+msgid "Footer Logo Image"
+msgstr ""
+
+#: inc/customizer-parts/footer-customizer.php:50
+msgid "Footer Logo Text"
+msgstr ""
+
+#: inc/customizer-parts/footer-customizer.php:52
+msgid "If there is no logo image, this text will appear in the footer"
+msgstr ""
+
+#: inc/customizer-parts/footer-customizer.php:59
+msgid "Footer Text Section"
+msgstr ""
+
+#: inc/customizer-parts/footer-customizer.php:66
+msgid "Footer Text"
+msgstr ""
+
+#: inc/customizer-parts/footer-customizer.php:67
+msgid "Type the footer address text"
+msgstr ""
+
+#: inc/customizer-parts/footer-customizer.php:75
+msgid "Footer Email"
+msgstr ""
+
+#: inc/customizer-parts/footer-customizer.php:83
+msgid "Footer Website Text"
+msgstr ""
+
+#: inc/customizer-parts/footer-customizer.php:91
+msgid "Footer Website"
+msgstr ""
+
+#: inc/customizer-parts/footer-customizer.php:100
+msgid "Site Signature Text"
+msgstr ""
+
+#: inc/customizer-parts/general-customizer.php:10
+msgid "Display Site Name"
+msgstr ""
+
+#: inc/customizer-parts/general-customizer.php:22
+msgid "Typography Section"
+msgstr ""
+
+#: inc/customizer-parts/general-customizer.php:29
+msgid "Theme main font family"
+msgstr ""
+
+#: inc/customizer-parts/general-customizer.php:57
+msgid "Theme headings font family"
+msgstr ""
+
+#: inc/customizer-parts/slider-customizer.php:4
+msgid "Slider Section"
+msgstr ""
+
+#: inc/customizer-parts/slider-customizer.php:7
+msgid "Slider Options Section"
+msgstr ""
+
+#: inc/customizer-parts/slider-customizer.php:13
+msgid "Slider Background Image"
+msgstr ""
+
+#: inc/customizer-parts/slider-customizer.php:14
+msgid "Recommended 1600x1200 and Higher"
+msgstr ""
+
+#: inc/customizer-parts/slider-customizer.php:21
+msgid "Select The Overlay color"
+msgstr ""
+
+#: inc/customizer-parts/slider-customizer.php:30
+msgid "Pause On Hover"
+msgstr ""
+
+#: inc/customizer-parts/slider-customizer.php:31
+msgid "Check if you want to pause slider animation on mouse hover"
+msgstr ""
+
+#: inc/customizer-parts/slider-customizer.php:39
+msgid "Slide transition speed slides in (ms)"
+msgstr ""
+
+#: inc/customizer-parts/slider-customizer.php:52
+msgid "Delay between slides in (ms)"
+msgstr ""
+
+#: inc/customizer-parts/slider-customizer.php:64
+msgid "Slide %d Section"
+msgstr ""
+
+#: inc/customizer-parts/slider-customizer.php:70
+msgid "Slide %d Title"
+msgstr ""
+
+#: inc/customizer-parts/slider-customizer.php:78
+msgid "Slide %d Text"
+msgstr ""
+
+#: inc/customizer-parts/slider-customizer.php:86
+msgid "Slide %d Image"
+msgstr ""
+
+#: inc/customizer-parts/slider-customizer.php:93
+msgid "Button 1 Text"
+msgstr ""
+
+#: inc/customizer-parts/slider-customizer.php:101
+msgid "Button 1 Section"
+msgstr ""
+
+#: inc/customizer-parts/slider-customizer.php:109
+#: inc/customizer-parts/slider-customizer.php:133
+msgid "Steps Section"
+msgstr ""
+
+#: inc/customizer-parts/slider-customizer.php:110
+#: inc/customizer-parts/slider-customizer.php:134
+msgid "Video Section"
+msgstr ""
+
+#: inc/customizer-parts/slider-customizer.php:111
+#: inc/customizer-parts/slider-customizer.php:135
+msgid "Download Section"
+msgstr ""
+
+#: inc/customizer-parts/slider-customizer.php:117
+msgid "Button 2 Text"
+msgstr ""
+
+#: inc/customizer-parts/slider-customizer.php:125
+msgid "Button 2 Section"
+msgstr ""
+
+#: inc/customizer-parts/steps-customizer.php:5
+msgid "App Flow Section"
+msgstr ""
+
+#: inc/customizer-parts/steps-customizer.php:24
+msgid "Steps Section Image"
+msgstr ""
+
+#: inc/customizer-parts/steps-customizer.php:25
+msgid "The image will be displayed in the steps section"
+msgstr ""
+
+#: inc/customizer-parts/steps-customizer.php:35
+#: inc/customizer-parts/steps-customizer.php:37
+msgid "Steps Section Title"
+msgstr ""
+
+#: inc/customizer-parts/steps-customizer.php:43
+msgid "Steps Section Description"
+msgstr ""
+
+#: inc/customizer-parts/steps-customizer.php:52
+msgid "Step %d Title"
+msgstr ""
+
+#: inc/customizer-parts/steps-customizer.php:61
+msgid "Step %d Description"
+msgstr ""
+
+#: inc/customizer-parts/video-customizer.php:4
+msgid "App Video Section"
+msgstr ""
+
+#: inc/customizer-parts/video-customizer.php:22
+msgid "Video Section Title"
+msgstr ""
+
+#: inc/customizer-parts/video-customizer.php:24
+#: inc/front-end/video-section.php:4
+msgid "App Demo"
+msgstr ""
+
+#: inc/customizer-parts/video-customizer.php:30
+msgid "Video Section Description"
+msgstr ""
+
+#: inc/customizer-parts/video-customizer.php:38
+msgid "Video File"
+msgstr ""
+
+#: inc/customizer-parts/video-customizer.php:39
+msgid "The Video will be displayed in the video section"
+msgstr ""
+
+#: inc/customizer-parts/video-customizer.php:49
+msgid "Video Cover Image"
+msgstr ""
+
+#: inc/customizer-parts/video-customizer.php:50
+msgid "The image will be displayed as a cover image of the video"
+msgstr ""
+
+#: inc/customizer-parts/video-customizer.php:60
+msgid "Use External Video From URL"
+msgstr ""
+
+#: inc/customizer-parts/video-customizer.php:67
+msgid "External Video URL"
+msgstr ""
+
+#: inc/customizer-parts/video-customizer.php:68
+msgid "You can copy a youtube or vimeo link"
+msgstr ""
+
+#: inc/front-end/contact-section.php:5
+msgid "Contact section title"
+msgstr ""
+
+#: inc/front-end/contact-section.php:6
+msgid "Contact section description"
+msgstr ""
+
+#: inc/front-end/download-section.php:25
+msgid "Button 1"
+msgstr ""
+
+#: inc/front-end/download-section.php:30
+msgid "Button 2"
+msgstr ""
+
+#: inc/navwalker.php:375
+msgid "Add a menu"
+msgstr ""
+
+#. translators: %s: post date.
+#: inc/template-tags.php:27
+msgctxt "post date"
+msgid " %s"
+msgstr ""
+
+#. translators: %s: post author.
+#: inc/template-tags.php:43
+msgctxt "post author"
+msgid " %s"
+msgstr ""
+
+#. translators: 1: list of categories.
+#. translators: 1: list of tags.
+#: inc/template-tags.php:66
+#: inc/template-tags.php:73
+msgid " %1$s"
+msgstr ""
+
+#. translators: used between list items, there is a space after the comma
+#: inc/template-tags.php:70
+msgctxt "list item separator"
+msgid ", "
+msgstr ""
+
+#. translators: %s: Name of current post. Only visible to screen readers
+#: inc/template-tags.php:81
+#: template-parts/content-page.php:37
+msgid "Edit <span class=\"screen-reader-text\">%s</span>"
+msgstr ""
+
+#. Template Name of the theme
+msgid "Landing Page Template"
+msgstr ""
+
+#: plugins/class-tgm-plugin-activation.php:327
+#: plugins/tgm-plugin-activation.php:67
+msgid "Install Required Plugins"
+msgstr ""
+
+#: plugins/class-tgm-plugin-activation.php:328
+#: plugins/tgm-plugin-activation.php:68
+msgid "Install Plugins"
+msgstr ""
+
+#. translators: %s: plugin name.
+#: plugins/class-tgm-plugin-activation.php:330
+#: plugins/tgm-plugin-activation.php:69
+msgid "Installing Plugin: %s"
+msgstr ""
+
+#. translators: %s: plugin name.
+#: plugins/class-tgm-plugin-activation.php:332
+#: plugins/tgm-plugin-activation.php:70
+msgid "Updating Plugin: %s"
+msgstr ""
+
+#: plugins/class-tgm-plugin-activation.php:333
+#: plugins/tgm-plugin-activation.php:71
+msgid "Something went wrong with the plugin API."
+msgstr ""
+
+#. translators: 1: plugin name(s).
+#: plugins/class-tgm-plugin-activation.php:334
+#: plugins/tgm-plugin-activation.php:72
+msgid "This theme requires the following plugin: %1$s."
+msgid_plural "This theme requires the following plugins: %1$s."
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: 1: plugin name(s).
+#: plugins/class-tgm-plugin-activation.php:340
+#: plugins/tgm-plugin-activation.php:77
+msgid "This theme recommends the following plugin: %1$s."
+msgid_plural "This theme recommends the following plugins: %1$s."
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: 1: plugin name(s).
+#: plugins/class-tgm-plugin-activation.php:346
+#: plugins/tgm-plugin-activation.php:82
+msgid "The following plugin needs to be updated to its latest version to ensure maximum compatibility with this theme: %1$s."
+msgid_plural "The following plugins need to be updated to their latest version to ensure maximum compatibility with this theme: %1$s."
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: 1: plugin name(s).
+#: plugins/class-tgm-plugin-activation.php:352
+#: plugins/tgm-plugin-activation.php:87
+msgid "There is an update available for: %1$s."
+msgid_plural "There are updates available for the following plugins: %1$s."
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: 1: plugin name(s).
+#: plugins/class-tgm-plugin-activation.php:358
+#: plugins/tgm-plugin-activation.php:92
+msgid "The following required plugin is currently inactive: %1$s."
+msgid_plural "The following required plugins are currently inactive: %1$s."
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: 1: plugin name(s).
+#: plugins/class-tgm-plugin-activation.php:364
+#: plugins/tgm-plugin-activation.php:97
+msgid "The following recommended plugin is currently inactive: %1$s."
+msgid_plural "The following recommended plugins are currently inactive: %1$s."
+msgstr[0] ""
+msgstr[1] ""
+
+#: plugins/class-tgm-plugin-activation.php:370
+#: plugins/tgm-plugin-activation.php:102
+msgid "Begin installing plugin"
+msgid_plural "Begin installing plugins"
+msgstr[0] ""
+msgstr[1] ""
+
+#: plugins/class-tgm-plugin-activation.php:375
+#: plugins/tgm-plugin-activation.php:107
+msgid "Begin updating plugin"
+msgid_plural "Begin updating plugins"
+msgstr[0] ""
+msgstr[1] ""
+
+#: plugins/class-tgm-plugin-activation.php:380
+#: plugins/tgm-plugin-activation.php:112
+msgid "Begin activating plugin"
+msgid_plural "Begin activating plugins"
+msgstr[0] ""
+msgstr[1] ""
+
+#: plugins/class-tgm-plugin-activation.php:385
+#: plugins/tgm-plugin-activation.php:117
+msgid "Return to Required Plugins Installer"
+msgstr ""
+
+#: plugins/class-tgm-plugin-activation.php:386
+#: plugins/class-tgm-plugin-activation.php:827
+#: plugins/class-tgm-plugin-activation.php:2533
+#: plugins/class-tgm-plugin-activation.php:3580
+msgid "Return to the Dashboard"
+msgstr ""
+
+#: plugins/class-tgm-plugin-activation.php:387
+#: plugins/class-tgm-plugin-activation.php:3159
+#: plugins/tgm-plugin-activation.php:118
+msgid "Plugin activated successfully."
+msgstr ""
+
+#: plugins/class-tgm-plugin-activation.php:388
+#: plugins/class-tgm-plugin-activation.php:2952
+#: plugins/tgm-plugin-activation.php:119
+msgid "The following plugin was activated successfully:"
+msgid_plural "The following plugins were activated successfully:"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: 1: plugin name.
+#: plugins/class-tgm-plugin-activation.php:390
+#: plugins/tgm-plugin-activation.php:120
+msgid "No action taken. Plugin %1$s was already active."
+msgstr ""
+
+#. translators: 1: plugin name.
+#: plugins/class-tgm-plugin-activation.php:392
+#: plugins/tgm-plugin-activation.php:121
+msgid "Plugin not activated. A higher version of %s is needed for this theme. Please update the plugin."
+msgstr ""
+
+#. translators: 1: dashboard link.
+#: plugins/class-tgm-plugin-activation.php:394
+#: plugins/tgm-plugin-activation.php:122
+msgid "All plugins installed and activated successfully. %1$s"
+msgstr ""
+
+#: plugins/class-tgm-plugin-activation.php:395
+#: plugins/tgm-plugin-activation.php:123
+msgid "Dismiss this notice"
+msgstr ""
+
+#: plugins/class-tgm-plugin-activation.php:396
+#: plugins/tgm-plugin-activation.php:124
+msgid "There are one or more required or recommended plugins to install, update or activate."
+msgstr ""
+
+#: plugins/class-tgm-plugin-activation.php:397
+#: plugins/tgm-plugin-activation.php:125
+msgid "Please contact the administrator of this site for help."
+msgstr ""
+
+#: plugins/class-tgm-plugin-activation.php:522
+msgid "This plugin needs to be updated to be compatible with your theme."
+msgstr ""
+
+#: plugins/class-tgm-plugin-activation.php:523
+msgid "Update Required"
+msgstr ""
+
+#: plugins/class-tgm-plugin-activation.php:934
+msgid "The remote plugin package does not contain a folder with the desired slug and renaming did not work."
+msgstr ""
+
+#: plugins/class-tgm-plugin-activation.php:934
+#: plugins/class-tgm-plugin-activation.php:937
+msgid "Please contact the plugin provider and ask them to package their plugin according to the WordPress guidelines."
+msgstr ""
+
+#: plugins/class-tgm-plugin-activation.php:937
+msgid "The remote plugin package consists of more than one file, but the files are not packaged in a folder."
+msgstr ""
+
+#: plugins/class-tgm-plugin-activation.php:1121
+#: plugins/class-tgm-plugin-activation.php:2948
+msgctxt "plugin A *and* plugin B"
+msgid "and"
+msgstr ""
+
+#. translators: %s: version number
+#: plugins/class-tgm-plugin-activation.php:1982
+msgid "TGMPA v%s"
+msgstr ""
+
+#: plugins/class-tgm-plugin-activation.php:2273
+msgid "Required"
+msgstr ""
+
+#: plugins/class-tgm-plugin-activation.php:2276
+msgid "Recommended"
+msgstr ""
+
+#: plugins/class-tgm-plugin-activation.php:2292
+msgid "WordPress Repository"
+msgstr ""
+
+#: plugins/class-tgm-plugin-activation.php:2295
+msgid "External Source"
+msgstr ""
+
+#: plugins/class-tgm-plugin-activation.php:2298
+msgid "Pre-Packaged"
+msgstr ""
+
+#: plugins/class-tgm-plugin-activation.php:2315
+msgid "Not Installed"
+msgstr ""
+
+#: plugins/class-tgm-plugin-activation.php:2319
+msgid "Installed But Not Activated"
+msgstr ""
+
+#: plugins/class-tgm-plugin-activation.php:2321
+msgid "Active"
+msgstr ""
+
+#: plugins/class-tgm-plugin-activation.php:2327
+msgid "Required Update not Available"
+msgstr ""
+
+#: plugins/class-tgm-plugin-activation.php:2330
+msgid "Requires Update"
+msgstr ""
+
+#: plugins/class-tgm-plugin-activation.php:2333
+msgid "Update recommended"
+msgstr ""
+
+#. translators: 1: install status, 2: update status
+#: plugins/class-tgm-plugin-activation.php:2342
+msgctxt "Install/Update Status"
+msgid "%1$s, %2$s"
+msgstr ""
+
+#. translators: 1: number of plugins.
+#: plugins/class-tgm-plugin-activation.php:2388
+msgctxt "plugins"
+msgid "All <span class=\"count\">(%s)</span>"
+msgid_plural "All <span class=\"count\">(%s)</span>"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: 1: number of plugins.
+#: plugins/class-tgm-plugin-activation.php:2392
+msgid "To Install <span class=\"count\">(%s)</span>"
+msgid_plural "To Install <span class=\"count\">(%s)</span>"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: 1: number of plugins.
+#: plugins/class-tgm-plugin-activation.php:2396
+msgid "Update Available <span class=\"count\">(%s)</span>"
+msgid_plural "Update Available <span class=\"count\">(%s)</span>"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: 1: number of plugins.
+#: plugins/class-tgm-plugin-activation.php:2400
+msgid "To Activate <span class=\"count\">(%s)</span>"
+msgid_plural "To Activate <span class=\"count\">(%s)</span>"
+msgstr[0] ""
+msgstr[1] ""
+
+#: plugins/class-tgm-plugin-activation.php:2482
+msgctxt "as in: \"version nr unknown\""
+msgid "unknown"
+msgstr ""
+
+#: plugins/class-tgm-plugin-activation.php:2490
+msgid "Installed version:"
+msgstr ""
+
+#: plugins/class-tgm-plugin-activation.php:2498
+msgid "Minimum required version:"
+msgstr ""
+
+#: plugins/class-tgm-plugin-activation.php:2510
+msgid "Available version:"
+msgstr ""
+
+#: plugins/class-tgm-plugin-activation.php:2533
+msgid "No plugins to install, update or activate."
+msgstr ""
+
+#: plugins/class-tgm-plugin-activation.php:2547
+msgid "Plugin"
+msgstr ""
+
+#: plugins/class-tgm-plugin-activation.php:2548
+msgid "Source"
+msgstr ""
+
+#: plugins/class-tgm-plugin-activation.php:2549
+msgid "Type"
+msgstr ""
+
+#: plugins/class-tgm-plugin-activation.php:2553
+msgid "Version"
+msgstr ""
+
+#: plugins/class-tgm-plugin-activation.php:2554
+msgid "Status"
+msgstr ""
+
+#. translators: %2$s: plugin name in screen reader markup
+#: plugins/class-tgm-plugin-activation.php:2603
+msgid "Install %2$s"
+msgstr ""
+
+#. translators: %2$s: plugin name in screen reader markup
+#: plugins/class-tgm-plugin-activation.php:2608
+msgid "Update %2$s"
+msgstr ""
+
+#. translators: %2$s: plugin name in screen reader markup
+#: plugins/class-tgm-plugin-activation.php:2614
+msgid "Activate %2$s"
+msgstr ""
+
+#: plugins/class-tgm-plugin-activation.php:2684
+msgid "Upgrade message from the plugin author:"
+msgstr ""
+
+#: plugins/class-tgm-plugin-activation.php:2717
+msgid "Install"
+msgstr ""
+
+#: plugins/class-tgm-plugin-activation.php:2723
+msgid "Update"
+msgstr ""
+
+#: plugins/class-tgm-plugin-activation.php:2726
+msgid "Activate"
+msgstr ""
+
+#: plugins/class-tgm-plugin-activation.php:2757
+msgid "No plugins were selected to be installed. No action taken."
+msgstr ""
+
+#: plugins/class-tgm-plugin-activation.php:2759
+msgid "No plugins were selected to be updated. No action taken."
+msgstr ""
+
+#: plugins/class-tgm-plugin-activation.php:2800
+msgid "No plugins are available to be installed at this time."
+msgstr ""
+
+#: plugins/class-tgm-plugin-activation.php:2802
+msgid "No plugins are available to be updated at this time."
+msgstr ""
+
+#: plugins/class-tgm-plugin-activation.php:2908
+msgid "No plugins were selected to be activated. No action taken."
+msgstr ""
+
+#: plugins/class-tgm-plugin-activation.php:2934
+msgid "No plugins are available to be activated at this time."
+msgstr ""
+
+#: plugins/class-tgm-plugin-activation.php:3158
+msgid "Plugin activation failed."
+msgstr ""
+
+#. translators: 1: plugin name, 2: action number 3: total number of actions.
+#: plugins/class-tgm-plugin-activation.php:3498
+msgid "Updating Plugin %1$s (%2$d/%3$d)"
+msgstr ""
+
+#. translators: 1: plugin name, 2: error message.
+#: plugins/class-tgm-plugin-activation.php:3501
+msgid "An error occurred while installing %1$s: <strong>%2$s</strong>."
+msgstr ""
+
+#. translators: 1: plugin name.
+#: plugins/class-tgm-plugin-activation.php:3503
+msgid "The installation of %1$s failed."
+msgstr ""
+
+#: plugins/class-tgm-plugin-activation.php:3507
+msgid "The installation and activation process is starting. This process may take a while on some hosts, so please be patient."
+msgstr ""
+
+#. translators: 1: plugin name.
+#: plugins/class-tgm-plugin-activation.php:3509
+msgid "%1$s installed and activated successfully."
+msgstr ""
+
+#. translators: 1: plugin name.
+#: plugins/class-tgm-plugin-activation.php:3509
+#: plugins/class-tgm-plugin-activation.php:3517
+msgid "Show Details"
+msgstr ""
+
+#. translators: 1: plugin name.
+#: plugins/class-tgm-plugin-activation.php:3509
+#: plugins/class-tgm-plugin-activation.php:3517
+msgid "Hide Details"
+msgstr ""
+
+#: plugins/class-tgm-plugin-activation.php:3510
+msgid "All installations and activations have been completed."
+msgstr ""
+
+#. translators: 1: plugin name, 2: action number 3: total number of actions.
+#: plugins/class-tgm-plugin-activation.php:3512
+msgid "Installing and Activating Plugin %1$s (%2$d/%3$d)"
+msgstr ""
+
+#: plugins/class-tgm-plugin-activation.php:3515
+msgid "The installation process is starting. This process may take a while on some hosts, so please be patient."
+msgstr ""
+
+#. translators: 1: plugin name.
+#: plugins/class-tgm-plugin-activation.php:3517
+msgid "%1$s installed successfully."
+msgstr ""
+
+#: plugins/class-tgm-plugin-activation.php:3518
+msgid "All installations have been completed."
+msgstr ""
+
+#. translators: 1: plugin name, 2: action number 3: total number of actions.
+#: plugins/class-tgm-plugin-activation.php:3520
+msgid "Installing Plugin %1$s (%2$d/%3$d)"
+msgstr ""
+
+#: plugins/tgm-plugin-activation.php:35
+msgid "Contact Form 7"
+msgstr ""
+
+#: plugins/tgm-plugin-activation.php:40
+msgid "WPT Demo Importer"
+msgstr ""
+
+#: template-parts/content-none.php:14
+msgid "Nothing Found"
+msgstr ""
+
+#. translators: 1: link to WP admin new post page.
+#: template-parts/content-none.php:24
+msgid "Ready to publish your first post? <a href=\"%1$s\">Get started here</a>."
+msgstr ""
+
+#: template-parts/content-none.php:37
+msgid "Sorry, but nothing matched your search terms. Please try again with some different keywords."
+msgstr ""
+
+#: template-parts/content-none.php:44
+msgid "It seems we can&rsquo;t find what you&rsquo;re looking for. Perhaps searching can help."
+msgstr ""
+
+#: template-parts/content-page.php:24
+#: template-parts/content.php:57
+msgid "Pages:"
+msgstr ""
+
+#. translators: %s: Name of current post. Only visible to screen readers
+#: template-parts/content.php:31
+#: template-parts/content.php:44
+msgid "Continue reading<span class=\"screen-reader-text\"> \"%s\"</span>"
+msgstr ""
