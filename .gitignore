@@ -32,6 +32,7 @@ plugins/**/tests/
 dist/inMyDistrict.*
 
 # keys and credentials
+## this one is copied from keys/ to www/js/ upon build
 www/js/credentials.js
 server/credentials.json
 keys/
@@ -42,8 +43,6 @@ updateServer.sh
 
 # configs from Atom
 .on-save.json
-
-www/credentials.js
 
 #server
 /server/uploadedImages/
