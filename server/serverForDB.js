@@ -136,14 +136,18 @@ app.get(requestHistoricUrl, function (req, res) {
   db2 = mysql.createConnection(DBInfo)
 
   const uuid = req.query.uuid
+  const occurrenceUuid = req.query.occurrence_uuid
 
   debug('\nGetting entries from' +
     'database table ' + DBInfo.database + '->' + DBInfo.db_tables.ocorrencias)
 
   var query
-  if (uuid) {
+  if (uuid) { // user device uuid
     // get the all entries for a specific user (ex: to generate historic for user)
     query = `SELECT * FROM ${DBInfo.db_tables.ocorrencias} WHERE uuid=${db2.escape(uuid)} AND deleted_by_admin=0 ORDER BY data_data ASC`
+  } else if (occurrenceUuid) {
+    // returns only single specific occurrence by its table_row_uuid (occurrence uuid)
+    query = `SELECT * FROM ${DBInfo.db_tables.ocorrencias} WHERE table_row_uuid=${db2.escape(occurrenceUuid)}`
   } else {
     // get all production entries for all users except admin (ex: to generate a map of all entries)
     query = `SELECT * FROM ${DBInfo.db_tables.ocorrencias} WHERE PROD=1 AND uuid!='87332d2a0aa5e634' AND deleted_by_admin=0 ` +
