@@ -17,7 +17,7 @@ const sqlFormatter = require('sql-formatter')
 var imgDirectory
 var db // database connection variable
 
-const DBInfo = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'keys', 'serverCredentials.json'), 'utf8')).database
+const DBInfo = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'keys', 'serverSecrets.json'), 'utf8')).database
 debug(DBInfo)
 
 module.exports = (_imgDirectory) => {

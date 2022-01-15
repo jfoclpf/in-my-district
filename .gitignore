@@ -36,7 +36,7 @@ dist/inMyDistrict.*
 www/js/appSecrets.js
 keys/*
 ## except samples
-!keys/serverCredentials.sample.json
+!keys/serverSecrets.sample.json
 !keys/appSecrets.sample.js
 
 #upload script to server
