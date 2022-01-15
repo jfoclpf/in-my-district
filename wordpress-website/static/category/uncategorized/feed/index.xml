@@ -12,7 +12,7 @@
 	<atom:link href="/category/uncategorized/feed/" rel="self" type="application/rss+xml" />
 	<link>/</link>
 	<description></description>
-	<lastBuildDate>Sat, 31 Jul 2021 13:42:58 +0000</lastBuildDate>
+	<lastBuildDate>Mon, 19 Aug 2019 12:58:00 +0000</lastBuildDate>
 	<language>en-US</language>
 	<sy:updatePeriod>
 	hourly	</sy:updatePeriod>
@@ -20,45 +20,6 @@
 	1	</sy:updateFrequency>
 	<generator>https://wordpress.org/?v=5.8.3</generator>
 	<item>
-		<title>Hello world!</title>
-		<link>/2021/07/31/hello-world/</link>
-					<comments>/2021/07/31/hello-world/#comments</comments>
-		
-		<dc:creator><![CDATA[root]]></dc:creator>
-		<pubDate>Sat, 31 Jul 2021 13:42:58 +0000</pubDate>
-				<category><![CDATA[Uncategorized]]></category>
-		<guid isPermaLink="false">/?p=1</guid>
-
-					<description><![CDATA[Welcome to WordPress. This is your first post. Edit or delete it, then start writing!]]></description>
-										<content:encoded><![CDATA[
-<p>Welcome to WordPress. This is your first post. Edit or delete it, then start writing!</p>
-]]></content:encoded>
-					
-					<wfw:commentRss>/2021/07/31/hello-world/feed/</wfw:commentRss>
-			<slash:comments>1</slash:comments>
-		
-		
-			</item>
-		<item>
-		<title>Hello world!</title>
-		<link>/2020/07/08/hello-world-2/</link>
-					<comments>/2020/07/08/hello-world-2/#comments</comments>
-		
-		<dc:creator><![CDATA[root]]></dc:creator>
-		<pubDate>Wed, 08 Jul 2020 10:19:18 +0000</pubDate>
-				<category><![CDATA[Uncategorized]]></category>
-		<guid isPermaLink="false">http://wptrees.com/?p=1</guid>
-
-					<description><![CDATA[Welcome to WP Trees Sites. This is your first post. Edit or delete it, then start writing!]]></description>
-										<content:encoded><![CDATA[<p>Welcome to <a href="http://wptrees.com/">WP Trees Sites</a>. This is your first post. Edit or delete it, then start writing!</p>
-]]></content:encoded>
-					
-					<wfw:commentRss>/2020/07/08/hello-world-2/feed/</wfw:commentRss>
-			<slash:comments>2</slash:comments>
-		
-		
-			</item>
-		<item>
 		<title>Nam rutrum pellentesque euismod</title>
 		<link>/2019/08/19/nam-rutrum-pellentesque-euismod/</link>
 					<comments>/2019/08/19/nam-rutrum-pellentesque-euismod/#respond</comments>
