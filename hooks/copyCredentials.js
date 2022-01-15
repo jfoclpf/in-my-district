@@ -12,8 +12,8 @@ module.exports = function (context) {
 
   var projectRoot = path.resolve(path.dirname(context.scriptLocation), '..')
 
-  var fileOriginFullPath = path.join(projectRoot, 'keys', 'credentials.js')
-  var fileDestFullPath = path.join(projectRoot, 'www', 'js', 'credentials.js')
+  var fileOriginFullPath = path.join(projectRoot, 'keys', 'appSecrets.js')
+  var fileDestFullPath = path.join(projectRoot, 'www', 'js', 'appSecrets.js')
 
   try {
     if (fs.existsSync(fileOriginFullPath)) { // file exists

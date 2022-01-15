@@ -33,9 +33,11 @@ dist/inMyDistrict.*
 
 # keys and credentials
 ## this one is copied from keys/ to www/js/ upon build
-www/js/credentials.js
-server/credentials.json
-keys/
+www/js/appSecrets.js
+keys/*
+## except samples
+!keys/serverCredentials.sample.json
+!keys/appSecrets.sample.js
 
 #upload script to server
 uploadToServer.sh
