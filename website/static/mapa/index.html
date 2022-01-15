@@ -388,6 +388,7 @@ app.map = (function (thisModule) {
 
       let htmlInfoContent =
         '<div style="width:200px">' +
+					`<a href="${'/ocorrencia/?uuid=' + el.table_row_uuid}">Hiperligação direta<\/a><br/>` +
           `<b>Ocorrência<\/b>: ${el.anomaly1} - ${el.anomaly2}<br/>` +
           `<b>Local<\/b>: ${el.data_local} n. ${el.data_num_porta}, ${el.data_concelho}<br/>` +
           `<b>Data<\/b>: ${(new Date(el.data_data)).toLocaleDateString('pt-PT')} às ${el.data_hora.slice(0, 5)}<br/>` +
