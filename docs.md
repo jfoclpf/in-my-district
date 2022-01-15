@@ -42,7 +42,7 @@ ou de uma forma mais automática para escolher a versão 8
 `sudo update-java-alternatives -s $(sudo update-java-alternatives -l | grep 8 | cut -d " " -f1)`
 
 ### macos
-export JAVA_HOME=`/usr/libexec/java_home -v 1.8`
+`export JAVA_HOME=/usr/libexec/java_home -v 1.8`
 
 ## Eventuais problemas com Gradle
 
