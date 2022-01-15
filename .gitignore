@@ -38,6 +38,7 @@ keys/*
 ## except samples
 !keys/serverSecrets.sample.json
 !keys/appSecrets.sample.js
+!keys/appSigningEnvs.sample
 
 #upload script to server
 uploadToServer.sh

@@ -1,14 +1,12 @@
 #!/bin/bash
 
-export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/
-export ANDROID_SDK_ROOT=/home/joao/Android/Sdk/
-export PATH=${PATH}:$ANDROID_SDK_ROOT/tools:$ANDROID_SDK_ROOT/platform-tools
-
 cd "${0%/*}" # directory of the script
 cd ..        # root directory of the project
 
-# extract $PASS
-source keys/keyPassword
+# extract variables
+source keys/appSigningEnvs
+
+export PATH=${PATH}:$ANDROID_SDK_ROOT/tools:$ANDROID_SDK_ROOT/platform-tools
 
 cordova clean
 
@@ -18,10 +16,10 @@ cd platforms/android/ && ./gradlew bundle &&
 
 cd ../../
 
-cp keys/autocosts.keystore platforms/android/app/build/outputs/bundle/release/
+cp keys/$KEY_FILENAME platforms/android/app/build/outputs/bundle/release/
 cd platforms/android/app/build/outputs/bundle/release/
 
-jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore autocosts.keystore -storepass $PASS app-release.aab autocosts &&
+jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore $KEY_FILENAME -storepass $KEY_PASS app-release.aab $KEY_ALIAS &&
 
 cd ../../../../../../..
 rm -f dist/inMyDistrict.aab

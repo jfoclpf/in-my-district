@@ -1,0 +1,6 @@
+KEY_FILENAME=my-release-key.keystore
+KEY_ALIAS=my-release-key-alias
+KEY_PASS=my-release-key-password
+
+JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/
+ANDROID_SDK_ROOT=/path/android/sdk/
