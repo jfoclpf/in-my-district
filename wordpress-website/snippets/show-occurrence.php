@@ -1,3 +1,5 @@
+<!-- snippet to be inserted in the page https://nomeubairro.app/ocorrencia/
+     using the plugin Insert PHP Code Snippet -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
 
