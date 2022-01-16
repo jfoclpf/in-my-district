@@ -118,7 +118,7 @@
     "ignore": [
       "www/js/res/*",
       "test/www/*",
-      "wordpress-website/"
+      "website/"
     ]
   }
 }
