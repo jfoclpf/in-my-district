@@ -9,6 +9,10 @@ on:
   pull_request:
     branches: [ main ]
 
+defaults:
+  run:
+    working-directory: app
+
 jobs:
   ios:
     strategy:
@@ -34,7 +38,6 @@ jobs:
       run: npm install -g cordova
     - name: Add iOS Platform
       run: |
-        cd app/
         cordova platform rm android
         cordova platform add ios
     - run: npm test

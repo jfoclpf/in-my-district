@@ -9,6 +9,10 @@ on:
   pull_request:
     branches: [ main ]
 
+defaults:
+  run:
+    working-directory: app
+
 jobs:
   android:
     strategy:
@@ -51,8 +55,7 @@ jobs:
     - name: Install Apache Cordova
       run: npm install -g cordova
     - name: Add Android Platform
-      run: | 
-        cd app/
+      run: |
         rm -rf platforms/android
         cordova platform add android
     - run: npm test
