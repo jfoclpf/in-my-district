@@ -37,6 +37,7 @@ jobs:
         javac -version
     - name: Install Android SDK
       run: |
+        sudo apt update -y
         sudo apt install android-sdk -y
     - name: Uninstall SDK v31.0.0 and list SDKs
       run: |
