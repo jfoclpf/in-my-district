@@ -18,6 +18,10 @@ jobs:
         
     runs-on: ${{ matrix.platform }}
 
+    defaults:
+      run:
+        working-directory: app
+
     steps:
     - uses: actions/checkout@v2
     - name: Use Node.js ${{ matrix.node-version }}
@@ -54,9 +58,6 @@ jobs:
       run: |
         rm -rf platforms/android
         cordova platform add android
-      working-directory: app
     - run: npm test
-      working-directory: app
     - name: Building APK
       run: cordova build android --release
-      working-directory: app
