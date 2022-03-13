@@ -1,4 +1,4 @@
-## Requisitos
+## Requisitos para a APP
 
 ### [Apache Cordova](https://cordova.apache.org/)
 
@@ -17,9 +17,9 @@ O gradle é usado para fazer o `build` dos projetos Apache Cordova
 
 É uma exigência do Apache Cordova que seja a versão 8. Em Debian/Ubuntu `sudo apt install openjdk-8-jdk`
 
-### [ADB](https://www.xda-developers.com/install-adb-windows-macos-linux/)
+### [Android SDK](https://stackoverflow.com/questions/34556884/how-to-install-android-sdk-on-ubuntu) ou [Android Studio](https://developer.android.com/studio/install)
 
-O ADB é usado para testar a APP no seu telemóvel Android
+O Android SDK (que é instalado automaticamente quando se instala o Android Studio) é usado para testar a APP no seu telemóvel Android.
 
 ## Eventuais problemas com versões do Java
 
@@ -56,6 +56,10 @@ Tal pode dar problemas porque diferentes versões de gradle dependem de diferent
 `export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/` ou<br>
 `export JAVA_HOME=/usr/lib/jvm/jdk1.8.0_131/` ou<br>
 mesmo apagar com `export JAVA_HOME=`
+
+Em Debian/Ubuntu, para escolher a versão correta do Java:
+
+`sudo update-java-alternatives -s $(sudo update-java-alternatives -l | grep 8 | cut -d " " -f1)`
 
 ## Testar num smartphone
 

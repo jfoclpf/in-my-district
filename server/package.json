@@ -1,0 +1,21 @@
+{
+  "name": "in-my-district-server",
+  "version": "1.0.0",
+  "description": "server code for the APP In My District",
+  "main": "serverForDB.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "João Pimentel Ferreira",
+  "license": "ISC",
+  "dependencies": {
+    "async": "^3.2.3",
+    "body-parser": "^1.19.2",
+    "cors": "^2.8.5",
+    "debug": "^4.3.3",
+    "express": "^4.17.3",
+    "express-fileupload": "^1.3.1",
+    "mysql": "^2.18.1",
+    "sql-formatter": "^4.0.2"
+  }
+}

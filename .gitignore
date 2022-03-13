@@ -6,43 +6,27 @@ bin/
 test/www/*
 
 # Cordova - platforms and plugins
-platforms/
-plugins/
-
-# Cordova - plugins - remove all except json & xml
-plugins/**/.DS_Store
-plugins/**/*.cs
-plugins/**/*.h
-plugins/**/*.java
-plugins/**/*.js
-plugins/**/*.m
-plugins/**/*.map
-plugins/**/*.md
-plugins/**/*.modulemap
-plugins/**/*.ts
-plugins/**/LICENSE
-plugins/**/NOTICE
-plugins/**/*.gradle
-plugins/**/tests/
+/app/platforms/
+/app/plugins/
 
 # res
 **/resources/signing
 
 # where the build script stores the apk
-dist/inMyDistrict.*
+/app/dist/inMyDistrict.*
 
 # keys and credentials
 ## this one is copied from keys/ to www/js/ upon build
-www/js/appSecrets.js
-keys/*
+/keys/*
+/app/www/js/appSecrets.js
+
 ## except samples
 !keys/serverSecrets.sample.json
 !keys/appSecrets.sample.js
 !keys/appSigningEnvs.sample
 
 #upload script to server
-uploadToServer.sh
-updateServer.sh
+/server/uploadToServer.sh
 
 # configs from Atom
 .on-save.json

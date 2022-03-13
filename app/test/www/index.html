@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="pt">
+<!-- [html-validate-disable no-trailing-whitespace] -->
+
+<head>
+  <meta charset="utf-8">
+  
+  <title>No meu Bairro!</title>
+  
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  
+  <meta http-equiv="Content-Security-Policy" content="
+    default-src 'self' data: file: gap: ms-appdata: https://ssl.gstatic.com https://developers.google.com https://ssl.gstatic.com https://maps.googleapis.com https://stackpath.bootstrapcdn.com https://cdnjs.cloudflare.com https://cdnjs.cloudflare.com https://use.fontawesome.com https://fonts.gstatic.com https://cmd.autenticacao.gov.pt https://frtend.reg.cmd.autenticacao.gov.pt https://contabo.joaopimentel.com https://nominatim.openstreetmap.org https://play.google.com https://apps.apple.com https://geoptapi.org https://in-my-district.joaopimentel.com 'unsafe-eval';
+    style-src 'self' https://fonts.googleapis.com https://stackpath.bootstrapcdn.com 'unsafe-inline';
+    media-src file: *;
+    img-src * 'self' data: file:;
+    script-src 'self' 'unsafe-inline' data: content: file: https://ssl.gstatic.com https://maps.googleapis.com https://developers.google.com https://stackpath.bootstrapcdn.com https://cdnjs.cloudflare.com https://cdnjs.cloudflare.com https://use.fontawesome.com https://cmd.autenticacao.gov.pt https://frtend.reg.cmd.autenticacao.gov.pt https://code.jquery.com https://nominatim.openstreetmap.org
+  ">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  
+  <link rel="stylesheet" href="css/res/bootstrap.min.css">
+  <link rel="stylesheet" href="css/res/jquery-ui.min.css">
+  <link rel="stylesheet" href="css/res/font-awesome.min.css">
+  <link rel="stylesheet" href="css/sidebar.css">
+  <link rel="stylesheet" type="text/css" href="css/main.css">
+  <link rel="stylesheet" type="text/css" href="css/res/jAlert.css">
+  <link rel="stylesheet" type="text/css" href="css/res/leaflet.css">
+  <link rel="stylesheet" type="text/css" href="css/res/MarkerCluster.css">
+  <link rel="stylesheet" type="text/css" href="css/res/MarkerCluster.Default.css">
+</head>
+
+<body>
+  <div class="wrapper">
+    <nav id="sidebar">
+      <ul class="list-unstyled components">
+    
+        <li id="form_show" class="mt-3">
+          <div><i class="fa fa-paper-plane"></i></div>
+          <div><a>Enviar</a></div>
+        </li>
+    
+        <li id="personal_data_show">
+          <div><i class="fa fa-address-card"></i></div>
+          <div><a>Os meus dados</a></div>
+        </li>
+    
+        <li id="historic_show">
+          <div><i class="fa fa-history"></i></div>
+          <div><a>Histórico</a></div>
+        </li>
+    
+        <li id="map_section_show">
+          <div><i class="fa fa-map"></i></div>
+          <div><a>Mapa Geral</a></div>
+        </li>
+    
+        <li>
+          <div class="list">
+            <div><i class="fa fa-info-circle"></i></div>
+            <div>
+              <a href="#pageSubmenuAboutUs" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Sobre</a>
+              <ul class="collapse list-unstyled" id="pageSubmenuAboutUs">
+                <li id="privacy_policy_shows">
+                  <a>Política de privacidade</a>
+                </li>
+                <li>
+                  <a href="https://github.com/jfoclpf/in-my-district/issues">Erros e sugestões</a>
+                </li>
+                <li>
+                  <a href="https://github.com/jfoclpf/in-my-district.git">O código desta App</a>
+                </li>
+                <li>
+                  <a href="https://www.paypal.com/donate?hosted_button_id=J7F3ALLQAFWEJ">Fazer um Donativo</a>
+                </li>
+                <li>
+                  <span class="version"></span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </li>
+    
+      </ul>
+    </nav>
+
+    <!-- Page Content  -->
+    <div id="content">
+      <div class="container-fluid section-head d-flex flex-row">
+        <div class="p-1">
+          <button aria-label="Mostrar ou esconder menu" type="button" id="sidebarCollapse" class="btn btn-dark d-inline-block ml-auto">
+            <i class="fa fa-bars"></i>
+          </button>
+        </div>
+        <div class="pl-4 pt-0 d-flex align-items-center">
+          <div id="header_title">
+            <span>No Meu Bairro!</span>
+          </div>
+          <div id="header_for_map">
+            <select class="form-control input-lg" id="map_view_select" name="Tipo de visualização do mapa"></select>
+          </div>
+        </div>
+      </div>
+      <hr>
+      <div id="main_form" class="section">
+        <h3>Imagens</h3>
+        <div id="image_selector">
+          <div class="row">
+            <div class="form-group img-container col-md">
+              <div class="form-group col-xs-12">
+                <button aria-label="Adicionar Foto 1" type="button" class="btn btn-primary" id="addImg_1"><i class="fa fa-plus"></i></button>
+                <button aria-label="Remover Foto 1" type="button" class="btn btn-primary" id="remImg_1"><i class="fa fa-minus"></i></button>
+              </div>
+              <!-- [html-validate-disable-next attribute-allowed-values] -->
+              <img alt="Imagem 1" id="myImg_1" src="" class="col-xs-12 anomaly-photo">
+            </div>
+            <div class="form-group img-container col-md">
+              <div class="form-group col-xs-12 col-sm-6 col-md-3">
+                <button aria-label="Adicionar Foto 2" type="button" class="btn btn-primary" id="addImg_2"><i class="fa fa-plus"></i></button>
+                <button aria-label="Remover Foto 2" type="button" class="btn btn-primary" id="remImg_2"><i class="fa fa-minus"></i></button>
+              </div>
+              <!-- [html-validate-disable-next attribute-allowed-values] -->
+              <img alt="Imagem 2" id="myImg_2" src="" class="col-xs-12 anomaly-photo">
+            </div>
+            <div class="form-group img-container col-md">
+              <div class="form-group col-xs-12">
+                <button aria-label="Adicionar Foto 3" type="button" class="btn btn-primary" id="addImg_3"><i class="fa fa-plus"></i></button>
+                <button aria-label="Remover Foto 3" type="button" class="btn btn-primary" id="remImg_3"><i class="fa fa-minus"></i></button>
+              </div>
+              <!-- [html-validate-disable-next attribute-allowed-values] -->
+              <img alt="Imagem 3" id="myImg_3" src="" class="col-xs-12 anomaly-photo">
+            </div>
+            <div class="form-group img-container col-md">
+              <div class="form-group col-xs-12">
+                <button aria-label="Adicionar Foto 4" type="button" class="btn btn-primary" id="addImg_4"><i class="fa fa-plus"></i></button>
+                <button aria-label="Remover Foto 4" type="button" class="btn btn-primary" id="remImg_4"><i class="fa fa-minus"></i></button>
+              </div>
+              <!-- [html-validate-disable-next attribute-allowed-values] -->
+              <img alt="Imagem 4" id="myImg_4" src="" class="col-xs-12 anomaly-photo">
+            </div>
+          </div>
+        </div>
+      
+        <hr>
+      
+        <h3>Data e local</h3>
+      
+        <div class="row">
+          <div class="form-group col-sm-3">
+            <button aria-label="Atualizar Data e Local" type="button" class="btn btn-primary ml-2" id="getCurrentAddresBtn"><i class="fa fa-refresh"></i></button>
+            <br><br>
+            <label for="date">Data</label>
+            <input class="form-control input-lg mandatory" type="text" id="date" name="Data" required>
+          </div>
+      
+          <div class="col-sm-3 d-flex align-items-end">
+            <div class="form-group w-100">
+              <label for="time">Hora</label>
+              <input class="form-control input-lg mandatory" id="time" name="Hora" type="time">
+            </div>
+          </div>
+      
+          <div class="col-sm-5 d-flex align-items-end">
+            <div class="form-group w-100">
+              <label for="municipality">Concelho</label>
+              <select class="form-control input-lg mandatory"
+                     id="municipality" name="Concelho da ocorrência">
+              </select>
+            </div>
+          </div>
+      
+          <div class="col-sm-5 d-flex align-items-end">
+            <div class="form-group w-100">
+              <label for="parish">Freguesia</label>
+              <select class="form-control input-lg mandatory"
+                     id="parish" name="Freguesia da ocorrência">
+              </select>
+            </div>
+          </div>
+      
+          <div class="col-sm-5 d-flex align-items-end">
+            <div class="form-group w-100">
+              <label for="street">Local (rua, avenida, praceta, etc.)</label>
+              <input size="35" class="form-control input-lg mandatory"
+                     id="street" name="Local da ocorrência" placeholder="Rua do Ouro" type="text" required>
+            </div>
+          </div>
+      
+          <div class="col-sm-2 d-flex align-items-end">
+            <div class="form-group w-100">
+              <label for="street_number">Junto ao Número (opcional)</label>
+              <input size="4" class="form-control input-lg"
+                     id="street_number" name="Número postal do Local da Ocorrência" type="text">
+            </div>
+          </div>
+        </div>
+      
+        <div id="main_form_map"></div>
+      
+        <hr>
+      
+        <h3>Anomalia</h3>
+      
+        <div class="row">
+          <div id="anomalies" class="form-group col-sm">
+            <select class="form-control input-lg mandatory mb-2"
+              id="anomaly1" name="Tipo Principal de Ocorrência">
+            </select>
+            <select class="form-control input-lg mandatory"
+              id="anomaly2" name="Tipo Secundário de Ocorrência">
+            </select>
+          </div>
+        </div>
+      
+        <hr>
+      
+        <h3>Mensagem</h3>
+      
+        <div class="row">
+          <div class="form-group col-sm pt-3">
+            <input type="checkbox" id="send_to_municipality_checkbox" name="send_to_municipality_checkbox" checked>
+            <label for="send_to_municipality_checkbox">Enviar para Município</label>
+          </div>
+          <div class="form-group col-sm">
+            <input type="checkbox" id="send_to_parish_checkbox" name="send_to_parish_checkbox" checked>
+            <label for="send_to_parish_checkbox">Enviar para Junta de Freguesia</label>
+          </div>
+          <div class="form-group col-sm">
+            <input type="checkbox" id="message_summary" name="message_summary" checked>
+            <label for="message_summary">Incluir resumo no final</label>
+          </div>
+          <div class="form-group col-sm">
+            <input type="checkbox" id="APP_credits" name="APP_credits" checked>
+            <label for="APP_credits">Incluir créditos desta APP</label>
+          </div>
+        </div>
+      
+        <button aria-label="Gerar mensagem a enviar" type="button" class="btn btn-success" id="generate_message">Gerar texto</button>
+      </div>
+      <div id="personal_data" class="section collapse">
+        <div class="row">
+          <div class="col-xs-12 col-sm-3 form-group">
+            <label for="name">Nome <u>Completo</u></label>
+            <input size="30" id="name" name="O seu Nome Completo" class="form-control input-lg mandatory personal_info" type="text" required>
+          </div>
+          <div class="col-xs-12 col-sm-2 form-group">
+            <label for="id_type">Tipo de Identificação</label>
+            <select class="form-control input-lg personal_info" id="id_type">
+              <option>Cartão de Cidadão</option>
+              <option>Bilhete de Identidade</option>
+              <option>Passaporte</option>
+            </select>
+          </div>
+          <div class="col-xs-12 col-sm-2 form-group">
+            <label for="id_number">Número de Identificação</label>
+            <input size="30" id="id_number" name="O seu número de identificação" class="form-control input-lg mandatory personal_info" placeholder="00000000" type="text" required>
+          </div>
+          <div class="col-xs-12 col-sm-2 form-group">
+            <label for="nif">NIF</label>
+            <input size="30" id="nif" name="O seu NIF" class="form-control input-lg mandatory personal_info" placeholder="00000000" type="text" required>
+          </div>
+          <div class="col-xs-12 col-sm-5 form-group">
+            <label for="address">A sua Morada </label>
+            <input size="30" id="address" name="A sua morada" class="form-control input-lg mandatory personal_info" type="text" required>
+          </div>
+        </div>
+      
+        <div class="row">
+          <div class="col-xs-12 col-sm-2 form-group">
+            <label for="postal_code">Código Postal</label>
+            <input size="10" id="postal_code" name="O seu Código Postal" maxlength="8"
+              class="form-control input-lg mandatory personal_info" placeholder="0000-000" type="text" required>
+          </div>
+          <div class="col-xs-12 col-sm-2 form-group">
+            <label for="address_city">Localidade (da sua residência)</label>
+            <input size="10" id="address_city" name="A Localidade onde reside" class="form-control input-lg mandatory personal_info" placeholder="Lisboa" type="text" required>
+          </div>
+        </div>
+      
+        <div class="row">
+          <div class="col-xs-12 col-sm-2 form-group">
+            <button aria-label="Guardar dados" type="button" class="btn btn-success" id="save_personal_data"><i class="fa fa-save"></i></button>
+          </div>
+        </div>
+      </div>
+      <div id="historic" class="section collapse">
+      </div>
+      <div id="map_section" class="section collapse">
+        <div id="map"></div>
+      </div>
+      <div id="privacy_policy" class="section">
+        <h4>Quem está a fazer o pedido de dados?</h4>
+        <p class="lead">
+          A APP "No meu Bairro!" foi desenvolvida por João Pimentel Ferreira, com a contribuição valiosa de Daniel Gomes para a versão iOS,
+          tendo sido promovida com o intuito de aproximar os cidadãos munícipes com os seus serviços municipais.
+        </p>
+        <h4>Que dados estão a ser requeridos?</h4>
+        <p class="lead">
+          Os dados que a APP pede fazendo uso do Nominatim do Open Street Maps, são unicamente dados referentes à sua localização (latitude e longitude),
+          para assim podermos calcular com a precisão possível o endereço da ocorrência ou anomalia.
+          Esta APP não envia ao Open Street Maps quaisquer dados que não seja a sua geolocalização e de forma completamente anónima.
+          Adicionalmente, os dados das anomalias são anonimamente, i.e., sem qualquer informação relativa ao denunciante, guardados numa base de dados.
+          Os seus dados pessoais que colocar na APP ficarão guardados apenas e somente no seu dispositivo, para futuras ocorrências.
+          Ao abrigo da lei de proteção de dados, os municípios não revelam os dados do requerente.
+        </p>
+        <h4>Porque motivo fazemos esta recolha de dados?</h4>
+        <p class="lead">
+          Os dados geográficos referentes ao serviço Nominatim do Open Street Maps são usados para calcular com precisão o endereço postal da ocorrência,
+          para assim o utilizador poder redigir a comunicação ao município de forma automatizada.
+          Os dados das anomalias, excetuando os dados do utilizador que as comunica,
+          são recolhidos anonimamente para processamento estatístico e para evitar abusos na utilização desta aplicação.
+          Queremos também providenciar informação geográfica aos nossos utilizadores sobre as diversas ocorrências.
+        </p>
+      </div>
+      <div id="mail_message" class="section">
+        <hr>
+        <div class="row">
+          <div class="col-xs-12">
+            <h3>Mensagem</h3>
+            <div id="message" class="mailmessage"></div>
+          </div>
+        </div>
+        <hr>
+        <div class="row">
+          <div class="col-xs-12">
+            <p></p>
+            <button aria-label="Enviar Mensagem" type="button" class="btn btn-success" id="send_email_btn">Enviar</button>
+            <div id="spinner-send_email_btn" class="spinner-border text-success m-3" role="status">
+              <span class="sr-only">Loading...</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script charset="utf-8" src="cordova.js"></script>
+    
+    <script src="js/res/jquery.min.js"></script>
+    <script src="js/res/jquery-ui.min.js"></script>
+    <script src="js/res/jAlert.min.js"></script>
+    <script src="js/res/popper.min.js"></script>
+    <script src="js/res/bootstrap.min.js"></script>
+    <script src="js/res/leaflet.js"></script>
+    <script src="js/res/leaflet.markercluster.js"></script>
+    <script src="js/res/leaflet-image.js"></script>
+    <script src="js/res/crypto-js.js"></script>
+    
+    <!-- main.js needs to be the first app module to be loaded -->
+    <script src="js/main.js"></script>
+    <script src="js/sidebar.js"></script>
+    <script src="js/appSecrets.js"></script>
+    <script src="js/contacts.js"></script>
+    <script src="js/anomalies.js"></script>
+    <script src="js/functions.js"></script>
+    <script src="js/file.js"></script>
+    <script src="js/dbServerLink.js"></script>
+    <script src="js/historic.js"></script>
+    <script src="js/map.js"></script>
+    <script src="js/photos.js"></script>
+    <script src="js/form.js"></script>
+    <script src="js/personalInfo.js"></script>
+    <script src="js/localization.js"></script>
+    <script src="js/text.js"></script>
+  </div>
+</body>
+
+</html>

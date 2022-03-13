@@ -52,6 +52,7 @@ jobs:
       run: npm install -g cordova
     - name: Add Android Platform
       run: | 
+        cd app/
         rm -rf platforms/android
         cordova platform add android
     - run: npm test
