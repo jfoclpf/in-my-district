@@ -2,7 +2,7 @@
   "name": "in-my-district-server",
   "version": "1.0.0",
   "description": "server code for the APP In My District",
-  "main": "serverForDB.js",
+  "main": "./serverForDB.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

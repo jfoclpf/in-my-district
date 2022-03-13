@@ -18,8 +18,8 @@ O código está desenhado em Javascript para ser corrido num smartphone. Para ta
 
 Este repositório contém o código de três componentes principais, contidos nas seguintes diretorias:
 
- - `app/`: Aplicação móvel para Android ou iOS, escrita em Apache Cordova (Javascript)
- - `server/`: Servidor em NodeJS para comunicar com a APP e uma base de dados MySQL
+ - [`app/`](app/): Aplicação móvel para Android ou iOS, escrita em Apache Cordova (Javascript)
+ - [`server/`](server/): Servidor em NodeJS para comunicar com a APP e uma base de dados MySQL
  - [`website/`](website/): Página web desenvolvida em Wordpress para anunciar o projeto e publicar as ocorrências
 
 ## Como instalar e testar a APP
