@@ -34,7 +34,7 @@ jobs:
       run: | 
         javac -version
         sudo update-java-alternatives -l
-        sudo apt install openjdk-8-jdk -y
+        sudo apt install openjdk-8-jdk -y || echo OK
         sudo update-java-alternatives -s $(sudo update-java-alternatives -l | grep 8 | cut -d " " -f1) || echo OK
         javac -version
     - name: Install Android SDK
