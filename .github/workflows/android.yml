@@ -30,16 +30,18 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
         cache-dependency-path: app/package-lock.json
+    - name: Installing Java 8
+      run: |
+        sudo apt update -y
+        sudo apt install openjdk-8-jdk -y
     - name: Changing to Java 8
       run: | 
         javac -version
-        sudo update-java-alternatives -l || echo OK
-        sudo apt install openjdk-8-jdk -y
+        sudo update-java-alternatives -l; echo OK
         sudo update-java-alternatives -s $(sudo update-java-alternatives -l | grep 8 | cut -d " " -f1) || echo OK
         javac -version
     - name: Install Android SDK
       run: |
-        sudo apt update -y
         sudo apt install android-sdk -y
     - name: Uninstall SDK v31.0.0 and list SDKs
       run: |
