@@ -135,7 +135,7 @@ app.get(requestHistoricUrl, function (req, res) {
   debug('Getting History')
   db2 = mysql.createConnection(DBInfo)
 
-  const uuid = req.query.uuid
+  const uuid = req.query.uuid // device UUID
   const occurrenceUuid = req.query.occurrence_uuid
 
   debug('\nGetting entries from' +
@@ -206,7 +206,7 @@ app.get(requestHistoricUrl, function (req, res) {
 
 /* ############################################################################################## */
 /* ############################################################################################## */
-// app2 is used for uploading files (images of cars illegaly parked)
+// app2 is used for uploading files
 
 const fileUpload = require('express-fileupload')
 const debugFileTransfer = require('debug')('server:file-transfer')
