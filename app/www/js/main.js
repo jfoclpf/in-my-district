@@ -12,10 +12,10 @@ app.main = (function (thisModule) {
 
   thisModule.urls = {
     databaseServer: {
-      uploadImages: 'https://in-my-district.joaopimentel.com/serverapp_img_upload', // used to upload an image
-      requestImage: 'https://in-my-district.joaopimentel.com/image_server', // folder where all the images are stored
-      uploadOccurence: 'https://in-my-district.joaopimentel.com/serverapp', // to upload anew or update the data of an occurence
-      requestHistoric: 'https://in-my-district.joaopimentel.com/serverapp_get_historic' // to request all historic ocurrences of current user
+      uploadImages: 'https://servidor.nomeubairro.app/serverapp_img_upload', // used to upload an image
+      requestImage: 'https://servidor.nomeubairro.app/image_server', // folder where all the images are stored
+      uploadOccurence: 'https://servidor.nomeubairro.app/serverapp', // to upload anew or update the data of an occurence
+      requestHistoric: 'https://servidor.nomeubairro.app/serverapp_get_historic' // to request all historic ocurrences of current user
     },
     androidApps: {
       thisApp: 'https://play.google.com/store/apps/details?id=com.in.my.district'
