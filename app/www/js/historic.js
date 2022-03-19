@@ -120,7 +120,7 @@ app.historic = (function (thisModule) {
         </div>`
       )
 
-      if (historicData[i].processada_por_municipio) {
+      if (historicData[i].ocorrencia_resolvida) {
         $(`#historic button[data-index="${i}"].history-refresh-button`).hide()
         $(`#historic button[data-index="${i}"].history-check-button`).removeClass('btn-primary').addClass('btn-success')
       }
