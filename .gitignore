@@ -3,11 +3,11 @@ node_modules/
 temp/
 build/
 bin/
-test/www/*
 
 # Cordova - platforms and plugins
 /app/platforms/
 /app/plugins/
+/app/test/www/*
 
 # res
 **/resources/signing
