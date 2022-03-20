@@ -217,7 +217,8 @@ app.main = (function (thisModule) {
     }
 
     const msg = 'Nos dispositivos Xiaomi, a Otimização MIUI tem que estar ativa para o funcionamento desta APP, ' +
-      'especificamente para poder anexar fotos. Normalmente esta opção está ativa por defeito.'
+      'especificamente para poder anexar fotos. ' +
+      'Normalmente esta opção está ativa por defeito e não necessita de realizar qualquer operação.'
 
     $.jAlert({
       content: msg,
@@ -235,6 +236,7 @@ app.main = (function (thisModule) {
       ]
     })
   }
+  window.xiaomiWarning = xiaomiWarning
 
   // when user clicks "gerar texto"
   $('#generate_message').on('click', function () {
