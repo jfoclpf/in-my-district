@@ -89,19 +89,19 @@ app.historic = (function (thisModule) {
       return
     }
 
-    $('#historic').append('<h4>Histórico de ocorrências</h4')
+    $('#historic').append('<ul class="list-group list-group-flush"></ul>')
 
     // since the results are stored as they are submitted, they are ordered by time
     // we want to show on top the most recent ones, i.e., the last on the array
     for (var i = historicData.length - 1; i >= 0; i--) {
       const el = historicData[i]
-      $('#historic').append(`
-        <div class="p-3 border-element historic_element" data-index="${i}">
+      let elHtmlToAppend =
+        `<div class="list-group-item historic_element" data-index="${i}">
           <div class="row">
             <div class="col-9">
-              <b>Ocorrência</b>: ${el.anomaly1} - ${el.anomaly2}<br>
-              <b>Local</b>: ${el.data_local} n. ${el.data_num_porta}, ${el.data_concelho}<br>
-              <b>Data</b>: ${(new Date(el.data_data)).toLocaleDateString('pt-PT')} às ${el.data_hora.slice(0, 5)}<br>
+              ${el.anomaly1}, ${el.anomaly2}.<br>
+              ${el.data_local} n. ${el.data_num_porta}, ${el.data_concelho}.<br>
+              ${(new Date(el.data_data)).toLocaleDateString('pt-PT')} às ${el.data_hora.slice(0, 5)}<br>
             </div>
             <div class="col">
               <button aria-label="Reenviar ocorrência" class="btn btn-primary btn-sm m-1 history-refresh-button" data-index="${i}"><i class="fa fa-refresh"></i></button>
@@ -110,15 +110,24 @@ app.historic = (function (thisModule) {
           </div>
           <div class="row">
             <div class="col-9">
-              <b>Município</b>: ${el.data_concelho}<br>
-              <b>Freguesia</b>: ${el.data_freguesia}<br>
-            </div>
-            <div class="col">
-              <button aria-label="Mostrar fotos" class="btn btn-primary btn-sm m-1 history-show-photo-button"><i class="fa fa-picture-o"></i></button>
+              ${el.data_concelho}, ${el.data_freguesia}
             </div>
           </div>
+          <div class="mt-2">`
+
+      // DB has 4 fields for images for the same DB entry: foto1, foto2, foto3 and foto4
+      for (var photoIndex = 1; photoIndex <= 4; photoIndex++) {
+        if (historicData[i]['foto' + photoIndex]) { // if that photo index exists in the DB entry
+          const fullImgUrl = requestImageUrl + '/' + historicData[i]['foto' + photoIndex]
+          elHtmlToAppend += `<img src="${fullImgUrl}">`
+        }
+      }
+
+      elHtmlToAppend +=
+          `</div>
         </div>`
-      )
+
+      $('#historic .list-group').append(elHtmlToAppend)
 
       if (historicData[i].ocorrencia_resolvida) {
         $(`#historic button[data-index="${i}"].history-refresh-button`).hide()
@@ -126,7 +135,7 @@ app.historic = (function (thisModule) {
       }
     }
 
-    // deals with button to send refresh message
+    // deals with button to send refresh message (lembrete)
     $('#historic .history-refresh-button').click(function (event) {
       event.stopPropagation()
       const i = parseInt($(this).data('index'))
@@ -134,7 +143,7 @@ app.historic = (function (thisModule) {
         theme: 'dark_blue',
         class: 'ja_300px',
         closeBtn: false,
-        content: 'Deseja enviar um lembrete ao municipio e junta de freguesia respetivos a propósito desta ocorrência?',
+        content: 'Deseja enviar um lembrete ao município e/ou junta de freguesia respetivos a propósito desta ocorrência?',
         btns: [
           {
             text: 'Sim',
@@ -165,7 +174,7 @@ app.historic = (function (thisModule) {
           theme: 'dark_blue',
           class: 'ja_300px',
           closeBtn: false,
-          content: 'Deseja colocar esta denúncia como tratada e resolvida?',
+          content: 'Deseja colocar esta ocorrência como tratada e resolvida?',
           btns: [
             {
               text: 'Sim',
@@ -189,7 +198,7 @@ app.historic = (function (thisModule) {
           theme: 'dark_blue',
           class: 'ja_300px',
           closeBtn: false,
-          content: 'Deseja remarcar esta denúncia como não tratada e não resolvida?',
+          content: 'Deseja remarcar esta ocorrência como não tratada e não resolvida?',
           btns: [
             {
               text: 'Sim',
@@ -210,29 +219,6 @@ app.historic = (function (thisModule) {
         })
       } else {
         console.error('Error dealing with button', $thisButton)
-      }
-    })
-
-    // shows or hides photos when the div historic entry is clicked
-    $('#historic .historic_element').click(function () {
-      const i = parseInt($(this).data('index'))
-
-      if ($(this).find('img').length === 0) { // no image found, adds images
-        const $photos = $('<div class="historic_photos mt-2"></div>')
-        $(this).append($photos)
-
-        // DB has 4 fields for images for the same DB entry: foto1, foto2, foto3 and foto4
-        for (var photoIndex = 1; photoIndex <= 4; photoIndex++) {
-          if (historicData[i]['foto' + photoIndex]) { // if that photo index exists in the DB entry
-            const fullImgUrl = requestImageUrl + '/' + historicData[i]['foto' + photoIndex]
-            // check if the image really exists
-            $.get(fullImgUrl).done(() => {
-              $photos.append(`<img src="${fullImgUrl}">`)
-            })
-          }
-        }
-      } else { // has already images, remove them
-        $(this).find('.historic_photos').remove()
       }
     })
   }
