@@ -236,7 +236,6 @@ app.main = (function (thisModule) {
       ]
     })
   }
-  window.xiaomiWarning = xiaomiWarning
 
   // when user clicks "gerar texto"
   $('#generate_message').on('click', function () {
