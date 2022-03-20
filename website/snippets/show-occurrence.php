@@ -17,10 +17,10 @@ if ( $_GET['uuid'] ) {
     echo "<b>Declarada como resolvida pelo munícipe</b>: ".($oc["ocorrencia_resolvida"] ? "Sim" : "Não")."<br><br>";
 
     $imgurl = "https://in-my-district.joaopimentel.com/image_server/";
-    if (!empty($oc["foto1"])) { echo '<img src="'.$imgurl.$oc["foto1"].'">'; }
-    if (!empty($oc["foto2"])) { echo '<img src="'.$imgurl.$oc["foto2"].'">'; }
-    if (!empty($oc["foto3"])) { echo '<img src="'.$imgurl.$oc["foto3"].'">'; }
-    if (!empty($oc["foto4"])) { echo '<img src="'.$imgurl.$oc["foto4"].'">'; }
+    if (!empty($oc["foto1"])) { echo '<img src="'.$imgurl.rawurlencode($oc["foto1"]).'">'; }
+    if (!empty($oc["foto2"])) { echo '<img src="'.$imgurl.rawurlencode($oc["foto2"]).'">'; }
+    if (!empty($oc["foto3"])) { echo '<img src="'.$imgurl.rawurlencode($oc["foto3"]).'">'; }
+    if (!empty($oc["foto4"])) { echo '<img src="'.$imgurl.rawurlencode($oc["foto4"]).'">'; }
 
     echo '<div id="occurrence" data-coord-latit="'.$oc["data_coord_latit"].'" data-coord-long="'.$oc["data_coord_long"].'"></div>';
   } else {
