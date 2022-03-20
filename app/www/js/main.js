@@ -114,6 +114,10 @@ app.main = (function (thisModule) {
     if (!DEBUG) {
       requestUserAppEvaluation()
       initialWelcomePopup()
+      // this APP only works with MIUI optimization ON, warn the user about it
+      if (device.manufacturer.toLowerCase() === 'xiaomi') {
+        xiaomiWarning()
+      }
     }
   }
 
@@ -179,7 +183,7 @@ app.main = (function (thisModule) {
     app.historic.requestNumberOfHistoricOccurrences(
       (err, result) => {
         if (err) {
-          console.error('error getting minimumOccurences', err)
+          console.error('error getting number of historic occurrences', err)
           return
         }
 
@@ -204,6 +208,32 @@ app.main = (function (thisModule) {
           })
         }
       })
+  }
+
+  // this APP only works with MIUI optimization ON, warn user about it
+  function xiaomiWarning () {
+    if (JSON.parse(window.localStorage.getItem('didUserAlreadySeeXiaomiWarning'))) {
+      return
+    }
+
+    const msg = 'Nos dispositivos Xiaomi, a Otimização MIUI tem que estar ativa para o funcionamento desta APP, ' +
+      'especificamente para poder anexar fotos. Normalmente esta opção está ativa por defeito.'
+
+    $.jAlert({
+      content: msg,
+      theme: 'dark_blue',
+      closeBtn: false,
+      btns: [
+        {
+          text: 'Compreendo',
+          theme: 'green',
+          class: 'jButtonAlert',
+          onClick: function () {
+            window.localStorage.setItem('didUserAlreadySeeXiaomiWarning', 'true')
+          }
+        }
+      ]
+    })
   }
 
   // when user clicks "gerar texto"
