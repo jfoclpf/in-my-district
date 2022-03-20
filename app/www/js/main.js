@@ -242,7 +242,7 @@ app.main = (function (thisModule) {
       return
     }
 
-    var mainMessage = app.text.getMainMessage('body')
+    var mainMessage = app.text.getMainMessage('cleanBody')
     $('#message').html(mainMessage)
     $('#mail_message').show()
 

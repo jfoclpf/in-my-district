@@ -4,9 +4,13 @@
 /* global app, $ */
 
 app.text = (function (thisModule) {
-  // main message
+  // get main message
+  // parameter option may be:
+  // 'body': main body for the email message
+  // 'cleanBody': main body except last paragraphs with summary nor credits
+  // 'subject': title/subject for example for email subject
   function getMainMessage (option) {
-    if (option === 'body') {
+    if (option === 'body' || option === 'cleanBody') {
       var message = ''
 
       const municipality = $('#municipality option:selected').text().trim()
@@ -56,8 +60,8 @@ app.text = (function (thisModule) {
 
         getRegards() + '<br><br>'
 
-      // resumo no final da mensagem
-      if ($('#message_summary').is(':checked')) {
+      if (option === 'body') {
+        // resumo no final da mensagem
         message += '__________________________<br><br>' +
         `<b>Anomalia:</b> ${$('#anomaly1 option:selected').text()}, ${$('#anomaly2 option:selected').text()}<br>` +
         `<b>Morada:</b> ${$('#street').val().trim()}${$('#street_number').val() ? ', n. ' + $('#street_number').val() : ''}, ${parish}, ${municipality}<br>` +
@@ -70,9 +74,8 @@ app.text = (function (thisModule) {
           app.localization.getCoordinates().longitude.toFixed(6)
         }&zoom=18 <br>` +
         `<b>Datectada em</b>: ${$.datepicker.formatDate("dd' de 'MM' de 'yy", $('#date').datepicker('getDate'))}, ${$('#time').val()}<br><br>`
-      }
 
-      if ($('#APP_credits').is(':checked')) {
+        // credits
         message += 'Mensagem gerada pela aplicação No Meu Bairro! (https://nomeubairro.app)<br>'
       }
 
