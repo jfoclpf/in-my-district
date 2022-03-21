@@ -82,6 +82,10 @@ function cleanBadPhotos () {
     if (err) {
       console.log('There was an error: ')
       console.log(err)
+      if (db && db.end) {
+        console.log('Closing DB connection')
+        db.end()
+      }
     } else {
       debug('Timer function "cleanBadPhotos" run successfully')
     }
