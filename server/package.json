@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "João Pimentel Ferreira",
-  "license": "ISC",
+  "license": "GPL-3.0",
   "dependencies": {
     "async": "^3.2.3",
     "body-parser": "^1.19.2",
