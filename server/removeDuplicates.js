@@ -98,7 +98,7 @@ function removeDuplicates () {
 // that is, when an user submits twice the same entry
 function getEntriesToBeDeleted (results) {
   var output = []
-  // due to the mysql query, results are already grouped by uuid, and then ordered by date
+  // due to the mysql query, results are already grouped by (device) uuid, and then ordered by date
   for (var i = 1; i < results.length; i++) {
     // previous entry
     const previousA = results[i - 1].data_hora
