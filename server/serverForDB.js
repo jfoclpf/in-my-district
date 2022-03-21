@@ -40,6 +40,7 @@ app.get('/', function (req, res) {
 // to upload anew or update the data of an occurence
 app.post(submissionsUrl, function (req, res) {
   db1 = mysql.createConnection(DBInfo)
+
   // object got from POST
   var serverCommand = req.body.serverCommand || req.body.dbCommand // dbCommand for backward compatibility
   debug('serverCommand is ', serverCommand)
@@ -266,6 +267,12 @@ function generateUuid () {
 const server = app.listen(commonPort, () => console.log(`Request server listening on port ${commonPort}!`))
 const server2 = app2.listen(imgUploadUrlPort, () => console.log(`File upload server listening on port ${imgUploadUrlPort}!`))
 
+console.log('Initializing timers to cleanup database')
+// directory where the images are stored with respect to present file
+const imgDirectory = path.join(__dirname, 'uploadedImages')
+const dbForCleanBadPhotos = require(path.join(__dirname, 'cleanBadPhotos'))(imgDirectory)
+const dbForRemoveDuplicates = require(path.join(__dirname, 'removeDuplicates'))(imgDirectory)
+
 // gracefully exiting upon CTRL-C or when PM2 stops the process
 process.on('SIGINT', gracefulShutdown)
 process.on('SIGTERM', gracefulShutdown)
@@ -275,37 +282,35 @@ function gracefulShutdown (signal) {
   try {
     server.close()
     server2.close()
-    async.parallel([function (callback) {
-      if (db1) {
-        db1.end(function (err) {
+
+    const closeDbConnection = (db, name) => (callback => {
+      if (db && db.end) {
+        db.end(function (err) {
           if (err) {
-            callback(Error(err))
+            console.log(`DB connection ${name} was already closed, thus no need to close.`)
           } else {
-            callback()
+            console.log(`DB connection closed OK ${name}, thus no need to close.`)
           }
+          callback()
         })
       } else { // connection not active
+        console.log(`DB connection ${name} not active, thus no need to close.`)
         callback()
       }
-    }, function (callback) {
-      if (db2) {
-        db2.end(function (err) {
-          if (err) {
-            callback(Error(err))
-          } else {
-            callback()
-          }
-        })
-      } else { // connection not active
-        callback()
-      }
-    }],
+    })
+
+    async.parallel([
+      closeDbConnection(db1, 'db1'), 
+      closeDbConnection(db2, 'db2'),
+      closeDbConnection(dbForCleanBadPhotos, 'dbForCleanBadPhotos'),
+      closeDbConnection(dbForRemoveDuplicates, 'dbForRemoveDuplicates')
+    ],
     function (err, results) {
       if (err) {
         console.error('Error on closing db connections', err)
-        setTimeout(() => process.exit(1), 500)
+        setTimeout(() => process.exit(1), 5000)
       } else {
-        console.log('Grecefully exited, servers and db connections closed')
+        console.log('Grecefully exited, servers and db connections closed for main script')
         setTimeout(() => process.exit(0), 500)
       }
     })
@@ -314,9 +319,3 @@ function gracefulShutdown (signal) {
     setTimeout(() => process.exit(1), 500)
   }
 }
-
-console.log('Initializing timers to cleanup database')
-// directory where the images are stored with respect to present file
-const imgDirectory = path.join(__dirname, 'uploadedImages')
-require(path.join(__dirname, 'cleanBadPhotos'))(imgDirectory)
-require(path.join(__dirname, 'removeDuplicates'))(imgDirectory)

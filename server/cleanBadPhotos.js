@@ -24,6 +24,7 @@ module.exports = (_imgDirectory) => {
   imgDirectory = _imgDirectory
   cleanBadPhotos()
   setInterval(cleanBadPhotos, 1000 * 60 * 60) // every hour
+  return db // to close connection on main script upon graceful shutdown
 }
 
 // goes through the db and find inexistanf images, if so, delete them
