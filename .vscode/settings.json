@@ -1,4 +1,7 @@
 {
     "npm.packageManager": "npm",
-    "npm.exclude": "**/@(plugins|node_modules)/**"
+    "npm.exclude": "**/@(plugins|node_modules)/**",
+    "standard.enableGlobally": true,
+    "standard.autoFixOnSave": true,
+    "standard.run": "onSave"
 }
