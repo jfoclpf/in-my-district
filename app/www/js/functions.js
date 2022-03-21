@@ -98,6 +98,30 @@ app.functions = (function (thisModule) {
     $('#anomalies').val('bicicletas')
   }
 
+  // detect vertical swipe on the screen
+  let touchstartY = 0
+  let touchendY = 0
+
+  const slider = document.getElementById('slider')
+
+  function handleGesture () {
+    if (touchendY < touchstartY) {
+      console.log('swiped down by ' + touchstartY - touchendY)
+    }
+    if (touchendY > touchstartY) {
+      console.log('swiped up by ' + touchendY - touchstartY)
+    }
+  }
+
+  slider.addEventListener('touchstart', e => {
+    touchstartY = e.changedTouches[0].screenY
+  })
+
+  slider.addEventListener('touchend', e => {
+    touchendY = e.changedTouches[0].screenY
+    handleGesture()
+  })
+
   /* === Public methods to be returned === */
   thisModule.addFunctionsToPlugins = addFunctionsToPlugins
   thisModule.isCurrentUserAnAdmin = isCurrentUserAnAdmin
