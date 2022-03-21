@@ -39,7 +39,7 @@ function cleanBadPhotos () {
     (next) => {
       db.connect((err) => {
         if (err) {
-          console.error('error connecting: ' + err.stack)
+          console.error('error connecting: ' + err.message)
           next(Error(err))
         } else {
           debug('User ' + DBInfo.user + ' connected successfully to database ' + DBInfo.database + ' at ' + DBInfo.host)
