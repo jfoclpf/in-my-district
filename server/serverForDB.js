@@ -283,7 +283,7 @@ function gracefulShutdown (signal) {
     server.close()
     server2.close()
 
-    const closeDbConnection = (db, name) => (callback => {
+    const closeDbConnection = (db, name) => callback => {
       if (db && db.end) {
         db.end(function (err) {
           if (err) {
@@ -297,10 +297,10 @@ function gracefulShutdown (signal) {
         console.log(`DB connection ${name} not active, thus no need to close.`)
         callback()
       }
-    })
+    }
 
     async.parallel([
-      closeDbConnection(db1, 'db1'), 
+      closeDbConnection(db1, 'db1'),
       closeDbConnection(db2, 'db2'),
       closeDbConnection(dbForCleanBadPhotos, 'dbForCleanBadPhotos'),
       closeDbConnection(dbForRemoveDuplicates, 'dbForRemoveDuplicates')
