@@ -5,7 +5,8 @@
 		}
 	],
 	"settings": {
+		"standard.enable": true,
 		"standard.enableGlobally": true,
-		"standard.autoFixOnSave": true
+		"standard.engine": "standard"
 	}
 }
