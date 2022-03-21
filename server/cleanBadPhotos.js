@@ -95,36 +95,54 @@ function cleanBadPhotos () {
 function processDBentry (entry, callback) {
   var photoArray = [entry.foto1, entry.foto2, entry.foto3, entry.foto4]
 
-  var deleteEntry = true
+  var deleteTableRow = true
+  const photosNotFound = {}
   for (var i = 0; i < photoArray.length; i++) {
     if (photoArray[i]) {
       const fileName = path.join(imgDirectory, photoArray[i])
       if (fs.existsSync(fileName)) {
-        deleteEntry = false
+        deleteTableRow = false
       } else {
-        debug(`file ${fileName} does not exist`)
+        debug(`foto${i + 1} (${photoArray[i]}) of table_row_uuid=${entry.table_row_uuid} does not exist`)
+        photosNotFound[`foto${i + 1}`] = ''
       }
     }
   }
 
-  if (deleteEntry) {
-    debug('Entry is to be deleted since no photos are available: ', entry)
-    const query = `DELETE from ${DBInfo.db_tables.ocorrencias} ` +
-      `WHERE uuid='${entry.uuid}' AND foto1='${entry.foto1}'`
+  if (deleteTableRow) { // delete full entry/table row
+    debug('Table row/entry is to be deleted since none of the photos are available: ', entry)
+    const query = `DELETE from ${DBInfo.database}.${DBInfo.db_tables.ocorrencias} ` +
+      `WHERE table_row_uuid='${entry.table_row_uuid}'`
     debug(sqlFormatter.format(query))
 
     db.query(query, (err, results, fields) => {
       if (err) {
-        // error handling code goes here
-        debug('Error deleting entry from database: ', err)
+        debug(`Error deleting entry from table (${err.message}) where table_row_uuid='${entry.table_row_uuid}`)
         callback(Error(err))
       } else {
         debug('Entry deleted successfully')
         callback()
       }
     })
+  } else if (Object.keys(photosNotFound).length) {
+    debug(`${Object.keys(photosNotFound).toString()} will be removed from row with table_row_uuid=${entry.table_row_uuid}`)
+
+    const query = `UPDATE ${DBInfo.database}.${DBInfo.db_tables.ocorrencias} ` +
+      `SET ${db.escape(photosNotFound)}` +
+      `WHERE table_row_uuid='${entry.table_row_uuid}'`
+    debug(sqlFormatter.format(query), '\n')
+
+    db.query(query, (err, results, fields) => {
+      if (err) {
+        debug(`Error removing fotos from table row (${err.message}) where table_row_uuid='${entry.table_row_uuid}`)
+        callback(Error(err))
+      } else {
+        debug('Photos removed successfully')
+        callback()
+      }
+    })
   } else {
-    // does not delete entry
+    // does not do anything
     callback()
   }
 }
