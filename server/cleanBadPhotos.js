@@ -29,11 +29,6 @@ module.exports = (_imgDirectory) => {
 
 // goes through the db and find inexistanf images, if so, delete them
 function cleanBadPhotos () {
-  // get all production entries
-  var query = `SELECT * FROM ${DBInfo.db_tables.ocorrencias} WHERE PROD=1 AND uuid!='87332d2a0aa5e634'` // android uuid of the main developer should be ignored
-
-  debug(sqlFormatter.format(query))
-
   db = mysql.createConnection(DBInfo)
 
   async.series([
@@ -49,6 +44,10 @@ function cleanBadPhotos () {
       })
     },
     (next) => {
+      // get all production entries
+      const query = `SELECT * FROM ${DBInfo.database}.${DBInfo.db_tables.ocorrencias} WHERE PROD=1 AND uuid!='87332d2a0aa5e634'` // android uuid of the main developer should be ignored
+      debug(sqlFormatter.format(query))
+
       db.query(query, (err, results, fields) => {
         if (err) {
           // error handling code goes here
