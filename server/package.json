@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "server code for the APP In My District",
   "scripts": {
-    "start": "node ./serverForDB.js",
+    "start": "node ./main.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "João Pimentel Ferreira",

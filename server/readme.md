@@ -5,6 +5,6 @@ Here resides the NodeJS code of the sever that:
  - receives the uploaded photos corresponding to the occurrences sent by the APP
  - stores these photos, to be shown on the app or on the website
 
- The entry point of the server is `serverForDB.js`.
+ The entry point of the server is `main.js`.
  
  The server is receiving requests at https://servidor.nomeubairro.app/

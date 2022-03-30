@@ -1,7 +1,7 @@
 {
   "apps" : [{
     "name"        : "in-my-district",
-    "script"      : "serverForDB.js",
+    "script"      : "main.js",
     "watch"       : false,
     "instances"   : "2",
     "exec_mode"   : "cluster",
