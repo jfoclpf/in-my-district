@@ -28,7 +28,7 @@ const DBInfo = JSON.parse(
 debug(DBInfo)
 
 const app = express()
-var db1, db2
+var DB1, DB2 // global variables to gracefully exit connections
 
 app.use(bodyParser.json())
 app.use(cors())
@@ -39,7 +39,8 @@ app.get('/', function (req, res) {
 
 // to upload anew or update the data of an occurence
 app.post(submissionsUrl, function (req, res) {
-  db1 = mysql.createConnection(DBInfo)
+  const db1 = mysql.createConnection(DBInfo)
+  DB1 = db1
 
   // object got from POST
   var serverCommand = req.body.serverCommand || req.body.dbCommand // dbCommand for backward compatibility
@@ -128,13 +129,13 @@ app.post(submissionsUrl, function (req, res) {
     } else {
       debug('Submission successfully')
     }
-    db1 = null
   })
 })
 
 app.get(requestHistoricUrl, function (req, res) {
   debug('Getting History')
-  db2 = mysql.createConnection(DBInfo)
+  const db2 = mysql.createConnection(DBInfo)
+  DB2 = db2
 
   const uuid = req.query.uuid // device UUID
   const occurrenceUuid = req.query.occurrence_uuid
@@ -201,7 +202,6 @@ app.get(requestHistoricUrl, function (req, res) {
     } else {
       debug('Request successfully')
     }
-    db2 = null
   })
 })
 
@@ -280,11 +280,8 @@ function gracefulShutdown (signal) {
   console.log(`Received signal ${signal}. Closing http servers and db connections`)
 
   try {
-    server.close()
-    server2.close()
-
     const closeDbConnection = (db, name) => callback => {
-      if (db && db.end) {
+      if (db && db.end && db.state && db.state !== 'disconnected') {
         db.end(function (err) {
           if (err) {
             console.log(`DB connection ${name} was already closed, thus no need to close.`)
@@ -300,8 +297,20 @@ function gracefulShutdown (signal) {
     }
 
     async.parallel([
-      closeDbConnection(db1, 'db1'),
-      closeDbConnection(db2, 'db2'),
+      (callback) => {
+        server.close(() => {
+          console.log('Main server closed')
+          callback()
+        })
+      },
+      (callback) => {
+        server2.close(() => {
+          console.log('Server for files upload closed')
+          callback()
+        })
+      },
+      closeDbConnection(DB1, 'DB1'),
+      closeDbConnection(DB2, 'DB2'),
       closeDbConnection(dbForCleanBadPhotos, 'dbForCleanBadPhotos'),
       closeDbConnection(dbForRemoveDuplicates, 'dbForRemoveDuplicates')
     ],
@@ -310,7 +319,7 @@ function gracefulShutdown (signal) {
         console.error('Error on closing db connections', err)
         setTimeout(() => process.exit(1), 5000)
       } else {
-        console.log('Grecefully exited, servers and db connections closed for main script')
+        console.log('Grecefully exited, servers and DB connections closed for main script')
         setTimeout(() => process.exit(0), 500)
       }
     })
