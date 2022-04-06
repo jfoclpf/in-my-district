@@ -8,7 +8,7 @@
 
 # No meu bairro!
 
-Aplicação móvel para comunicar ao seu município anomalias no seu bairro, como buracos na calçada ou lixo por recolher.
+Aplicação móvel para comunicar ao seu Município e/ou Junta de Fregesia anomalias no seu bairro, como buracos na calçada ou lixo por recolher.
 
 O código está desenhado em Javascript para ser corrido num smartphone. Para tal faz uso da plataforma <a href="https://cordova.apache.org/">Apache Cordova</a>.
 
