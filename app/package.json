@@ -7,13 +7,13 @@
   "android-version-code": 10218,
   "scripts": {
     "test": "standard && node test/convertHbsToHtml.js && html-validate test/www/index.html && printf '\\n\\nTest OK\\n\\n'",
-    "version": "cordova-set-version --version ${npm_package_version} && git add config.xml && node scripts/setAndroidVersionCode.js -v ${npm_package_version} && git add package.json",
+    "versi  on": "cordova-set-version --version ${npm_package_version} && git add config.xml && node scripts/setAndroidVersionCode.js -v ${npm_package_version} && git add package.json",
     "push-version": "git push && git push origin v${npm_package_version}",
     "build-release-apk": "npm test && scripts/buildReleaseAPK.sh",
     "build-release-aab": "npm test && scripts/buildReleaseAAB.sh",
     "run-release-on-device": "scripts/runReleaseOnDevice.sh",
     "run-debug-on-device": "adb get-state 1>/dev/null 2>&1 && echo 'DEVICE ATTACHED' || { echo 'No device attached'; exit 1; } && cordova run android --device --debug",
-    "regenerate-png-files": "./res/icon/generateIcons.sh && ./res/screen/generateScreens.sh && git add res/* && git commit -m 'PNGs regenerated'"
+    "regenerate-png-files": "./res/icon/generateIcons.sh && ./res/screen/generateScreens.sh && cp res/icon/android/512.png www/img/logo.png && cp res/icon/android/512.png ../fastlane/metadata/android/en-US/images/icon.png && git add res/* www/img/logo.png ../fastlane/metadata/android/en-US/images/icon.png && git commit -m 'PNGs regenerated'"
   },
   "repository": {
     "type": "git",
