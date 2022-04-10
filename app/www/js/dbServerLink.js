@@ -27,6 +27,12 @@ app.dbServerLink = (function (thisModule) {
       }
     }
 
+    const localization = app.localization.getCoordinates()
+    if (!localization.latitude || !localization.longitude) {
+      callback(Error('There was an error getting localization'))
+      return
+    }
+
     var databaseObj = {
       PROD: !DEBUG ? 1 : 0,
       uuid: device.uuid,
@@ -40,8 +46,8 @@ app.dbServerLink = (function (thisModule) {
       data_freguesia: freguesia,
       data_local: app.form.getStreetName(),
       data_num_porta: app.form.getStreetNumber(),
-      data_coord_latit: app.localization.getCoordinates().latitude,
-      data_coord_long: app.localization.getCoordinates().longitude,
+      data_coord_latit: localization.latitude,
+      data_coord_long: localization.longitude,
       anomaly1: app.anomalies.getSelectedMainAnomaly(),
       anomaly2: app.anomalies.getSelectedSecondaryAnomaly(),
       anomaly_code: app.anomalies.getAnomalyCode(),

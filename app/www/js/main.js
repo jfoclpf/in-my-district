@@ -273,7 +273,7 @@ app.main = (function (thisModule) {
     app.dbServerLink.submitNewEntryToDB(function (err) {
       if (err) {
         console.error('There was an error submitting entry to database', err)
-        window.alert('Erro a inserir ocurrência na base de dados (submitNewEntryToDB)')
+        window.alert('Erro a inserir ocorrência na base de dados: ' + err.message)
       } else {
         console.success('Entry submited to dabase with success')
       }
