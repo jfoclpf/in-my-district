@@ -1,0 +1,1 @@
+All these icons were freely fetched from [icons8.com](https://icons8.com/)
