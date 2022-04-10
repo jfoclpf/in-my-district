@@ -5,6 +5,7 @@
   },
   {
     "topic": "Passeios e Acessibilidades",
+    "topicCode": "PA",
     "list": [
       { "code": "PA01", "desc": "Abatimentos superficiais", "type": "report" },
       { "code": "PA02", "desc": "Manutenção de Abrigos concessionados de paragens de transportes públicos", "type": "request" },
@@ -26,6 +27,7 @@
   },
   {
     "topic": "Higiene Urbana",
+    "topicCode": "HU",
     "list": [
       { "code": "HU01", "desc": "Alteração da periodicidade da recolha de ecoponto ou vidrão", "type": "request" },
       { "code": "HU02", "desc": "Reparação de papeleiras", "type": "request" },
@@ -71,6 +73,7 @@
   },
   {
     "topic": "Iluminação Pública",
+    "topicCode": "IP",
     "list": [
       { "code": "IP01", "desc": "Arruamento às escuras", "type": "report" },
       { "code": "IP02", "desc": "Arruamento com luz insuficiente", "type": "report" },
@@ -83,6 +86,7 @@
   },
   {
     "topic": "Estradas e Ciclovias",
+    "topicCode": "EC",
     "list": [
       { "code": "EC01", "desc": "Abatimentos superficiais", "type": "report" },
       { "code": "EC02", "desc": "Buraco na faixa de rodagem (betuminoso)", "type": "report" },
@@ -107,6 +111,7 @@
   },
   {
     "topic": "Espaços Verdes",
+    "topicCode": "EV",
     "list": [
       { "code": "EV01", "desc": "Plantação de árvores", "type": "request" },
       { "code": "EV02", "desc": "Manutenção de árvores, arbustos ou relva", "type": "request" },
@@ -121,6 +126,7 @@
   },
   {
     "topic": "Segurança Pública e Ruído",
+    "topicCode": "SPR",
     "list": [
       { "code": "SPR01", "desc": "Animais potencialmente perigosos", "type": "report" },
       { "code": "SPR02", "desc": "Edifício, Muro, Escarpa ou Talude degradado", "type": "report" },
@@ -143,6 +149,7 @@
   },
   {
     "topic": "Saneamento",
+    "topicCode": "SA",
     "list": [
       { "code": "SA01", "desc": "Entupimento de sarjeta ou sumidouro", "type": "report" },
       { "code": "SA02", "desc": "Fuga de água potável em espaço público (EPAL)", "type": "report" },
@@ -155,6 +162,7 @@
   },
   {
     "topic": "Habitação Municipal",
+    "topicCode": "HM",
     "list": [
       { "code": "HM01", "desc": "Emparedamento ou Entaipamento", "type": "request" },
       { "code": "HM02", "desc": "Manutenção ou Reparação de zona interior", "type": "request" },
@@ -167,6 +175,7 @@
   },
   {
     "topic": "Animais em Ambiente Urbano",
+    "topicCode": "AAU",
     "list": [
       { "code": "AAU01", "desc": "Recolha de animais de pequeno e médio porte mortos ou acidentados, na via pública", "type": "request" },
       { "code": "AAU02", "desc": "Recolha de animais de pequeno e médio porte mortos ou doentes em propriedade privada", "type": "request" },
@@ -175,6 +184,7 @@
   },
   {
     "topic": "Equipamentos Municipais",
+    "topicCode": "EM",
     "list": [
       { "code": "EM01", "desc": "Manutenção de Escultura", "type": "request" },
       { "code": "EM02", "desc": "Grafitis em património cultural", "type": "report" },
