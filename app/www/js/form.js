@@ -299,18 +299,21 @@ app.form = (function (thisModule) {
           $('#parish').append(`<option value="${parish.trim().toLowerCase()}">${parish.trim()}</option>`)
         })
 
-        // does not trigger parish select, if address was got from an API, because API will also set parish
-        if (!addressFromAPI) {
-          $('#parish').trigger('change') // trigers event
-        }
         return false // break loop, since the municipality was already found
       }
     })
+
+    // does not trigger parish select, if address was got from an API, because API will also set parish
+    // see module localization, function fillFormWithAddress
+    if (!addressFromAPI) {
+      $('#parish').trigger('change') // trigers event
+    }
   })
 
   $('#parish').on('change', function (event) {
     const parish = $(this).val().trim().toLowerCase()
     const municipality = $('#municipality').val().trim().toLowerCase()
+
     app.contacts.setParish(parish, municipality, function (err, parishData) {
       if (!err) {
         // if selected parish has no email address,
@@ -318,6 +321,10 @@ app.form = (function (thisModule) {
         if (!parishData.email) {
           $('#send_to_municipality_checkbox').prop('checked', true).prop('disabled', true)
           $('#send_to_parish_checkbox').prop('checked', false).prop('disabled', true)
+          // checks now if this is a blocked municipality
+        } else if (app.main.blockedMunicipalities.map(el => el.toLowerCase()).includes(municipality)) {
+          $('#send_to_municipality_checkbox').prop('checked', false).prop('disabled', true)
+          $('#send_to_parish_checkbox').prop('checked', true).prop('disabled', true)
         } else {
           $('#send_to_municipality_checkbox').prop('disabled', false)
           $('#send_to_parish_checkbox').prop('disabled', false)

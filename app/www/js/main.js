@@ -26,6 +26,12 @@ app.main = (function (thisModule) {
     }
   }
 
+  // list of municipalities, for which the APP will NOT allow sending emails
+  // for exemple in Lisbon, the municipality explicitly rejects issues sent with this APP
+  thisModule.blockedMunicipalities = [
+    'Lisboa'
+  ]
+
   // replaces $(document).ready() which is deprecated
   $(function () {
     console.log('DOM is ready')
