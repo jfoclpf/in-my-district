@@ -15,6 +15,7 @@ app.map = (function (thisModule) {
   var map
   var markersGroups // groups of markers, by type of anomaly
   var allDbEntries // all entries fetched from database
+  var anomalies // object with all the possible anomalies
   var isMapInitiated = false
 
   function init () {
@@ -24,10 +25,10 @@ app.map = (function (thisModule) {
       mine: { select: 'As que eu denunciei' }
     }
 
-    // populates yet with type of anomalies: faixa_bus, baixa_bus, etc.
-    const anomalies = app.anomalies.getAnomalies()
+    // populates markersGroups yet with type of anomalies
+    anomalies = app.anomalies.getAnomalies()
     for (const anomaly of anomalies) {
-      const anomaly1Code = anomaly.list[0].code.slice(0, 2) // ex: "PA", "HU", etc.
+      const anomaly1Code = anomaly.topicCode // ex: "PA", "AAU", etc.
       markersGroups[anomaly1Code] = {}
       markersGroups[anomaly1Code].select = anomaly.topic
     }
@@ -187,18 +188,25 @@ app.map = (function (thisModule) {
     // Sort markers and infowindows to the map
     const isCurrentUserAnAdmin = app.functions.isCurrentUserAnAdmin()
     const dbEntriesLength = allDbEntries.length
-    const mapIcon = L.icon({
-      iconUrl: cordova.file.applicationDirectory + 'www/img/map_icon.png',
-      iconSize: [50, 50],
-      iconAnchor: [25, 50]
-    })
+
+    const mapIcons = {}
+    for (const anomaly of anomalies) {
+      const topicCode = anomaly.topicCode
+      const mapIcon = L.icon({
+        iconUrl: `${cordova.file.applicationDirectory}www/img/map-icons/${topicCode}.png`,
+        iconSize: [50, 50],
+        iconAnchor: [25, 50]
+      })
+      mapIcons[topicCode] = mapIcon
+    }
 
     for (let i = 0; i < dbEntriesLength; i++) {
       const el = allDbEntries[i]
+      const topicCode = el.anomaly_code.match(/[a-zA-Z]+/)[0] // ex: "PA", "AAU", etc.
 
       const marker = L.marker(
         [el.data_coord_latit, el.data_coord_long],
-        { icon: mapIcon }
+        { icon: mapIcons[topicCode] }
       )
 
       let htmlInfoContent =
@@ -229,9 +237,8 @@ app.map = (function (thisModule) {
 
       marker.bindPopup(popup)
 
-      const anomaly1Code = el.anomaly_code.slice(0, 2) // ex: "PA", "HU", etc.
-      if (markersGroups[anomaly1Code]) {
-        markersGroups[anomaly1Code].markerClusterGroup.addLayer(marker)
+      if (markersGroups[topicCode]) {
+        markersGroups[topicCode].markerClusterGroup.addLayer(marker)
       }
       if (el.uuid === device.uuid) {
         markersGroups.mine.markerClusterGroup.addLayer(marker)
