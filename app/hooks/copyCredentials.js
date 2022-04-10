@@ -10,18 +10,18 @@ const twoSpaces = '  ' // for log indentation
 module.exports = function (context) {
   console.log(`${context.hook} : ${path.relative(context.opts.projectRoot, context.scriptLocation)}`)
 
-  var projectRoot = path.resolve(path.dirname(context.scriptLocation), '..')
+  var appDir = context.opts.projectRoot
 
-  var fileOriginFullPath = path.join(projectRoot, 'keys', 'appSecrets.js')
-  var fileDestFullPath = path.join(projectRoot, 'www', 'js', 'appSecrets.js')
+  var fileOriginFullPath = path.join(appDir, '..', 'keys', 'appSecrets.js')
+  var fileDestFullPath = path.join(appDir, 'www', 'js', 'appSecrets.js')
 
   try {
     if (fs.existsSync(fileOriginFullPath)) { // file exists
       fse.copySync(fileOriginFullPath, fileDestFullPath)
 
       const consoleMsg = 'copied ' +
-        path.relative(projectRoot, fileOriginFullPath) + ' -> ' +
-        path.relative(projectRoot, fileDestFullPath)
+        path.relative(appDir, fileOriginFullPath) + ' -> ' +
+        path.relative(appDir, fileDestFullPath)
 
       console.log(twoSpaces + consoleMsg)
     } else { // file does no exist
