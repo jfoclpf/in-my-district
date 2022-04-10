@@ -20,7 +20,7 @@ app.map = (function (thisModule) {
   function init () {
     // populate select box to select map view, i.e, filter ocurrences/drops in the map
     markersGroups = {
-      all: { select: 'Todas as anomalias' },
+      all: { select: 'Todas (por resolver)' },
       mine: { select: 'As que eu denunciei' }
     }
 

@@ -151,8 +151,9 @@ app.get(requestHistoricUrl, function (req, res) {
     // returns only single specific occurrence by its table_row_uuid (occurrence uuid)
     query = `SELECT * FROM ${DBInfo.db_tables.ocorrencias} WHERE table_row_uuid=${db2.escape(occurrenceUuid)}`
   } else {
-    // get all production entries for all users except admin (ex: to generate a map of all entries)
-    query = `SELECT * FROM ${DBInfo.db_tables.ocorrencias} WHERE PROD=1 AND uuid!='87332d2a0aa5e634' AND deleted_by_admin=0 ` +
+    // get all unsolved production entries for all users except admin (ex: to generate a map of all entries)
+    query = `SELECT * FROM ${DBInfo.db_tables.ocorrencias} ` +
+      "WHERE PROD=1 AND uuid!='87332d2a0aa5e634' AND deleted_by_admin=0 AND ocorrencia_resolvida=0 " +
       `ORDER BY ${DBInfo.db_tables.ocorrencias}.uuid  ASC, ${DBInfo.db_tables.ocorrencias}.data_data ASC`
   }
 
