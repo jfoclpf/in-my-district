@@ -87,17 +87,19 @@ input[type=checkbox] {
   display: none;
 }
 
+#historic img {
+  border: 0;
+  width: 100%;
+  display: block;
+}
+
+/* MAP */
+
 #main_form_map {
   height: 300px;
   width: 100%;
   margin: 0;
   padding: 0;
-}
-
-#historic img {
-  border: 0;
-  width: 100%;
-  display: block;
 }
 
 #map_section, #map {
@@ -110,6 +112,13 @@ input[type=checkbox] {
 #map .gm-style-iw.gm-style-iw-c {
   max-width: none !important;
 }
+
+#map .leaflet-popup-scrolled {
+  border-top: none;
+  border-bottom: none;
+}
+
+/* End of MAP */
 
 #cmd_how_it_works img{
   border: none !important;
