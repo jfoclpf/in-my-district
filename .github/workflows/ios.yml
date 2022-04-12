@@ -18,10 +18,6 @@ jobs:
         
     runs-on: ${{ matrix.platform }}
 
-    defaults:
-      run:
-        working-directory: app
-
     steps:
     - uses: actions/checkout@v2
     - name: Use Node.js ${{ matrix.node-version }}
@@ -39,8 +35,11 @@ jobs:
       run: npm install -g cordova
     - name: Add iOS Platform
       run: |
+        cd app/
         cordova platform rm android
         cordova platform add ios
     - run: npm test
     - name: Building APP
-      run: cordova build ios --release
+      run: |
+        cd app/
+        cordova build ios --release
