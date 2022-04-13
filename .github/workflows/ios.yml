@@ -41,7 +41,3 @@ jobs:
     - run: |
         cd app/
         npm test
-    - name: Building APP
-      run: |
-        cd app/
-        cordova build ios --release
