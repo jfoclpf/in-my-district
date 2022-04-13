@@ -38,7 +38,9 @@ jobs:
         cd app/
         cordova platform rm android
         cordova platform add ios
-    - run: npm test
+    - run: |
+        cd app/
+        npm test
     - name: Building APP
       run: |
         cd app/
