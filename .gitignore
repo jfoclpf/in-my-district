@@ -4,6 +4,9 @@ temp/
 build/
 bin/
 
+# anomalies file to be amended is /commons/json/anomalies.json
+/app/www/json/anomalies.json
+
 # Cordova - platforms and plugins
 /app/platforms/
 /app/plugins/
