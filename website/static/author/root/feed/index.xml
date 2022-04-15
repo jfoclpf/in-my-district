@@ -18,7 +18,15 @@
 	hourly	</sy:updatePeriod>
 	<sy:updateFrequency>
 	1	</sy:updateFrequency>
-	<generator>https://wordpress.org/?v=5.8.3</generator>
+	<generator>https://wordpress.org/?v=5.9.3</generator>
+
+<image>
+	<url>/wp-content/uploads/2022/04/256.png</url>
+	<title>root &#8211; No Meu Bairro!</title>
+	<link>/</link>
+	<width>32</width>
+	<height>32</height>
+</image> 
 	<item>
 		<title>Nam rutrum pellentesque euismod</title>
 		<link>/2019/08/19/nam-rutrum-pellentesque-euismod/</link>
