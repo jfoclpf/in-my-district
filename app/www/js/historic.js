@@ -136,7 +136,7 @@ app.historic = (function (thisModule) {
     }
 
     // deals with button to send refresh message (lembrete)
-    $('#historic .history-refresh-button').click(function (event) {
+    $('#historic .history-refresh-button').on('click', function (event) {
       event.stopPropagation()
       const i = parseInt($(this).data('index'))
       $.jAlert({
