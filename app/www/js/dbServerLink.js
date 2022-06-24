@@ -139,19 +139,28 @@ app.dbServerLink = (function (thisModule) {
     })
   }
 
-  function setEntryAsDeletedInDatabase (dbEntry, callback) {
+  function setEntryInDbAsDeleted (dbEntry, deleter, callback) {
     var databaseObj = Object.assign({}, dbEntry) // cloning Object
-    databaseObj.deleted_by_admin = 1
+
+    let dbCommand
+    if (deleter === 'admin') {
+      dbCommand = 'setEntryInDbAsDeletedByAdmin'
+    } else if (deleter === 'user') {
+      dbCommand = 'setEntryInDbAsDeletedByUser'
+    } else {
+      console.error('Unknown deleter: ' + deleter)
+      return
+    }
 
     $.ajax({
       url: uploadOccurenceUrl,
       type: 'POST',
-      data: JSON.stringify({ dbCommand: 'setEntryAsDeletedInDatabase', databaseObj: databaseObj }),
+      data: JSON.stringify({ dbCommand: dbCommand, databaseObj: databaseObj }),
       contentType: 'application/json; charset=utf-8',
       dataType: 'json',
       crossDomain: true,
       success: function (data) {
-        console.success('Status of deleted_by_admin set to 1 in database with success.')
+        console.success(`Status of deleted_by_${deleter} set to 1 in database with success`)
         console.log(databaseObj)
         console.log('Returned:', data)
         if (typeof callback === 'function') { callback() }
@@ -166,7 +175,7 @@ app.dbServerLink = (function (thisModule) {
 
   thisModule.submitNewEntryToDB = submitNewEntryToDB
   thisModule.setSolvedOccurrenceStatus = setSolvedOccurrenceStatus
-  thisModule.setEntryAsDeletedInDatabase = setEntryAsDeletedInDatabase
+  thisModule.setEntryInDbAsDeleted = setEntryInDbAsDeleted
 
   return thisModule
 })(app.dbServerLink || {})

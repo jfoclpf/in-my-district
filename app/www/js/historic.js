@@ -106,6 +106,7 @@ app.historic = (function (thisModule) {
             <div class="col">
               <button aria-label="Reenviar ocorrência" class="btn btn-primary btn-sm m-1 history-refresh-button" data-index="${i}"><i class="fa fa-refresh"></i></button>
               <button aria-label="Marcar ocorrência como tratada" class="btn btn-primary btn-sm m-1 history-check-button" data-index="${i}"><i class="fa fa-check"></i></button>
+              <button aria-label="Apagar ocorrência" class="btn btn-danger btn-sm m-1 history-delete-button" data-index="${i}"><i class="fa fa-trash"></i></button>
             </div>
           </div>
           <div class="row">
@@ -220,6 +221,41 @@ app.historic = (function (thisModule) {
       } else {
         console.error('Error dealing with button', $thisButton)
       }
+    })
+
+    // deals with button to delete entry
+    $('#historic .history-delete-button').on('click', function (event) {
+      event.stopPropagation()
+      const i = parseInt($(this).data('index'))
+
+      $.jAlert({
+        theme: 'dark_blue',
+        class: 'ja_300px',
+        closeBtn: false,
+        content: 'Deseja apagar esta denúncia?',
+        btns: [
+          {
+            text: 'Sim',
+            theme: 'red',
+            class: 'ja_button_with_icon',
+            onClick: function () {
+              app.dbServerLink.setEntryInDbAsDeleted(historicData[i], 'user', (err) => {
+                if (!err) {
+                  console.success('Entry deleted by user')
+                  updateHistoric()
+                } else {
+                  console.error('Error trying to delete entry by user\n\n' + JSON.stringify(err, {}, 2))
+                }
+              })
+            }
+          },
+          {
+            text: 'Não',
+            theme: 'green',
+            class: 'ja_button_with_icon'
+          }
+        ]
+      })
     })
   }
 

@@ -69,11 +69,15 @@ app.post(submissionsUrl, function (req, res) {
               `WHERE PROD=${db1.escape(databaseObj.PROD)} AND uuid=${db1.escape(databaseObj.uuid)} ` +
               `AND foto1=${db1.escape(databaseObj.foto1)}`
       break
-    case 'setEntryAsDeletedInDatabase':
+    case 'setEntryInDbAsDeletedByAdmin':
       // (update) when field 'deleted_by_admin' is present in the request (client) it means just an update of a previous existing entry/line
-      query = `UPDATE ${DBInfo.db_tables.ocorrencias} SET deleted_by_admin=${db1.escape(databaseObj.deleted_by_admin)} ` +
-              `WHERE PROD=${db1.escape(databaseObj.PROD)} AND uuid=${db1.escape(databaseObj.uuid)} ` +
-              `AND foto1=${db1.escape(databaseObj.foto1)}`
+      query = `UPDATE ${DBInfo.db_tables.ocorrencias} SET deleted_by_admin=1 ` +
+              `WHERE uuid=${db1.escape(databaseObj.uuid)} AND table_row_uuid=${db1.escape(databaseObj.table_row_uuid)}`
+      break
+    case 'setEntryInDbAsDeletedByUser':
+      // (update) when field 'deleted_by_admin' is present in the request (client) it means just an update of a previous existing entry/line
+      query = `UPDATE ${DBInfo.db_tables.ocorrencias} SET deleted_by_user=1 ` +
+              `WHERE uuid=${db1.escape(databaseObj.uuid)} AND table_row_uuid=${db1.escape(databaseObj.table_row_uuid)}`
       break
     default:
       debug('Bad request on dbCommand: ' + serverCommand)
@@ -146,15 +150,17 @@ app.get(requestHistoricUrl, function (req, res) {
   var query
   if (uuid) { // user device uuid
     // get the all entries for a specific user (ex: to generate historic for user)
-    query = `SELECT * FROM ${DBInfo.db_tables.ocorrencias} WHERE uuid=${db2.escape(uuid)} AND deleted_by_admin=0 ORDER BY data_data ASC`
+    query = `SELECT * FROM ${DBInfo.db_tables.ocorrencias} ` +
+            `WHERE uuid=${db2.escape(uuid)} AND deleted_by_admin=0 AND deleted_by_user=0 ` +
+            'ORDER BY data_data ASC'
   } else if (occurrenceUuid) {
     // returns only single specific occurrence by its table_row_uuid (occurrence uuid)
     query = `SELECT * FROM ${DBInfo.db_tables.ocorrencias} WHERE table_row_uuid=${db2.escape(occurrenceUuid)}`
   } else {
     // get all unsolved production entries for all users except admin (ex: to generate a map of all entries)
     query = `SELECT * FROM ${DBInfo.db_tables.ocorrencias} ` +
-      "WHERE PROD=1 AND uuid!='87332d2a0aa5e634' AND deleted_by_admin=0 AND ocorrencia_resolvida=0 " +
-      `ORDER BY ${DBInfo.db_tables.ocorrencias}.uuid  ASC, ${DBInfo.db_tables.ocorrencias}.data_data ASC`
+            'WHERE PROD=1 AND deleted_by_admin=0 AND deleted_by_user=0 AND ocorrencia_resolvida=0 ' +
+            `ORDER BY ${DBInfo.db_tables.ocorrencias}.uuid  ASC, ${DBInfo.db_tables.ocorrencias}.data_data ASC`
   }
 
   debug(sqlFormatter.format(query))
