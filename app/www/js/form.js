@@ -435,6 +435,14 @@ app.form = (function (thisModule) {
     }
   })
 
+  function bSendToMunicipality () {
+    return $('#send_to_municipality_checkbox').is(':checked')
+  }
+
+  function bSendToParish () {
+    return $('#send_to_parish_checkbox').is(':checked')
+  }
+
   thisModule.init = init
   /* === Public methods to be returned === */
   /* === Form field fetching functions === */
@@ -448,6 +456,8 @@ app.form = (function (thisModule) {
   thisModule.initMainFormMap = initMainFormMap
   thisModule.getScreenshotFromMap = getScreenshotFromMap
   thisModule.GPSLoadingOnFields = GPSLoadingOnFields
+  thisModule.bSendToMunicipality = bSendToMunicipality
+  thisModule.bSendToParish = bSendToParish
   /* ======================================== */
   thisModule.isMessageReady = isMessageReady
 

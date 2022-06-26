@@ -51,8 +51,8 @@ app.dbServerLink = (function (thisModule) {
       anomaly1: app.anomalies.getSelectedMainAnomaly(),
       anomaly2: app.anomalies.getSelectedSecondaryAnomaly(),
       anomaly_code: app.anomalies.getAnomalyCode(),
-      email_concelho: app.contacts.getCurrentMunicipality().email,
-      email_freguesia: app.contacts.getCurrentParish().email
+      email_concelho: app.form.bSendToMunicipality() ? app.contacts.getCurrentMunicipality().email : null,
+      email_freguesia: app.form.bSendToParish() ? app.contacts.getCurrentParish().email : null
     }
 
     $.ajax({

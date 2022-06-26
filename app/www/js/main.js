@@ -311,12 +311,12 @@ app.main = (function (thisModule) {
         return
       }
 
-      if ($('#send_to_municipality_checkbox').is(':checked')) {
-        emailTo.push(app.contacts.getCurrentMunicipality().email)
-      }
-      if ($('#send_to_parish_checkbox').is(':checked')) {
-        emailTo.push(app.contacts.getCurrentParish().email)
-      }
+    if (app.form.bSendToMunicipality()) {
+      emailTo.push(app.contacts.getCurrentMunicipality().email)
+    }
+    if (app.form.bSendToParish()) {
+      emailTo.push(app.contacts.getCurrentParish().email)
+    }
 
       try {
         cordova.plugins.email.open({
