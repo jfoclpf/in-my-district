@@ -102,14 +102,14 @@ app.text = (function (thisModule) {
   }
 
   function getRandomGreetings () {
-    var greetingsInitial = [
+    var greetingsArray = [
       'Excelentíssimos senhores',
       'Prezados senhores',
       'Caros senhores',
       'Ex.mos Senhores'
     ]
 
-    return greetingsInitial[Math.floor(Math.random() * greetingsInitial.length)]
+    return greetingsArray[Math.floor(Math.random() * greetingsArray.length)]
   }
 
   // best regards
