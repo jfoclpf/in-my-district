@@ -1,7 +1,9 @@
 [![Node.js CI](https://github.com/jfoclpf/in-my-district/actions/workflows/android.yml/badge.svg)](https://github.com/jfoclpf/in-my-district/actions/workflows/android.yml)
 [![Node.js CI](https://github.com/jfoclpf/in-my-district/actions/workflows/ios.yml/badge.svg)](https://github.com/jfoclpf/in-my-district/actions/workflows/ios.yml)
 [![js-standard-style][js-standard-style_img]][js-standard-style_url]
-[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/donate?hosted_button_id=J7F3ALLQAFWEJ)
+<br>
+[![Donate with librepay](https://img.shields.io/liberapay/receives/joaopimentel1980.svg?logo=liberapay)](https://en.liberapay.com/joaopimentel1980)
+[![Donate with librepay](https://img.shields.io/badge/donate-Donate-yellow?logo=liberapay)](https://en.liberapay.com/joaopimentel1980/donate)
 
 [js-standard-style_img]: https://img.shields.io/badge/code%20style-standard-brightgreen.svg
 [js-standard-style_url]: https://standardjs.com/
@@ -51,6 +53,4 @@ open platforms/ios/No\ meu\ Bairro\!.xcworkspace/
 
 ## Licença
 
-GNU GPLv3<br>
-http://www.gnu.org/licenses/gpl-3.0.en.html <br>
-http://choosealicense.com/licenses/gpl-3.0/
+[GNU GPLv3](http://www.gnu.org/licenses/gpl-3.0.en.html)
