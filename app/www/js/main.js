@@ -276,16 +276,40 @@ app.main = (function (thisModule) {
   })
 
   function sendEMailMessage () {
-    app.dbServerLink.submitNewEntryToDB(function (err) {
-      if (err) {
-        console.error('There was an error submitting entry to database', err)
-        window.alert('Erro a inserir ocorrência na base de dados: ' + err.message)
-      } else {
-        console.success('Entry submited to dabase with success')
-      }
-    })
-
+    let dbEntryResultData
     let attachments
+
+    const submitEntryToDbDefer = $.Deferred()
+    const getScreenshotFromMapDefer = $.Deferred()
+
+    app.dbServerLink.submitNewEntryToDB(
+      // callback for DB entry submitted
+      function (err, res) {
+        if (err) {
+          console.error('There was an error submitting entry to database', err)
+          window.alert('Erro a inserir dados da ocorrência na base de dados: ' + JSON.stringify(err.message))
+          submitEntryToDbDefer.reject()
+        } else if (!res) {
+          console.error('There was an error submitting entry to database: empty result')
+          window.alert('Erro a inserir dados da ocorrência na base de dados: sem retorno de dados')
+          submitEntryToDbDefer.reject()
+        } else {
+          dbEntryResultData = res
+          console.success('Entry submited to database with success')
+          submitEntryToDbDefer.resolve()
+        }
+      },
+      // callback for upload of photos
+      function (err) {
+        if (err) {
+          console.error('There was an error submitting photos to database', err)
+          window.alert('Erro a inserir fotos na base de dados: ' + JSON.stringify(err.message))
+        } else {
+          console.success('Photos submited to database with success')
+        }
+      }
+    )
+
     try {
       var imagesArray = app.photos.getPhotosForEmailAttachment()
       // console.log(JSON.stringify(imagesArray, 0, 3))
@@ -300,16 +324,19 @@ app.main = (function (thisModule) {
       if (err) {
         console.error('Error on getScreenshotFromMap', err)
         window.alert('Erro a obter imagem do mapa (getScreenshotFromMap)')
+        getScreenshotFromMapDefer.reject()
       } else {
         attachments.push(res)
+        getScreenshotFromMapDefer.resolve()
       }
+    })
 
-      var emailTo = []
-      // the system already forces the user to chose at least one of municipality or parish checkbox, anyway double-check
-      if (!$('#send_to_municipality_checkbox').is(':checked') && !$('#send_to_parish_checkbox').is(':checked')) {
-        window.alert('Erro, email tem de ser enviado pelo menos para municipio ou junta de freguesa')
-        return
-      }
+    var emailTo = []
+    // the system already forces the user to chose at least one of municipality or parish checkbox, anyway double-check
+    if (!$('#send_to_municipality_checkbox').is(':checked') && !$('#send_to_parish_checkbox').is(':checked')) {
+      window.alert('Erro, email tem de ser enviado pelo menos para municipio ou junta de freguesa')
+      return
+    }
 
     if (app.form.bSendToMunicipality()) {
       emailTo.push(app.contacts.getCurrentMunicipality().email)
@@ -318,19 +345,22 @@ app.main = (function (thisModule) {
       emailTo.push(app.contacts.getCurrentParish().email)
     }
 
+    const sendEmail = function () {
       try {
         cordova.plugins.email.open({
           to: emailTo, // email addresses for TO field
           attachments: attachments,
           subject: app.text.getMainMessage('subject'), // subject of the email
-          body: app.text.getMainMessage('body'), // email body (for HTML, set isHtml to true)
+          body: app.text.getMainMessage('body', dbEntryResultData), // email body (for HTML, set isHtml to true)
           isHtml: true // indicats if the body is HTML or plain text
         })
       } catch (err) {
         console.error('Error on cordova.plugins.email', err)
         window.alert('Erro ao abrir a APP de email:\n' + JSON.stringify(err, null, 2))
       }
-    })
+    }
+
+    $.when(submitEntryToDbDefer, getScreenshotFromMapDefer).then(sendEmail, sendEmail)
   }
 
   return thisModule

@@ -5,11 +5,13 @@
 
 app.text = (function (thisModule) {
   // get main message
-  // parameter option may be:
+  // parameter <option> may be:
   // 'body': main body for the email message
   // 'cleanBody': main body except last paragraphs with summary nor credits
   // 'subject': title/subject for example for email subject
-  function getMainMessage (option) {
+  // parameter <dbEntryResultData> is an Object (with keys) returned from server
+  // after entry is submitted into DB
+  function getMainMessage (option, dbEntryResultData) {
     if (option === 'body' || option === 'cleanBody') {
       var message = ''
 
@@ -63,17 +65,29 @@ app.text = (function (thisModule) {
       if (option === 'body') {
         // resumo no final da mensagem
         message += '__________________________<br><br>' +
+        `Resumo do ${anomaly2TypeOfAnomaly === 'anomaly2-report' ? 'relato' : 'pedido'}<br><br>` +
         `<b>Anomalia:</b> ${$('#anomaly1 option:selected').text()}, ${$('#anomaly2 option:selected').text()}<br>` +
         `<b>Morada:</b> ${$('#street').val().trim()}${$('#street_number').val() ? ', n. ' + $('#street_number').val() : ''}, ${parish}, ${municipality}<br>` +
-        // The 6th decimal digit of latitude and longitude gives a precision of about 10cm, enough for this type of use
-        // see: https://gis.stackexchange.com/a/8674/182228
-        '<b>Local exato:</b> ' +
-        `https://osm.org/?mlat=${
-          app.localization.getCoordinates().latitude.toFixed(6)
-        }&mlon=${
-          app.localization.getCoordinates().longitude.toFixed(6)
-        }&zoom=18 <br>` +
-        `<b>Datectada em</b>: ${$.datepicker.formatDate("dd' de 'MM' de 'yy", $('#date').datepicker('getDate'))}, ${$('#time').val()}<br><br>`
+        '<b>Hiper-ligação com informação do local exato:</b> ' +
+        `https://nomeubairro.app/ocorrencia/?uuid=${dbEntryResultData.table_row_uuid} <br><br>` +
+        `<b>Detectada em</b>: ${$.datepicker.formatDate("dd' de 'MM' de 'yy", $('#date').datepicker('getDate'))}, ${$('#time').val()}<br><br>`
+
+        if (dbEntryResultData) {
+          message += '__________________________<br><br>' +
+          `${getRandomGreetings()}, queiram por favor clicar nas seguintes ligações quando solucionarem a presente ocorrência<br><br>`
+          if (dbEntryResultData.chave_confirmacao_ocorrencia_resolvida_por_municipio) {
+            message += 'Município resolveu: ' +
+            'https://servidor.nomeubairro.app/resolvido/municipio/' +
+            `${dbEntryResultData.table_row_uuid}/${dbEntryResultData.chave_confirmacao_ocorrencia_resolvida_por_municipio}` +
+            '<br><br>'
+          }
+          if (dbEntryResultData.chave_confirmacao_ocorrencia_resolvida_por_freguesia) {
+            message += 'Freguesia resolveu: ' +
+            'https://servidor.nomeubairro.app/resolvido/freguesia/' +
+            `${dbEntryResultData.table_row_uuid}/${dbEntryResultData.chave_confirmacao_ocorrencia_resolvida_por_freguesia}` +
+            '<br><br>'
+          }
+        }
 
         // credits
         message += 'Mensagem gerada pela aplicação No Meu Bairro! (https://nomeubairro.app)<br>'

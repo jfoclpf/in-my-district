@@ -6,7 +6,7 @@ app.dbServerLink = (function (thisModule) {
   const uploadImagesUrl = app.main.urls.databaseServer.uploadImages
   const uploadOccurenceUrl = app.main.urls.databaseServer.uploadOccurence
 
-  function submitNewEntryToDB (callback) {
+  function submitNewEntryToDB (callback1, callback2) {
     const dateYYYY_MM_DD = app.form.getDateYYYY_MM_DD()
     const timeHH_MM = app.form.getTimeHH_MM()
     const municipality = app.form.getMunicipality()
@@ -29,7 +29,8 @@ app.dbServerLink = (function (thisModule) {
 
     const localization = app.localization.getCoordinates()
     if (!localization.latitude || !localization.longitude) {
-      callback(Error('There was an error getting localization'))
+      callback1(Error('There was an error getting localization'))
+      callback2(Error('There was an error getting localization'))
       return
     }
 
@@ -65,6 +66,9 @@ app.dbServerLink = (function (thisModule) {
       success: function (data) {
         console.success('Values inserted into database with success.')
         console.log('Returned:', data)
+        // first callback called right now, do not wait for the upload of photos due to performance
+        callback1(null, data)
+
         // upload all photos
         const deferred = []
         for (let i = 0; i < imagesArray.length; i++) {
@@ -87,16 +91,17 @@ app.dbServerLink = (function (thisModule) {
           .then(
             function () {
               console.log('All photos uplodead successfully')
-              callback()
+              callback2()
             },
             function () {
-              callback(Error('There was some error uploading photos'))
+              callback2(Error('There was some error uploading photos'))
             }
           )
       },
       error: function (err) {
         console.error(`There was an error submitting the following object into the database: ${err.responseText}`, err, databaseObj)
-        callback(Error(err))
+        callback1(Error(err))
+        callback2(Error(err))
       }
     })
   }

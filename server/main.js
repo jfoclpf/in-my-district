@@ -58,9 +58,25 @@ app.post(submissionsUrl, function (req, res) {
                 'database table ' + DBInfo.database + '->' + DBInfo.db_tables.ocorrencias)
 
   var query
+  var returnedData = {}
   switch (serverCommand) {
     case 'submitNewEntryToDB': // (new entry in table) builds sql query to insert user data
       databaseObj.table_row_uuid = generateUuid()
+      databaseObj.chave_confirmacao_ocorrencia_resolvida_por_op = generateUuid().slice(0, 8)
+
+      // just generates confirmation keys if email was indeed sent
+      databaseObj.chave_confirmacao_ocorrencia_resolvida_por_municipio =
+        databaseObj.email_concelho ? generateUuid().slice(0, 8) : null
+      databaseObj.chave_confirmacao_ocorrencia_resolvida_por_freguesia =
+        databaseObj.email_freguesia ? generateUuid().slice(0, 8) : null
+
+      returnedData = {
+        table_row_uuid: databaseObj.table_row_uuid,
+        chave_confirmacao_ocorrencia_resolvida_por_op: databaseObj.chave_confirmacao_ocorrencia_resolvida_por_op,
+        chave_confirmacao_ocorrencia_resolvida_por_municipio: databaseObj.chave_confirmacao_ocorrencia_resolvida_por_municipio,
+        chave_confirmacao_ocorrencia_resolvida_por_freguesia: databaseObj.chave_confirmacao_ocorrencia_resolvida_por_freguesia
+      }
+
       query = `INSERT INTO ${DBInfo.db_tables.ocorrencias} SET ${db1.escape(databaseObj)}`
       break
     case 'setSolvedOccurrenceStatus':
@@ -111,7 +127,7 @@ app.post(submissionsUrl, function (req, res) {
           debug('User data successfully added into ' +
                 'database table ' + DBInfo.database + '->' + DBInfo.db_tables.ocorrencias + '\n\n')
           debug('Result from db query is : ', results)
-          res.send(results)
+          res.send(returnedData)
           next()
         }
       })
@@ -210,6 +226,21 @@ app.get(requestHistoricUrl, function (req, res) {
       debug('Request successfully')
     }
   })
+})
+
+app.get('/resolvido/:authority?/:table_row_uuid?/:key?', function (req, res) {
+  const authority = req.params.authority
+  const tableRowUuid = req.params.table_row_uuid
+  const key = req.params.key
+
+  if (
+    (authority !== 'freguesia' && authority !== 'municipio') ||
+    !tableRowUuid ||
+    !key
+  ) {
+    res.status(501).send('Wrong request')
+  }
+  // insert solved into  DB and send email to OP
 })
 
 /* ############################################################################################## */
