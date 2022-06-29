@@ -66,5 +66,3 @@ jobs:
         rm -rf platforms/android
         cordova platform add android
     - run: npm test
-    - name: Building APK
-      run: cordova build android --release
