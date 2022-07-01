@@ -1,7 +1,7 @@
 /* script that runs periodically, and which goes through entries of database
    and checks for entries' duplicates. It does it by checking if photos are exactly the same
    even if they have different names. If two entries have exactly the same photos (same file JPG data content),
-   and if they are from the same user, the older entry is considered a duplicate and it is deleted */
+   and if they are from the same user, the older entry is considered a duplicate and it is marked as deleted */
 
 /* eslint prefer-const: "off" */
 /* eslint no-var: "off" */
@@ -13,84 +13,41 @@ const mysql = require('mysql') // module to get info from database
 const debug = require('debug')('removeDuplicates')
 const sqlFormatter = require('sql-formatter')
 
-// directory where the images are stored with respect to present file
-var imgDirectory
-var db // database connection variable
+var imgDirectory // directory where the images are stored with respect to present file
+var DBInfo
+var dBPoolConnections // database connection variable
 
-const DBInfo = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'keys', 'serverSecrets.json'), 'utf8')).database
-debug(DBInfo)
+module.exports.init = (data) => {
+  imgDirectory = data.imgDirectory
+  DBInfo = data.DBInfo
+  dBPoolConnections = data.dBPoolConnections
 
-module.exports = (_imgDirectory) => {
-  imgDirectory = _imgDirectory
   removeDuplicates()
   setInterval(removeDuplicates, 1000 * 60 * 70) // every hour plus 70 minutes
-  return db // to close connection on main script upon graceful shutdown
 }
 
 // goes through the db and find inexistanf images, if so, delete them
 function removeDuplicates () {
   // get all production entries grouped by uuid and then for each uuid ordered by date
-  var query = `SELECT * FROM ${DBInfo.db_tables.ocorrencias} WHERE PROD=1 AND uuid!='87332d2a0aa5e634' ` +
+  var query = `SELECT * FROM ${DBInfo.db_tables.ocorrencias} WHERE PROD=1 ` +
     `ORDER BY ${DBInfo.db_tables.ocorrencias}.uuid  ASC, ${DBInfo.db_tables.ocorrencias}.data_data ASC`
 
   debug(sqlFormatter.format(query))
 
-  db = mysql.createConnection(DBInfo)
-
-  async.series([
-    (next) => {
-      db.connect((err) => {
-        if (err) {
-          console.error('error connecting: ' + err.stack)
-          next(Error(err))
-        } else {
-          debug('User ' + DBInfo.user + ' connected successfully to database ' + DBInfo.database + ' at ' + DBInfo.host)
-          next()
-        }
-      })
-    },
-    (next) => {
-      db.query(query, (err, results, fields) => {
-        if (err) {
-          // error handling code goes here
-          debug('Error inserting user data into database: ', err)
-          next(Error(err))
-        } else {
-          // debug('Result from db query is : ', results)
-          const entriesToBeDeleted = getEntriesToBeDeleted(results)
-          async.each(entriesToBeDeleted, deleteEntry, (err) => {
-            if (err) {
-              debug('An error occurred')
-              next(Error(err))
-            } else {
-              debug('All entriesToBeDeleted processed successfully')
-              next()
-            }
-          })
-        }
-      })
-    },
-    (next) => {
-      db.end((err) => {
-        if (err) {
-          next(Error(err))
-        } else {
-          debug('DB connection closed successfully')
-          next()
-        }
-      })
-    }
-  ],
-  (err, results) => {
+  dBPoolConnections.query(query, (err, results, fields) => {
     if (err) {
-      console.log('There was an error: ')
-      console.log(err)
-      if (db && db.end) {
-        console.log('Closing DB connection')
-        db.end()
-      }
+      // error handling code goes here
+      console.error('removeDuplicates: Error connecting or querying to database: ', err)
     } else {
-      debug('Timer function "removeDuplicates" run successfully')
+      // debug('Result from db query is : ', results)
+      const entriesToBeDeleted = getEntriesToBeDeleted(results) // array
+      async.each(entriesToBeDeleted, deleteEntry, (err) => {
+        if (err) {
+          console.error('removeDuplicates: An error occurred:', err)
+        } else {
+          debug('All entriesToBeDeleted processed successfully')
+        }
+      })
     }
   })
 }
@@ -141,19 +98,20 @@ function areTwoPhotosEqual (photoA, photoB) {
 }
 
 function deleteEntry (entry, callback) {
-  debug('Entry is to be deleted: ', entry)
-  const query = `DELETE from ${DBInfo.db_tables.ocorrencias} ` +
-    `WHERE uuid='${entry.uuid}' AND foto1='${entry.foto1}' ` +
-    `AND data_concelho='${entry.data_concelho}' AND data_freguesia='${entry.data_freguesia}'`
+  debug('Entry is to be marked as deleted by system: ', entry)
+
+  const query = `UPDATE ${DBInfo.database}.${DBInfo.db_tables.ocorrencias} ` +
+    `SET ${mysql.escape({ deleted_by_sys: 1 })} ` +
+    `WHERE table_row_uuid='${entry.table_row_uuid}'`
   debug(sqlFormatter.format(query))
 
-  db.query(query, (err, results, fields) => {
+  dBPoolConnections.query(query, (err, results, fields) => {
     if (err) {
       // error handling code goes here
-      debug('Error deleting entry from database: ', err)
+      console.error('removeDuplicates: Error marking entry as deleted by system: ', err)
       callback(Error(err))
     } else {
-      debug('Entry in database deleted successfully')
+      debug('Entry in database marked as deleted')
       // delete files from server corresponding to entry
       const photoArray = [entry.foto1, entry.foto2, entry.foto3, entry.foto4]
       for (var i = 0; i < photoArray.length; i++) {
