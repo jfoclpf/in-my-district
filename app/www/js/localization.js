@@ -83,18 +83,18 @@ app.localization = (function (thisModule) {
         PositionError()
         callback(Error(app.main.urls.geoApi.nominatimReverse + ' returns empty'))
       } else {
-        var addressFromGeoPtApi
+        var addressFromGeoApiPt
         // from app.main.urls.geoApi.ptApi
         if (res[1].status !== 'fulfilled') {
           // this happens when user is not in Portugal
           console.warn(app.main.urls.geoApi.ptApi + ' returns empty')
         } else {
-          addressFromGeoPtApi = res[1].value
+          addressFromGeoApiPt = res[1].value
         }
 
         const addressFromOSM = res[0].value.address
-        console.log('getAddressForForm: ', addressFromOSM, addressFromGeoPtApi)
-        fillFormWithAddress(addressFromOSM, addressFromGeoPtApi)
+        console.log('getAddressForForm: ', addressFromOSM, addressFromGeoApiPt)
+        fillFormWithAddress(addressFromOSM, addressFromGeoApiPt)
         callback(null, { latitude, longitude })
       }
     }).catch((err) => {
@@ -102,19 +102,19 @@ app.localization = (function (thisModule) {
     })
   }
 
-  function fillFormWithAddress (addressFromOSM, addressFromGeoPtApi) {
+  function fillFormWithAddress (addressFromOSM, addressFromGeoApiPt) {
     if (addressFromOSM) {
       $('#street').val(addressFromOSM.road || '') // nome da rua/avenida/etc.
       $('#street_number').val(addressFromOSM.house_number || '')
     }
 
-    if (addressFromGeoPtApi) {
-      if (addressFromGeoPtApi.concelho) {
-        $('#municipality').val(addressFromGeoPtApi.concelho.trim().toLowerCase())
+    if (addressFromGeoApiPt) {
+      if (addressFromGeoApiPt.concelho) {
+        $('#municipality').val(addressFromGeoApiPt.concelho.trim().toLowerCase())
           .trigger('change', [true]) // triger with parameter, true to refer addressFromAPI
       }
-      if (addressFromGeoPtApi.freguesia) {
-        $('#parish').val(addressFromGeoPtApi.freguesia.trim().toLowerCase())
+      if (addressFromGeoApiPt.freguesia) {
+        $('#parish').val(addressFromGeoApiPt.freguesia.trim().toLowerCase())
           .trigger('change')
       }
     } else if (addressFromOSM) {
