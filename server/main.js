@@ -80,8 +80,7 @@ app.post(submissionsUrl, function (req, res) {
     case 'setSolvedOccurrenceStatus':
       // (update) when field 'ocorrencia_resolvida' is present in the request (client) it means just an update of a previous existing entry/line
       query = `UPDATE ${DBInfo.db_tables.ocorrencias} SET ocorrencia_resolvida=${mysql.escape(databaseObj.ocorrencia_resolvida)} ` +
-              `WHERE PROD=${mysql.escape(databaseObj.PROD)} AND uuid=${mysql.escape(databaseObj.uuid)} ` +
-              `AND foto1=${mysql.escape(databaseObj.foto1)}`
+              `WHERE uuid=${mysql.escape(databaseObj.uuid)} AND table_row_uuid=${mysql.escape(databaseObj.table_row_uuid)}`
       break
     case 'setEntryInDbAsDeletedByAdmin':
       // (update) when field 'deleted_by_admin' is present in the request (client) it means just an update of a previous existing entry/line
