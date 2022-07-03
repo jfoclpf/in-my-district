@@ -126,7 +126,7 @@ app.get(requestHistoricUrl, function (req, res) {
   if (uuid) { // user device uuid
     // get the all entries for a specific user (ex: to generate historic for user)
     query = `SELECT * FROM ${DBInfo.db_tables.ocorrencias} ` +
-            `WHERE uuid=${mysql.escape(uuid)} AND deleted_by_admin=0 AND deleted_by_user=0 ` +
+            `WHERE uuid=${mysql.escape(uuid)} AND deleted_by_admin=0 AND deleted_by_user=0 AND deleted_by_sys=0 ` +
             'ORDER BY data_data ASC'
   } else if (occurrenceUuid) {
     // returns only single specific occurrence by its table_row_uuid (occurrence uuid)
@@ -134,7 +134,7 @@ app.get(requestHistoricUrl, function (req, res) {
   } else {
     // get all unsolved production entries for all users except admin (ex: to generate a map of all entries)
     query = `SELECT * FROM ${DBInfo.db_tables.ocorrencias} ` +
-            'WHERE PROD=1 AND deleted_by_admin=0 AND deleted_by_user=0 AND ocorrencia_resolvida=0 ' +
+            'WHERE PROD=1 AND deleted_by_admin=0 AND deleted_by_user=0 AND deleted_by_sys=0 AND ocorrencia_resolvida=0 ' +
             `ORDER BY ${DBInfo.db_tables.ocorrencias}.uuid  ASC, ${DBInfo.db_tables.ocorrencias}.data_data ASC`
   }
 
