@@ -23,7 +23,7 @@ module.exports.init = (data) => {
   dBPoolConnections = data.dBPoolConnections
 
   removeDuplicates()
-  setInterval(removeDuplicates, 1000 * 60 * 70) // every hour plus 70 minutes
+  setInterval(removeDuplicates, 1000 * 60 * 70) // every 70 minutes
 }
 
 // goes through the db and find inexistanf images, if so, delete them
@@ -41,6 +41,8 @@ function removeDuplicates () {
     } else {
       // debug('Result from db query is : ', results)
       const entriesToBeDeleted = getEntriesToBeDeleted(results) // array
+      debug(`${entriesToBeDeleted.length} considered repeated and marked to be deleted`)
+
       async.each(entriesToBeDeleted, deleteEntry, (err) => {
         if (err) {
           console.error('removeDuplicates: An error occurred:', err)
@@ -119,7 +121,7 @@ function deleteEntry (entry, callback) {
           const filePath = path.join(imgDirectory, photoArray[i])
           fs.unlink(filePath, (err) => {
             if (err) {
-              debug(`Could not delete file ${filePath}`)
+              console.error(`Could not delete file ${filePath}`)
             } else {
               debug(`File deleted successfully: ${filePath}`)
             }
