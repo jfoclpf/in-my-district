@@ -113,6 +113,7 @@ app.post(submissionsUrl, function (req, res) {
   })
 })
 
+// to fetch information from occurrences from database
 app.get(requestHistoricUrl, function (req, res) {
   debug('Getting History')
 
@@ -123,17 +124,28 @@ app.get(requestHistoricUrl, function (req, res) {
     'database table ' + DBInfo.database + '->' + DBInfo.db_tables.ocorrencias)
 
   var query
+
+  // not all fields should be public, other fields like name and email
+  // are sensitive and confirmation keys are secret
+  var fieldsArr = ['table_row_uuid', 'uuid', 'foto1', 'foto2', 'foto3', 'foto4',
+    'data_data', 'data_hora', 'data_concelho', 'data_freguesia', 'data_local',
+    'data_num_porta', 'data_coord_latit', 'data_coord_long', 'anomaly1', 'anomaly2',
+    'anomaly_code', 'email_concelho', 'email_freguesia', 'ocorrencia_resolvida',
+    'ocorrencia_resolvida_por_op', 'ocorrencia_resolvida_por_municipio',
+    'ocorrencia_resolvida_por_freguesia', 'ocorrencia_resolvida_por_utilizadores_adicionais']
+
   if (uuid) { // user device uuid
     // get the all entries for a specific user (ex: to generate historic for user)
-    query = `SELECT * FROM ${DBInfo.db_tables.ocorrencias} ` +
+    query = `SELECT ${mysql.escapeId(fieldsArr)} FROM ${DBInfo.database}.${DBInfo.db_tables.ocorrencias} ` +
             `WHERE uuid=${mysql.escape(uuid)} AND deleted_by_admin=0 AND deleted_by_user=0 AND deleted_by_sys=0 ` +
             'ORDER BY data_data ASC'
   } else if (occurrenceUuid) {
     // returns only single specific occurrence by its table_row_uuid (occurrence uuid)
-    query = `SELECT * FROM ${DBInfo.db_tables.ocorrencias} WHERE table_row_uuid=${mysql.escape(occurrenceUuid)}`
+    query = `SELECT ${mysql.escapeId(fieldsArr)} FROM ${DBInfo.database}.${DBInfo.db_tables.ocorrencias} ` +
+            `WHERE table_row_uuid=${mysql.escape(occurrenceUuid)}`
   } else {
     // get all unsolved production entries for all users except admin (ex: to generate a map of all entries)
-    query = `SELECT * FROM ${DBInfo.db_tables.ocorrencias} ` +
+    query = `SELECT ${mysql.escapeId(fieldsArr)} FROM ${DBInfo.database}.${DBInfo.db_tables.ocorrencias} ` +
             'WHERE PROD=1 AND deleted_by_admin=0 AND deleted_by_user=0 AND deleted_by_sys=0 AND ocorrencia_resolvida=0 ' +
             `ORDER BY ${DBInfo.db_tables.ocorrencias}.uuid  ASC, ${DBInfo.db_tables.ocorrencias}.data_data ASC`
   }
@@ -224,7 +236,7 @@ app.get('/resolvido/:authority?/:table_row_uuid?/:key?', function (req, res) {
         const query = `UPDATE ${DBInfo.database}.${DBInfo.db_tables.ocorrencias} ` +
           `SET ${mysql.escape(solvedObj2Db)} ` +
           `WHERE table_row_uuid='${entry.table_row_uuid}'`
-        
+
         debug(sqlFormatter.format(query))
 
         connection.query(query, (err, results, fields) => {
