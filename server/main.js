@@ -14,6 +14,7 @@ const imgUploadUrlPort = 3046
 const fs = require('fs')
 const path = require('path')
 const express = require('express')
+const { engine } = require('express-handlebars')
 const async = require('async')
 const bodyParser = require('body-parser')
 const cors = require('cors')
@@ -33,6 +34,10 @@ const app = express()
 
 app.use(bodyParser.json())
 app.use(cors())
+
+app.engine('.hbs', engine({ extname: '.hbs' }))
+app.set('view engine', '.hbs')
+app.set('views', './views')
 
 app.get('/', function (req, res) {
   res.status(200).send('Server online')
@@ -259,10 +264,11 @@ app.get('/resolvido/:authority?/:table_row_uuid?/:key?', function (req, res) {
           res.status(501).send('Ocorreu um erro')
         }
       } else {
-        res.type('text/html').send(
-          `<a href="https://nomeubairro.app/ocorrencia/?uuid=${entry.table_row_uuid}">Ocorrência</a> marcada como resolvida.<br>` +
-          'Muito obrigados pela participação!'
-        )
+        res.type('text/html').render('home', {
+          layout: false,
+          data: `<a href="https://nomeubairro.app/ocorrencia/?uuid=${entry.table_row_uuid}">Ocorrência</a> marcada como resolvida.<br>` +
+                'Muito obrigados pela participação!'
+        })
       }
     })
   })
