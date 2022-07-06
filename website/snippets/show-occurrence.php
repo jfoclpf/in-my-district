@@ -13,8 +13,11 @@ if ( $_GET['uuid'] ) {
     echo "<b>Local</b>: ".$oc["data_local"]." n. ".$oc["data_num_porta"].", ".$oc["data_concelho"]."<br>";
     echo "<b>Data</b>: ".date('d/m/Y',strtotime($oc["data_data"]))." às ".date('H:i',strtotime($oc["data_hora"]))."<br>";
     echo "<b>Município</b>: ".$oc["data_concelho"]."<br>";
-    echo "<b>Freguesia</b>: ".$oc["data_freguesia"]."<br>";
-    echo "<b>Declarada como resolvida pelo munícipe</b>: ".($oc["ocorrencia_resolvida"] ? "Sim" : "Não")."<br><br>";
+    echo "<b>Freguesia</b>: ".$oc["data_freguesia"]."<br><br>";
+    echo "<b>Ocorrência resolvida</b>: ".($oc["ocorrencia_resolvida"] ? "Sim" : "Não")."<br>";
+	echo "<b>Declarada como resolvida pelo cidadão que reportou</b>: ".($oc["ocorrencia_resolvida_por_op"] ? "Sim" : "Não")."<br>";
+	echo "<b>Declarada como resolvida pelo município</b>: ".($oc["ocorrencia_resolvida_por_municipio"] ? "Sim" : "Não")."<br>";
+	echo "<b>Declarada como resolvida pela freguesia</b>: ".($oc["ocorrencia_resolvida_por_freguesia"] ? "Sim" : "Não")."<br><br>";
 
     $imgurl = "https://in-my-district.joaopimentel.com/image_server/";
     if (!empty($oc["foto1"])) { echo '<img src="'.$imgurl.rawurlencode($oc["foto1"]).'">'; }
@@ -31,6 +34,7 @@ if ( $_GET['uuid'] ) {
 
 <br>
 <div id="map" style="height: 550px"></div>
+<br>
 
 <script language="JavaScript">
 // fetch lat and lon from html data element
