@@ -48,7 +48,7 @@ app.post(submissionsUrl, function (req, res) {
 
   if (!serverCommand || !databaseObj) {
     debug('Bad request')
-    res.status(501).send('property serverCommand or databaseObj of reqquest does not exist')
+    res.status(501).json({ error: 'property serverCommand or databaseObj of request does not exist' })
     return // leave now
   }
 
@@ -93,8 +93,8 @@ app.post(submissionsUrl, function (req, res) {
               `WHERE uuid=${mysql.escape(databaseObj.uuid)} AND table_row_uuid=${mysql.escape(databaseObj.table_row_uuid)}`
       break
     default:
-      debug('Bad request on dbCommand: ' + serverCommand)
-      res.status(501).send(`dbCommand ${serverCommand} does not exist`)
+      console.error('Bad request on dbCommand: ' + serverCommand)
+      res.status(501).json({ error: `POST dbCommand ${serverCommand} does not exist` })
       return // leave now
   }
 
@@ -102,13 +102,13 @@ app.post(submissionsUrl, function (req, res) {
 
   dBPoolConnections.query(query, function (err, results, fields) {
     if (err) {
-      debug('Error inserting user data into database: ', err)
-      res.status(501).send(JSON.stringify(err))
+      console.error('Error inserting user data into database: ', err)
+      res.status(501).json({ error: 'Error inserting user data into database' })
     } else {
       debug('User data successfully added into ' +
             'database table ' + DBInfo.database + '->' + DBInfo.db_tables.ocorrencias + '\n\n')
       debug('Result from db query is : ', results)
-      res.send(returnedData)
+      res.json(returnedData)
     }
   })
 })
@@ -155,11 +155,11 @@ app.get(requestHistoricUrl, function (req, res) {
   dBPoolConnections.query(query, function (err, results, fields) {
     if (err) {
       // error handling code goes here
-      debug('Error inserting user data into database: ', err)
-      res.status(501).send(JSON.stringify(err))
+      console.error('Error fetching info from database: ', err)
+      res.status(501).json({ error: 'Error fetching info from database' })
     } else {
       debug('Entries from db query: ', results.length)
-      res.send(results)
+      res.json(results)
     }
   })
 })
