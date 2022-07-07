@@ -16,9 +16,9 @@ if ( $_GET['uuid'] ) {
     echo "<b>Freguesia</b>: ".$oc["data_freguesia"]."<br><br>";
 
     echo "<details><summary><b>Ocorrência resolvida</b>: ".($oc["ocorrencia_resolvida"] ? "Sim" : "Não")."</summary>";
-	echo "<b>Declarada como resolvida pelo cidadão que reportou</b>: ".($oc["ocorrencia_resolvida_por_op"] ? "Sim" : "Não")."<br>";
-	echo "<b>Declarada como resolvida pelo município</b>: ".($oc["ocorrencia_resolvida_por_municipio"] ? "Sim" : "Não")."<br>";
-	echo "<b>Declarada como resolvida pela freguesia</b>: ".($oc["ocorrencia_resolvida_por_freguesia"] ? "Sim" : "Não");
+	echo "<b class=\"pl-4\">Declarada como resolvida pelo cidadão que reportou</b>: ".($oc["ocorrencia_resolvida_por_op"] ? "Sim" : "Não")."<br>";
+	echo "<b class=\"pl-4\">Declarada como resolvida pelo município</b>: ".($oc["ocorrencia_resolvida_por_municipio"] ? "Sim" : "Não")."<br>";
+	echo "<b class=\"pl-4\">Declarada como resolvida pela freguesia</b>: ".($oc["ocorrencia_resolvida_por_freguesia"] ? "Sim" : "Não");
 	echo "</details><br>";
 
     $imgurl = "https://in-my-district.joaopimentel.com/image_server/";
