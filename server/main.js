@@ -84,6 +84,10 @@ app.post(submissionsUrl, function (req, res) {
       break
     }
     case 'setSolvedOccurrenceStatus': {
+      // when the user sets the occurrence as resolved, user has priority over parish or municipalitiy setting occurence as solved
+      const bIsSolved = databaseObj.ocorrencia_resolvida
+      query = `UPDATE ${DBInfo.db_tables.ocorrencias} ` +
+              `SET ${mysql.escape({ ocorrencia_resolvida: bIsSolved, ocorrencia_resolvida_por_op: bIsSolved })} ` +
               `WHERE uuid=${mysql.escape(databaseObj.uuid)} AND table_row_uuid=${mysql.escape(databaseObj.table_row_uuid)}`
       break
     }
