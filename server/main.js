@@ -63,7 +63,7 @@ app.post(submissionsUrl, function (req, res) {
   var query
   var returnedData = {}
   switch (serverCommand) {
-    case 'submitNewEntryToDB': // (new entry in table) builds sql query to insert user data
+    case 'submitNewEntryToDB': { // (new entry in table) builds sql query to insert user data
       databaseObj.table_row_uuid = generateUuid()
       databaseObj.chave_confirmacao_ocorrencia_resolvida_por_op = generateUuid().slice(0, 8)
 
@@ -82,25 +82,28 @@ app.post(submissionsUrl, function (req, res) {
 
       query = `INSERT INTO ${DBInfo.db_tables.ocorrencias} SET ${mysql.escape(databaseObj)}`
       break
-    case 'setSolvedOccurrenceStatus':
-      // (update) when field 'ocorrencia_resolvida' is present in the request (client) it means just an update of a previous existing entry/line
-      query = `UPDATE ${DBInfo.db_tables.ocorrencias} SET ocorrencia_resolvida=${mysql.escape(databaseObj.ocorrencia_resolvida)} ` +
+    }
+    case 'setSolvedOccurrenceStatus': {
               `WHERE uuid=${mysql.escape(databaseObj.uuid)} AND table_row_uuid=${mysql.escape(databaseObj.table_row_uuid)}`
       break
-    case 'setEntryInDbAsDeletedByAdmin':
+    }
+    case 'setEntryInDbAsDeletedByAdmin': {
       // (update) when field 'deleted_by_admin' is present in the request (client) it means just an update of a previous existing entry/line
       query = `UPDATE ${DBInfo.db_tables.ocorrencias} SET deleted_by_admin=1 ` +
               `WHERE uuid=${mysql.escape(databaseObj.uuid)} AND table_row_uuid=${mysql.escape(databaseObj.table_row_uuid)}`
       break
-    case 'setEntryInDbAsDeletedByUser':
+    }
+    case 'setEntryInDbAsDeletedByUser': {
       // (update) when field 'deleted_by_admin' is present in the request (client) it means just an update of a previous existing entry/line
       query = `UPDATE ${DBInfo.db_tables.ocorrencias} SET deleted_by_user=1 ` +
               `WHERE uuid=${mysql.escape(databaseObj.uuid)} AND table_row_uuid=${mysql.escape(databaseObj.table_row_uuid)}`
       break
-    default:
+    }
+    default: {
       console.error('Bad request on dbCommand: ' + serverCommand)
       res.status(501).json({ error: `POST dbCommand ${serverCommand} does not exist` })
       return // leave now
+    }
   }
 
   debug(sqlFormatter.format(query))
