@@ -23,8 +23,8 @@ const debug = require('debug')('server:main')
 const sqlFormatter = require('sql-formatter')
 
 const DBInfo = JSON.parse(
-  fs.readFileSync(path.join(__dirname, '..', 'keys', 'serverSecrets.json'), 'utf8'))
-  .database
+  fs.readFileSync(path.join(__dirname, '..', 'keys-configs', 'serverSecrets.json'), 'utf8'))
+  .mysql
 
 DBInfo.connectionLimit = 20 // for pooling
 const dBPoolConnections = mysql.createPool(DBInfo)
