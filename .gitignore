@@ -18,15 +18,15 @@ bin/
 # where the build script stores the apk
 /app/dist/inMyDistrict.*
 
-# keys and credentials
-## this one is copied from keys/ to www/js/ upon build
-/keys/*
+# keys, configuration and credentials
+## this one is copied from keys-configs/ to www/js/ upon build
+/keys-configs/*
 /app/www/js/appSecrets.js
 
 ## except samples
-!keys/serverSecrets.sample.json
-!keys/appSecrets.sample.js
-!keys/appSigningEnvs.sample
+!keys-configs/serverConfigs.sample.json
+!keys-configs/appConfigs.sample.js
+!keys-configs/appSigningEnvs.sample
 
 #upload script to server
 /server/uploadToServer.sh

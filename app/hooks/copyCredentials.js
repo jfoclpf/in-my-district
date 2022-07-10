@@ -1,5 +1,5 @@
-/* Copies JS file keys/credentials.js to www/js/ directory.
-This is used because the dir keys/ is not git tracked as it contains sensible information */
+/* Copies JS file keys-configs/credentials.js to www/js/ directory.
+This is used because the dir keys-configs/ is not git tracked as it contains sensible information */
 
 const fs = require('fs')
 const fse = require('fs-extra')
@@ -13,7 +13,7 @@ module.exports = function (context) {
   var appDir = context.opts.projectRoot
 
   copyFile(
-    path.join(appDir, '..', 'keys', 'appSecrets.js'),
+    path.join(appDir, '..', 'keys-configs', 'appSecrets.js'),
     path.join(appDir, 'www', 'js', 'appSecrets.js')
   )
 

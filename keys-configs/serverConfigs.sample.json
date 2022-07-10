@@ -1,0 +1,41 @@
+{
+  "website": {
+    "scheme": "https",
+    "host": "nomeubairro.app"
+  },
+  "server": {
+    "scheme": "https",
+    "host": "servidor.nomeubairro.app",
+    "paths" : {
+      "submissionsUrl": "/serverapp",
+      "requestHistoricUrl": "/serverapp_get_historic",
+      "solvedUrl": "/resolvido",
+      "imgUploadUrl": "/serverapp_img_upload"
+    },
+    "commonPort": 3045,
+    "imgUploadUrlPort": 3046
+  },
+  "mysql": {
+    "__comment"  : "SQL Database where to store all the occorrences",
+    "host"      : "servidor.nomeubairro.app",
+    "user"      : "mysql_user",
+    "password"  : "mysql_password",
+    "database"  : "database_name",
+    "port"      : "/var/run/mysqld/mysqld.sock",
+    "db_tables" : {
+      "ocorrencias": "ocorrencias"
+    }
+  },
+  "nodemailer": {
+    "__comment": "NPM nodemailer module configs, for example for local Postfix mail server",
+    "sendmail": true,
+    "newline": "unix",
+    "path": "/usr/sbin/sendmail",
+    "secure": true,
+    "dkim": {
+      "domainName": "nomeubairro.app",
+      "keySelector": "default",
+      "privateKey": "-----BEGIN RSA PRIVATE KEY-----\nMII..."
+    }
+  }
+}

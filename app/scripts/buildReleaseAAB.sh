@@ -4,7 +4,7 @@ cd "${0%/*}" # directory of the script
 cd ..        # directory of the app dir
 
 # extract variables
-source ../keys/appSigningEnvs
+source ../keys-configs/appSigningEnvs
 
 export PATH=${PATH}:$ANDROID_SDK_ROOT/tools:$ANDROID_SDK_ROOT/platform-tools
 
@@ -16,7 +16,7 @@ cd platforms/android/ && ./gradlew bundle &&
 
 cd ../../
 
-cp ../keys/$KEY_FILENAME platforms/android/app/build/outputs/bundle/release/
+cp ../keys-configs/$KEY_FILENAME platforms/android/app/build/outputs/bundle/release/
 cd platforms/android/app/build/outputs/bundle/release/
 
 jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore $KEY_FILENAME -storepass $KEY_PASS app-release.aab $KEY_ALIAS &&
