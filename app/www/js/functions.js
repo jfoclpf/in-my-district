@@ -20,7 +20,10 @@ app.functions = (function (thisModule) {
     }
   }
 
-  // tell if current user is an authorized admin
+  // Tell if current user is an authorized Admin
+  // Admins have special permissions, like erasing occurrences
+  // UUID for debug and release are different and thus both should be considered
+  // To know UUID in dev console check the variable device.uuid
   function isCurrentUserAnAdmin () {
     return (typeof ADMIN_DEVICE_UUIDs !== 'undefined') && ADMIN_DEVICE_UUIDs.includes(device.uuid)
   }

@@ -16,6 +16,7 @@
     },
     "mainAppPort": 8080,
     "imgUploadAppPort": 8081,
+    "photosDirectory": "uploadedImages",
     "mysql": {
       "__comment": "MySQL Database where to store all the occorrences",
       "host": "servidor.nomeubairro.app",

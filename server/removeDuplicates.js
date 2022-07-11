@@ -13,12 +13,12 @@ const mysql = require('mysql') // module to get info from database
 const debug = require('debug')('removeDuplicates')
 const sqlFormatter = require('sql-formatter')
 
-var imgDirectory // directory where the images are stored with respect to present file
+var photosDirectoryFullPath // directory full path where the images/photos of occurrences are stored
 var DBInfo
 var dBPoolConnections // database connection variable
 
 module.exports.init = (data) => {
-  imgDirectory = data.imgDirectory
+  photosDirectoryFullPath = data.photosDirectoryFullPath
   DBInfo = data.DBInfo
   dBPoolConnections = data.dBPoolConnections
 
@@ -91,8 +91,8 @@ function getEntriesToBeDeleted (results) {
 // check if two photos are equal (have same jpg content)
 function areTwoPhotosEqual (photoA, photoB) {
   if (photoA && photoB) {
-    var photoABuffer = fs.readFileSync(path.join(imgDirectory, photoA))
-    var photoBBuffer = fs.readFileSync(path.join(imgDirectory, photoB))
+    var photoABuffer = fs.readFileSync(path.join(photosDirectoryFullPath, photoA))
+    var photoBBuffer = fs.readFileSync(path.join(photosDirectoryFullPath, photoB))
     return photoABuffer.equals(photoBBuffer)
   } else {
     return false

@@ -27,13 +27,16 @@ const websiteUrlOrigin = configs.website.scheme + '://' + configs.website.host
 const DBInfo = configs.server.mysql
 const serverInfo = configs.server
 
-const submissionsUrl = serverInfo.url.paths.submissionsUrl // to upload anew or update the data of an occurence
-const requestHistoricUrl = serverInfo.url.paths.requestHistoricUrl
-const solvedUrl = serverInfo.url.paths.solvedUrl // for the link municipalities and parishes use to declare occurrence as resolved
+// paths
+const submissionsUrlPath = serverInfo.url.paths.submissions // to upload anew or update the data of an occurence
+const requestHistoricUrlPath = serverInfo.url.paths.requestHistoric
+const solvedOccurrenceUrlPath = serverInfo.url.paths.solvedOccurrence // for the link municipalities and parishes use to declare occurrence as resolved
 const mainAppPort = serverInfo.mainAppPort
 
-const imgUploadUrl = serverInfo.url.paths.imgUploadUrl
-const imgUploadAppPort = serverInfo.imgUploadAppPort
+// upload of images/photos
+const photosUploadUrlPath = serverInfo.url.paths.photosUpload
+const photosUploadAppPort = serverInfo.photosUploadAppPort
+const photosDirectoryFullPath = path.join(__dirname, serverInfo.photosDirectory)
 
 DBInfo.connectionLimit = 20 // for pooling
 const dBPoolConnections = mysql.createPool(DBInfo)
@@ -52,7 +55,7 @@ app.get('/', function (req, res) {
 })
 
 // to upload anew or update the data of an occurrence
-app.post(submissionsUrl, function (req, res) {
+app.post(submissionsUrlPath, function (req, res) {
   // object got from POST
   var serverCommand = req.body.serverCommand || req.body.dbCommand // dbCommand for backward compatibility
   debug('serverCommand is ', serverCommand)
@@ -134,7 +137,7 @@ app.post(submissionsUrl, function (req, res) {
 })
 
 // to fetch information from occurrences from database
-app.get(requestHistoricUrl, function (req, res) {
+app.get(requestHistoricUrlPath, function (req, res) {
   debug('Getting History')
 
   const uuid = req.query.uuid // device UUID
@@ -185,7 +188,7 @@ app.get(requestHistoricUrl, function (req, res) {
 })
 
 // link for the municipality or parish authorities to click to mark occurence as resolved
-app.get(solvedUrl + '/:authority?/:table_row_uuid?/:key?', function (req, res) {
+app.get(solvedOccurrenceUrlPath + '/:authority?/:table_row_uuid?/:key?', function (req, res) {
   const authority = req.params.authority
   const tableRowUuid = req.params.table_row_uuid
   const key = req.params.key
@@ -281,6 +284,7 @@ app.get(solvedUrl + '/:authority?/:table_row_uuid?/:key?', function (req, res) {
       } else {
         res.type('text/html').render('home', {
           layout: false,
+          websiteUrlOrigin: websiteUrlOrigin,
           data: `<a href="${websiteUrlOrigin}/ocorrencia/?uuid=${entry.table_row_uuid}">Ocorrência</a> marcada como resolvida.<br>` +
                 'Muito obrigados pela participação!'
         })
@@ -303,7 +307,7 @@ app2.use(cors())
 app2.use(bodyParser.json({ limit: '50mb' }))
 app2.use(bodyParser.urlencoded({ limit: '50mb', extended: true }))
 
-app2.post(imgUploadUrl, async (req, res) => {
+app2.post(imgUploadUrlPath, async (req, res) => {
   debugFileTransfer('Getting files')
   try {
     if (!req.files) {
@@ -353,11 +357,10 @@ const server2 = app2.listen(imgUploadAppPort, () => console.log(`File upload ser
 
 console.log('Initializing timers to cleanup database')
 // directory where the images are stored with respect to present file
-const imgDirectory = path.join(__dirname, 'uploadedImages')
 require(path.join(__dirname, 'cleanBadPhotos'))
-  .init({ imgDirectory, DBInfo, dBPoolConnections })
+  .init({ photosDirectoryFullPath, DBInfo, dBPoolConnections })
 require(path.join(__dirname, 'removeDuplicates'))
-  .init({ imgDirectory, DBInfo, dBPoolConnections })
+  .init({ photosDirectoryFullPath, DBInfo, dBPoolConnections })
 
 // gracefully exiting upon CTRL-C or when PM2 stops the process
 process.on('SIGINT', gracefulShutdown)

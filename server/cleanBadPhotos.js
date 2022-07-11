@@ -13,12 +13,12 @@ const mysql = require('mysql') // module to get info from database
 const debug = require('debug')('cleanBadPhotos')
 const sqlFormatter = require('sql-formatter')
 
-var imgDirectory // directory where the images are stored with respect to present file
+var photosDirectoryFullPath // directory full path where the images/photos of occurrences are stored
 var DBInfo
 var dBPoolConnections // database connection variable
 
 module.exports.init = (data) => {
-  imgDirectory = data.imgDirectory
+  photosDirectoryFullPath = data.photosDirectoryFullPath
   DBInfo = data.DBInfo
   dBPoolConnections = data.dBPoolConnections
 
@@ -56,7 +56,7 @@ function processDBentry (entry, mainCallback) {
   const photosNotFound = {}
   for (var i = 0; i < photoArray.length; i++) {
     if (photoArray[i]) {
-      const fileName = path.join(imgDirectory, photoArray[i])
+      const fileName = path.join(photosDirectoryFullPath, photoArray[i])
       if (fs.existsSync(fileName)) {
         deleteTableRow = false
       } else {
