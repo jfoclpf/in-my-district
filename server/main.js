@@ -5,12 +5,6 @@ and stores it in the dabatase */
 /* eslint no-var: "off" */
 /* eslint no-prototype-builtins: "off" */
 
-const submissionsUrl = /.*\/serverapp$/ // to upload anew or update the data of an occurence
-const requestHistoricUrl = /.*\/serverapp_get_historic$/
-const commonPort = 3045
-const imgUploadUrl = /.*\/serverapp_img_upload$/
-const imgUploadUrlPort = 3046
-
 const fs = require('fs')
 const path = require('path')
 const express = require('express')
@@ -22,13 +16,27 @@ const mysql = require('mysql') // module to get info from database
 const debug = require('debug')('server:main')
 const sqlFormatter = require('sql-formatter')
 
-const DBInfo = JSON.parse(
-  fs.readFileSync(path.join(__dirname, '..', 'keys-configs', 'serverSecrets.json'), 'utf8'))
-  .mysql
+const configs = JSON.parse(
+  fs.readFileSync(path.join(__dirname, '..', 'keys-configs', 'configs.json'), 'utf8')
+)
+debug(configs)
+
+const serverUrlOrigin = configs.server.url.scheme + '://' + configs.server.url.host // eslint-disable-line no-unused-vars
+const websiteUrlOrigin = configs.website.scheme + '://' + configs.website.host
+
+const DBInfo = configs.server.mysql
+const serverInfo = configs.server
+
+const submissionsUrl = serverInfo.url.paths.submissionsUrl // to upload anew or update the data of an occurence
+const requestHistoricUrl = serverInfo.url.paths.requestHistoricUrl
+const solvedUrl = serverInfo.url.paths.solvedUrl // for the link municipalities and parishes use to declare occurrence as resolved
+const mainAppPort = serverInfo.mainAppPort
+
+const imgUploadUrl = serverInfo.url.paths.imgUploadUrl
+const imgUploadAppPort = serverInfo.imgUploadAppPort
 
 DBInfo.connectionLimit = 20 // for pooling
 const dBPoolConnections = mysql.createPool(DBInfo)
-debug(DBInfo)
 
 const app = express()
 
@@ -177,7 +185,7 @@ app.get(requestHistoricUrl, function (req, res) {
 })
 
 // link for the municipality or parish authorities to click to mark occurence as resolved
-app.get('/resolvido/:authority?/:table_row_uuid?/:key?', function (req, res) {
+app.get(solvedUrl + '/:authority?/:table_row_uuid?/:key?', function (req, res) {
   const authority = req.params.authority
   const tableRowUuid = req.params.table_row_uuid
   const key = req.params.key
@@ -273,7 +281,7 @@ app.get('/resolvido/:authority?/:table_row_uuid?/:key?', function (req, res) {
       } else {
         res.type('text/html').render('home', {
           layout: false,
-          data: `<a href="https://nomeubairro.app/ocorrencia/?uuid=${entry.table_row_uuid}">Ocorrência</a> marcada como resolvida.<br>` +
+          data: `<a href="${websiteUrlOrigin}/ocorrencia/?uuid=${entry.table_row_uuid}">Ocorrência</a> marcada como resolvida.<br>` +
                 'Muito obrigados pela participação!'
         })
       }
@@ -340,8 +348,8 @@ function generateUuid () {
 /* ############################################################################################## */
 /* ############################################################################################## */
 
-const server = app.listen(commonPort, () => console.log(`Request server listening on port ${commonPort}!`))
-const server2 = app2.listen(imgUploadUrlPort, () => console.log(`File upload server listening on port ${imgUploadUrlPort}!`))
+const server = app.listen(mainAppPort, () => console.log(`Request server listening on port ${mainAppPort}!`))
+const server2 = app2.listen(imgUploadAppPort, () => console.log(`File upload server listening on port ${imgUploadAppPort}!`))
 
 console.log('Initializing timers to cleanup database')
 // directory where the images are stored with respect to present file

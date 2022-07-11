@@ -24,8 +24,7 @@ bin/
 /app/www/js/appSecrets.js
 
 ## except samples
-!keys-configs/serverConfigs.sample.json
-!keys-configs/appConfigs.sample.js
+!keys-configs/configs.sample.json
 !keys-configs/appSigningEnvs.sample
 
 #upload script to server

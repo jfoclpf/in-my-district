@@ -111,7 +111,6 @@
   "standard": {
     "ignore": [
       "www/js/res/*",
-      "www/js/appSecrets.js",
       "test/www/*",
       "platforms/",
       "plugins/"
