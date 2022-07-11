@@ -19,14 +19,11 @@ The server is receiving requests at https://servidor.nomeubairro.app/
 
 ```nginx
 server {
+  server_name servidor.nomeubairro.app;
+  client_max_body_size 50M;
 
-  ## Your website name goes here.
-	server_name servidor.nomeubairro.app;
-
-	client_max_body_size 50M;
-
-	# APP in-my-district
-	location ~ ^\/(|serverapp|serverapp_get_historic|resolvido\/.*)$ {
+  # APP in-my-district
+  location ~ ^\/(|serverapp|serverapp_get_historic|resolvido\/.*)$ {
     proxy_pass http://localhost:3045;
     proxy_http_version 1.1;
     proxy_set_header Upgrade $http_upgrade;
@@ -35,7 +32,7 @@ server {
     proxy_cache_bypass $http_upgrade;
     proxy_set_header X-Forwarded-For $remote_addr;
     proxy_set_header X-Forwarded-Proto https;
-	}
+  }
 
   # server for uploading photos
   location = /serverapp_img_upload {
@@ -48,7 +45,7 @@ server {
     proxy_set_header X-Forwarded-For $remote_addr;
   }
 
-  #image server
+  # server for static uploaded images/photos
   location /image_server/ {
     alias /var/www/in-my-district/server/uploadedImages/;
     autoindex off;
