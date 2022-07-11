@@ -118,7 +118,7 @@ function deleteEntry (entry, callback) {
       const photoArray = [entry.foto1, entry.foto2, entry.foto3, entry.foto4]
       for (var i = 0; i < photoArray.length; i++) {
         if (photoArray[i]) {
-          const filePath = path.join(imgDirectory, photoArray[i])
+          const filePath = path.join(photosDirectoryFullPath, photoArray[i])
           fs.unlink(filePath, (err) => {
             if (err) {
               console.error(`Could not delete file ${filePath}`)

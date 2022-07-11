@@ -284,61 +284,13 @@ app.get(solvedOccurrenceUrlPath + '/:authority?/:table_row_uuid?/:key?', functio
       } else {
         res.type('text/html').render('home', {
           layout: false,
-          websiteUrlOrigin: websiteUrlOrigin,
+          websiteUrlOrigin,
           data: `<a href="${websiteUrlOrigin}/ocorrencia/?uuid=${entry.table_row_uuid}">Ocorrência</a> marcada como resolvida.<br>` +
                 'Muito obrigados pela participação!'
         })
       }
     })
   })
-})
-
-/* ############################################################################################## */
-/* ############################################################################################## */
-// app2 is used for uploading files
-
-const fileUpload = require('express-fileupload')
-const debugFileTransfer = require('debug')('server:file-transfer')
-const app2 = express()
-
-// enable files upload
-app2.use(fileUpload({ createParentPath: true, debug: debugFileTransfer.enabled }))
-app2.use(cors())
-app2.use(bodyParser.json({ limit: '50mb' }))
-app2.use(bodyParser.urlencoded({ limit: '50mb', extended: true }))
-
-app2.post(imgUploadUrlPath, async (req, res) => {
-  debugFileTransfer('Getting files')
-  try {
-    if (!req.files) {
-      debugFileTransfer('No files')
-      res.status(400).send({
-        status: false,
-        message: 'No file uploaded'
-      })
-    } else {
-      // Use the name of the input field (i.e. "avatar") to retrieve the uploaded file
-      debugFileTransfer('Fetching files:')
-      debugFileTransfer(req.files)
-      const img = req.files.file
-      // Use the mv() method to place the file in upload directory (i.e. "uploads")
-      img.mv('./uploadedImages/' + img.name)
-
-      // send response
-      res.status(200).send({
-        status: true,
-        message: 'File is uploaded',
-        data: {
-          name: img.name,
-          mimetype: img.mimetype,
-          size: img.size
-        }
-      })
-    }
-  } catch (err) {
-    debugFileTransfer('Error on requesting files:', err)
-    res.status(500).send(err)
-  }
 })
 
 function generateUuid () {
@@ -353,7 +305,10 @@ function generateUuid () {
 /* ############################################################################################## */
 
 const server = app.listen(mainAppPort, () => console.log(`Request server listening on port ${mainAppPort}!`))
-const server2 = app2.listen(imgUploadAppPort, () => console.log(`File upload server listening on port ${imgUploadAppPort}!`))
+
+// server for uploading files to main server's disk
+const server2 = require(path.join(__dirname, 'fileUpload'))
+  .init({ photosUploadUrlPath, photosUploadAppPort, photosDirectoryFullPath })
 
 console.log('Initializing timers to cleanup database')
 // directory where the images are stored with respect to present file
