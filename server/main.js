@@ -333,7 +333,7 @@ function gracefulShutdown (signal) {
       },
       (callback) => {
         server2.close(() => {
-          console.log('Server for files upload closed')
+          console.log('Server for photos upload closed')
           callback()
         })
       },
