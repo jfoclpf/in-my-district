@@ -15,7 +15,7 @@
       }
     },
     "mainAppPort": 8080,
-    "imgUploadAppPort": 8081,
+    "photosUploadAppPort": 8081,
     "photosDirectory": "uploadedImages",
     "mysql": {
       "__comment": "MySQL Database where to store all the occorrences",
