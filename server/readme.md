@@ -46,16 +46,16 @@ server {
     proxy_set_header Host $host;
     proxy_cache_bypass $http_upgrade;
     proxy_set_header X-Forwarded-For $remote_addr;
-	}
+  }
 
-	#image server
-	location /image_server/ {
-	  alias /var/www/in-my-district/server/uploadedImages/;
-		autoindex off;
-	}
+  #image server
+  location /image_server/ {
+    alias /var/www/in-my-district/server/uploadedImages/;
+    autoindex off;
+  }
 
   location = /robots.txt {
-		return 200 "User-agent: *\nDisallow: /\n";
+    return 200 "User-agent: *\nDisallow: /\n";
   }
 
   listen 443 ssl; # managed by Certbot
