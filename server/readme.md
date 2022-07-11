@@ -1,10 +1,77 @@
+## Function of the code
 Here resides the NodeJS code of the sever that: 
 
- - connects to a MySQL database
- - receives HTTP requests from the APP to submit new ocurrences in the database
- - receives the uploaded photos corresponding to the occurrences sent by the APP
- - stores these photos, to be shown on the app or on the website
+ - connects to a MySQL database (`main.js`)
+ - receives HTTP requests from the APP to submit or update new ocurrences in the database (`main.js`)
+ - receives the uploaded photos corresponding to the occurrences sent by the APP (`photosUpload.js`)
+ - stores these photos, to be shown on the app or on the website (`photosUpload.js`)
 
- The entry point of the server is `main.js`.
+The code also runs periodically to
+
+ - marks entry in database as deleted if pathnames of photos don't exist in server (`cleanBadPhotos`)
+ - remove duplicated entries in database (`removeDuplicates.js`)
+
+The entry point of the server is `main.js`.
  
- The server is receiving requests at https://servidor.nomeubairro.app/
+The server is receiving requests at https://servidor.nomeubairro.app/
+
+## Nginx typical configuration
+
+```nginx
+server {
+
+  ## Your website name goes here.
+	server_name servidor.nomeubairro.app;
+
+	client_max_body_size 50M;
+
+	# APP in-my-district
+	location ~ ^\/(|serverapp|serverapp_get_historic|resolvido\/.*)$ {
+    proxy_pass http://localhost:3045;
+    proxy_http_version 1.1;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection 'upgrade';
+    proxy_set_header Host $host;
+    proxy_cache_bypass $http_upgrade;
+    proxy_set_header X-Forwarded-For $remote_addr;
+    proxy_set_header X-Forwarded-Proto https;
+	}
+
+  # server for uploading photos
+  location = /serverapp_img_upload {
+    proxy_pass http://localhost:3046;
+    proxy_http_version 1.1;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection 'upgrade';
+    proxy_set_header Host $host;
+    proxy_cache_bypass $http_upgrade;
+    proxy_set_header X-Forwarded-For $remote_addr;
+	}
+
+	#image server
+	location /image_server/ {
+	  alias /var/www/in-my-district/server/uploadedImages/;
+		autoindex off;
+	}
+
+  location = /robots.txt {
+		return 200 "User-agent: *\nDisallow: /\n";
+  }
+
+  listen 443 ssl; # managed by Certbot
+  ssl_certificate /etc/letsencrypt/live/servidor.nomeubairro.app/fullchain.pem; # managed by Certbot
+  ssl_certificate_key /etc/letsencrypt/live/servidor.nomeubairro.app/privkey.pem; # managed by Certbot
+  include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+  ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+}
+
+server {
+  if ($host = servidor.nomeubairro.app) {
+    return 301 https://$host$request_uri;
+  } # managed by Certbot
+
+  server_name servidor.nomeubairro.app;
+  listen 80;
+  return 404; # managed by Certbot
+}
+```
