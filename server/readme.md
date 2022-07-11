@@ -72,3 +72,12 @@ server {
   return 404; # managed by Certbot
 }
 ```
+
+## PM2 for production mode
+
+After Nginx configuration is correctly configured and loaded, we use PM2 to start the server in production mode, using the file `pm2.json` located in this directory
+
+```
+npm install pm2@latest -g
+pm2 start pm2.json
+```
