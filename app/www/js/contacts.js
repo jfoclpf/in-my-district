@@ -1,74 +1,64 @@
 /* Module that deals with the contacts stored in module contacts.js */
 
-/* eslint no-var: off */
-/* global app, $ */
+/* global $ */
 
-app.contacts = (function (thisModule) {
-  var currentMunicipality = {}
-  var currentParish = {}
+import * as main from './main.js'
 
-  function init () {
-  }
+var currentMunicipality = {}
+var currentParish = {}
 
-  function setMunicipality (municipality) {
-    $.ajax({
-      url: app.main.urls.geoApi.ptApi + '/municipio',
-      data: {
-        nome: municipality
-      },
-      dataType: 'json',
-      type: 'GET',
-      async: true,
-      crossDomain: true
-    }).done(function (data) {
-      console.log('municipio: ', data)
-      currentMunicipality = data
-    }).fail(function (err) {
-      console.error(`Could not obtain data for ${municipality}`, err)
-      currentMunicipality = null
-    })
-  }
+export function init () {
+}
 
-  function setParish (parish, municipality, callback) {
-    $.ajax({
-      url: app.main.urls.geoApi.ptApi + '/freguesia',
-      data: {
-        nome: parish,
-        municipio: municipality
-      },
-      dataType: 'json',
-      type: 'GET',
-      async: true,
-      crossDomain: true
-    }).done(function (data) {
-      console.log('freguesia: ', data)
-      currentParish = data
-      callback(null, data)
-    }).fail(function (err) {
-      console.error(`Could not obtain data for ${parish} in ${municipality}`, err)
-      currentParish = null
-      callback(Error(err))
-    })
-  }
+export function setMunicipality (municipality) {
+  $.ajax({
+    url: main.urls.geoApi.ptApi + '/municipio',
+    data: {
+      nome: municipality
+    },
+    dataType: 'json',
+    type: 'GET',
+    async: true,
+    crossDomain: true
+  }).done(function (data) {
+    console.log('municipio: ', data)
+    currentMunicipality = data
+  }).fail(function (err) {
+    console.error(`Could not obtain data for ${municipality}`, err)
+    currentMunicipality = null
+  })
+}
 
-  function getCurrentMunicipality () {
-    return currentMunicipality
-  }
+export function setParish (parish, municipality, callback) {
+  $.ajax({
+    url: main.urls.geoApi.ptApi + '/freguesia',
+    data: {
+      nome: parish,
+      municipio: municipality
+    },
+    dataType: 'json',
+    type: 'GET',
+    async: true,
+    crossDomain: true
+  }).done(function (data) {
+    console.log('freguesia: ', data)
+    currentParish = data
+    callback(null, data)
+  }).fail(function (err) {
+    console.error(`Could not obtain data for ${parish} in ${municipality}`, err)
+    currentParish = null
+    callback(Error(err))
+  })
+}
 
-  function getCurrentParish () {
-    return currentParish
-  }
+export function getCurrentMunicipality () {
+  return currentMunicipality
+}
 
-  function hasCurrentParishAnEmail () {
-    return currentParish && currentParish.email
-  }
+export function getCurrentParish () {
+  return currentParish
+}
 
-  thisModule.init = init
-  thisModule.setMunicipality = setMunicipality
-  thisModule.setParish = setParish
-  thisModule.getCurrentMunicipality = getCurrentMunicipality
-  thisModule.getCurrentParish = getCurrentParish
-  thisModule.hasCurrentParishAnEmail = hasCurrentParishAnEmail
-
-  return thisModule
-})(app.contacts || {})
+export function hasCurrentParishAnEmail () {
+  return currentParish && currentParish.email
+}
