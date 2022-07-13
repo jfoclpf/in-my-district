@@ -12,9 +12,6 @@ import * as localization from './localization.js'
 import * as dbServerLink from './dbServerLink.js'
 import * as anomaliesMod from './anomalies.js'
 
-const requestHistoricUrl = main.urls.databaseServer.requestHistoric
-const requestImageUrl = main.urls.databaseServer.requestImage
-
 var map
 var markersGroups // groups of markers, by type of anomaly
 var allDbEntries // all entries fetched from database
@@ -154,6 +151,8 @@ function initializeMap (callback) {
 }
 
 function getAllEntries (callback) {
+  const requestHistoricUrl = main.urls.databaseServer.requestHistoric
+
   // because there's parameter uuid, it gets all entries with PROD=1
   $.ajax({
     url: requestHistoricUrl,
@@ -179,6 +178,8 @@ function getAllEntries (callback) {
 }
 
 function processMapMarkers () {
+  const requestImageUrl = main.urls.databaseServer.requestImage
+
   // create an array for each type of occurence
   for (const key in markersGroups) {
     if (markersGroups.hasOwnProperty(key)) {

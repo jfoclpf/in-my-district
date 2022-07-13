@@ -1,5 +1,7 @@
 /* eslint camelcase: off */
-/* global cordova, $, device, ADMIN_DEVICE_UUIDs */
+/* global cordova, $, device */
+
+import * as appSecrets from './appSecrets.js'
 
 // to run on startup
 // add functions related with respective plugins
@@ -22,7 +24,8 @@ export function addFunctionsToPlugins () {
 // UUID for debug and release are different and thus both should be considered
 // To know UUID in dev console check the variable device.uuid
 export function isCurrentUserAnAdmin () {
-  return (typeof ADMIN_DEVICE_UUIDs !== 'undefined') && ADMIN_DEVICE_UUIDs.includes(device.uuid)
+  const adminDevicesUuids = appSecrets.adminDevicesUuids
+  return (typeof adminDevicesUuids !== 'undefined') && adminDevicesUuids.includes(device.uuid)
 }
 
 // limpar a mensagem para o email, remove HTML tags,

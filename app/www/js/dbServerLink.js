@@ -9,10 +9,10 @@ import * as localization from './localization.js'
 import * as anomalies from './anomalies.js'
 import * as contacts from './contacts.js'
 
-const uploadImagesUrl = main.urls.databaseServer.uploadImages
-const uploadOccurenceUrl = main.urls.databaseServer.uploadOccurence
-
 export function submitNewEntryToDB (callback1, callback2) {
+  const uploadImagesUrl = main.urls.databaseServer.uploadImages
+  const uploadOccurenceUrl = main.urls.databaseServer.uploadOccurence
+
   const dateYYYY_MM_DD = form.getDateYYYY_MM_DD()
   const timeHH_MM = form.getTimeHH_MM()
   const municipality = form.getMunicipality()
@@ -125,6 +125,7 @@ function getRandomString (length) {
 
 // for a certain occurence it sets that it was dealt, or not, by authority
 export function setSolvedOccurrenceStatus (occurence, status, callback) {
+  const uploadOccurenceUrl = main.urls.databaseServer.uploadOccurence
   var databaseObj = Object.assign({}, occurence) // cloning Object
 
   databaseObj.ocorrencia_resolvida = status ? 1 : 0
@@ -151,6 +152,7 @@ export function setSolvedOccurrenceStatus (occurence, status, callback) {
 }
 
 export function setEntryInDbAsDeleted (dbEntry, deleter, callback) {
+  const uploadOccurenceUrl = main.urls.databaseServer.uploadOccurence
   var databaseObj = Object.assign({}, dbEntry) // cloning Object
 
   let dbCommand

@@ -12,12 +12,13 @@ module.exports = function (context) {
 
   var appDir = context.opts.projectRoot
 
-  // generate Javascript file with array of ADMIN_DEVICE_UUIDs, taken from config JSON file
+  // generate Javascript file with array of adminDevicesUuids, taken from config JSON file
   const adminDevicesUuids = JSON.parse(
     fs.readFileSync(path.join(appDir, '..', 'keys-configs', 'configs.json'), 'utf8')
   ).adminDevicesUuids
 
-  const jsFileContent = `const ADMIN_DEVICE_UUIDs = ${JSON.stringify(adminDevicesUuids)} // eslint-disable-line\n`
+  const jsFileContent =
+    `export const adminDevicesUuids = ${JSON.stringify(adminDevicesUuids)} // eslint-disable-line\n`
 
   fs.writeFileSync(path.join(appDir, 'www', 'js', 'appSecrets.js'), jsFileContent)
   console.log(`${twoSpaces}File generated: ${path.join('www', 'js', 'appSecrets.js')}`)

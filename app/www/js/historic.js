@@ -11,12 +11,10 @@ import * as text from './text.js'
 import * as file from './file.js'
 import * as dbServerLink from './dbServerLink.js'
 
-const requestHistoricUrl = main.urls.databaseServer.requestHistoric
-const requestImageUrl = main.urls.databaseServer.requestImage
-
 var historicData
 
 export function updateHistoric () {
+  const requestHistoricUrl = main.urls.databaseServer.requestHistoric
   const uuid = device.uuid
   setLoadingIcon()
 
@@ -43,6 +41,7 @@ export function updateHistoric () {
 }
 
 export function requestNumberOfHistoricOccurrences (callback) {
+  const requestHistoricUrl = main.urls.databaseServer.requestHistoric
   const uuid = device.uuid
 
   console.log('Fetching historic with uuid ' + uuid)
@@ -83,6 +82,8 @@ function setLoadingIcon () {
 }
 
 function insertFetchedDataIntoHistoric () {
+  const requestImageUrl = main.urls.databaseServer.requestImage
+
   // resets and cleans <div id="historic">
   $('#historic').find('*').off() // removes all event handlers
   $('#historic').empty()
@@ -263,6 +264,8 @@ function insertFetchedDataIntoHistoric () {
 }
 
 function sendReminderEmail (occurrence) {
+  const requestImageUrl = main.urls.databaseServer.requestImage
+
   var progressAlert = $.jAlert({
     class: 'ja_300px',
     closeBtn: false,
