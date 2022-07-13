@@ -21,7 +21,7 @@ cordova clean
 
 cordova build --release android
 
-cp keys-configs/$KEY_FILENAME platforms/android/app/build/outputs/apk/release/
+cp ../keys-configs/$KEY_FILENAME platforms/android/app/build/outputs/apk/release/
 cd platforms/android/app/build/outputs/apk/release/
 
 # old method of signing; after Android 11 one must use apksigner instead
