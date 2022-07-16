@@ -4,7 +4,7 @@
     "host": "nomeubairro.app"
   },
   "server": {
-    "urls": {
+    "url": {
       "scheme": "https",
       "host": "servidor.nomeubairro.app",
       "paths" : {
