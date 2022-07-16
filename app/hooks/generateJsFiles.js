@@ -23,13 +23,27 @@ module.exports = function (context) {
   generateFile(appDir, path.join(appDir, 'www', 'js', 'appSecrets.js'), jsFileContent)
 
   // generate www/js/variables.js
+  const variables = {
+    urls: {
+      databaseServer: (() => {
+        const urls = {}
+        for (const key in configs.server.url.paths) {
+          urls[key] = configs.server.url.scheme + '://' + configs.server.url.host + configs.server.url.paths[key]
+        }
+        return urls
+      })(),
+      appStores: configs.appStores,
+      geoApi: configs.geoApi
+    }
+  }
   jsFileContent =
-    `export const variables = ${JSON.stringify(configs.adminDevicesUuids)} // eslint-disable-line\n`
+    '/* eslint-disable */\n' +
+    `export const variables = ${JSON.stringify(variables, null, ' ')}\n`
   generateFile(appDir, path.join(appDir, 'www', 'js', 'variables.js'), jsFileContent)
 
   // just copy file
   copyFile(
-    appDir,
+    context,
     path.join(appDir, '..', 'commons', 'json', 'anomalies.json'),
     path.join(appDir, 'www', 'json', 'anomalies.json')
   )
@@ -40,7 +54,8 @@ function generateFile (appDir, fileDestFullPath, jsFileContent) {
   console.log(`${twoSpaces}File generated: ${path.relative(appDir, fileDestFullPath)}`)
 }
 
-function copyFile (appDir, fileOriginFullPath, fileDestFullPath) {
+function copyFile (context, fileOriginFullPath, fileDestFullPath) {
+  const appDir = context.opts.projectRoot
   try {
     if (fs.existsSync(fileOriginFullPath)) { // file exists
       fse.copySync(fileOriginFullPath, fileDestFullPath)
