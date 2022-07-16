@@ -27,7 +27,7 @@
   <preference name="StatusBarBackgroundColor" value="#FFFFFF"/>
   <preference name="StatusBarStyle" value="blacktranslucent"/>
   <preference name="AndroidXEnabled" value="true"/>
-  <hook src="hooks/copyCredentials.js" type="before_prepare"/>
+  <hook src="hooks/generateJsFiles.js" type="before_prepare"/>
   <hook src="hooks/convertHbsToHtml.js" type="after_prepare"/>
   <hook src="hooks/minifyFiles.js" type="after_prepare"/>
   <hook src="node_modules/cordova-import-npm/scripts/importNpmPackages.js" type="before_prepare"/>
