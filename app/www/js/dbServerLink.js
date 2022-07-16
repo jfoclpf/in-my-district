@@ -10,8 +10,8 @@ import * as anomalies from './anomalies.js'
 import * as contacts from './contacts.js'
 
 export function submitNewEntryToDB (callback1, callback2) {
-  const uploadImagesUrl = main.urls.databaseServer.uploadImages
-  const uploadOccurenceUrl = main.urls.databaseServer.uploadOccurence
+  const photosUploadUrl = main.urls.databaseServer.photosUpload
+  const submissionsUrl = main.urls.databaseServer.submissions
 
   const dateYYYY_MM_DD = form.getDateYYYY_MM_DD()
   const timeHH_MM = form.getTimeHH_MM()
@@ -63,7 +63,7 @@ export function submitNewEntryToDB (callback1, callback2) {
   }
 
   $.ajax({
-    url: uploadOccurenceUrl,
+    url: submissionsUrl,
     type: 'POST',
     data: JSON.stringify({ dbCommand: 'submitNewEntryToDB', databaseObj: databaseObj }),
     contentType: 'application/json; charset=utf-8',
@@ -80,7 +80,7 @@ export function submitNewEntryToDB (callback1, callback2) {
       for (let i = 0; i < imagesArray.length; i++) {
         deferred[i] = $.Deferred();
         (function (_i) {
-          file.uploadFileToServer(imagesArray[_i], imgFileNames[_i], uploadImagesUrl,
+          file.uploadFileToServer(imagesArray[_i], imgFileNames[_i], photosUploadUrl,
             (err) => {
               if (err) {
                 console.error(err)
@@ -125,13 +125,13 @@ function getRandomString (length) {
 
 // for a certain occurence it sets that it was dealt, or not, by authority
 export function setSolvedOccurrenceStatus (occurence, status, callback) {
-  const uploadOccurenceUrl = main.urls.databaseServer.uploadOccurence
+  const submissionsUrl = main.urls.databaseServer.submissions
   var databaseObj = Object.assign({}, occurence) // cloning Object
 
   databaseObj.ocorrencia_resolvida = status ? 1 : 0
 
   $.ajax({
-    url: uploadOccurenceUrl,
+    url: submissionsUrl,
     type: 'POST',
     data: JSON.stringify({ dbCommand: 'setSolvedOccurrenceStatus', databaseObj: databaseObj }),
     contentType: 'application/json; charset=utf-8',
@@ -152,7 +152,7 @@ export function setSolvedOccurrenceStatus (occurence, status, callback) {
 }
 
 export function setEntryInDbAsDeleted (dbEntry, deleter, callback) {
-  const uploadOccurenceUrl = main.urls.databaseServer.uploadOccurence
+  const submissionsUrl = main.urls.databaseServer.submissions
   var databaseObj = Object.assign({}, dbEntry) // cloning Object
 
   let dbCommand
@@ -166,7 +166,7 @@ export function setEntryInDbAsDeleted (dbEntry, deleter, callback) {
   }
 
   $.ajax({
-    url: uploadOccurenceUrl,
+    url: submissionsUrl,
     type: 'POST',
     data: JSON.stringify({ dbCommand: dbCommand, databaseObj: databaseObj }),
     contentType: 'application/json; charset=utf-8',

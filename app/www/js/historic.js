@@ -82,7 +82,7 @@ function setLoadingIcon () {
 }
 
 function insertFetchedDataIntoHistoric () {
-  const requestImageUrl = main.urls.databaseServer.requestImage
+  const photosDirUrl = main.urls.databaseServer.photosDir
 
   // resets and cleans <div id="historic">
   $('#historic').find('*').off() // removes all event handlers
@@ -123,7 +123,7 @@ function insertFetchedDataIntoHistoric () {
     // DB has 4 fields for images for the same DB entry: foto1, foto2, foto3 and foto4
     for (var photoIndex = 1; photoIndex <= 4; photoIndex++) {
       if (historicData[i]['foto' + photoIndex]) { // if that photo index exists in the DB entry
-        const fullImgUrl = requestImageUrl + '/' + historicData[i]['foto' + photoIndex]
+        const fullImgUrl = photosDirUrl + '/' + historicData[i]['foto' + photoIndex]
         elHtmlToAppend += `<img src="${fullImgUrl}">`
       }
     }
@@ -264,7 +264,7 @@ function insertFetchedDataIntoHistoric () {
 }
 
 function sendReminderEmail (occurrence) {
-  const requestImageUrl = main.urls.databaseServer.requestImage
+  const photosDirUrl = main.urls.databaseServer.photosDir
 
   var progressAlert = $.jAlert({
     class: 'ja_300px',
@@ -298,7 +298,7 @@ function sendReminderEmail (occurrence) {
   for (var photoIndex = 1; photoIndex <= 4; photoIndex++) {
     if (occurrence['foto' + photoIndex]) { // if that photo index exists in the DB entry
       const fileName = occurrence['foto' + photoIndex]
-      const fullImgUrl = requestImageUrl + '/' + fileName
+      const fullImgUrl = photosDirUrl + '/' + fileName
 
       photosDeferred[photoIndex] = $.Deferred()
       downloadFileToDevice(photoIndex, fullImgUrl, fileName)

@@ -178,7 +178,7 @@ function getAllEntries (callback) {
 }
 
 function processMapMarkers () {
-  const requestImageUrl = main.urls.databaseServer.requestImage
+  const photosDirUrl = main.urls.databaseServer.photosDir
 
   // create an array for each type of occurence
   for (const key in markersGroups) {
@@ -223,7 +223,7 @@ function processMapMarkers () {
 
     for (var photoIndex = 1; photoIndex <= 4; photoIndex++) {
       if (el['foto' + photoIndex]) {
-        const photoUrl = requestImageUrl + '/' + el['foto' + photoIndex]
+        const photoUrl = photosDirUrl + '/' + el['foto' + photoIndex]
         htmlInfoContent += `<img class="photo-in-popup" width="200px" src="${photoUrl}">`
       }
     }
