@@ -4,24 +4,24 @@
     "host": "nomeubairro.app"
   },
   "server": {
-    "url": {
+    "urls": {
       "scheme": "https",
       "host": "servidor.nomeubairro.app",
       "paths" : {
-        "submissionsUrl": "/serverapp",
-        "requestHistoricUrl": "/serverapp_get_historic",
-        "solvedUrl": "/resolvido",
-        "imgUploadUrl": "/serverapp_img_upload"
+        "submissions": "/serverapp",
+        "requestHistoric": "/serverapp_get_historic",
+        "solvedOccurrence": "/resolvido",
+        "photosUpload": "/serverapp_img_upload"
       }
     },
-    "mainAppPort": 8080,
-    "photosUploadAppPort": 8081,
+    "mainAppPort": 3045,
+    "photosUploadAppPort": 3046,
     "photosDirectory": "uploadedImages",
     "mysql": {
       "__comment": "MySQL Database where to store all the occorrences",
       "host": "servidor.nomeubairro.app",
       "user": "app_in_my_district",
-      "password": "password",
+      "password": "<password>",
       "database": "app_in_my_district",
       "port": "/var/run/mysqld/mysqld.sock",
       "db_tables": {
@@ -44,5 +44,13 @@
   "adminDevicesUuids": [
     "xxxxxxxxxxxxxxxx",
     "yyyyyyyyyyyyyyyy"
-  ]
+  ],
+  "appStores": {
+    "playStore": "https://play.google.com/store/apps/details?id=com.in.my.district",
+    "F-Droid": "https://f-droid.org/packages/com.in.my.district/"
+  },
+  "geoApis": {
+    "nominatimReverse": "https://nominatim.openstreetmap.org/reverse",
+    "ptApi": "https://geoapi.pt/"
+  }
 }
