@@ -2,6 +2,7 @@
 /* global cordova, $, L, leafletImage */
 
 import * as main from './main.js'
+import * as variables from './variables.js'
 import * as contacts from './contacts.js'
 import * as functions from './functions.js'
 import * as personalInfo from './personalInfo.js'
@@ -14,7 +15,7 @@ var mainFormMap
 var anomalyMapMarker // map marker referring to the place where the anomaly is located
 
 export function init () {
-  const url = main.urls.geoApi.ptApi + '/municipios/freguesias'
+  const url = variables.urls.geoApi.ptApi + '/municipios/freguesias'
   $.ajax({
     url: url,
     dataType: 'json',

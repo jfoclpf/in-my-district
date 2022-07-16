@@ -5,7 +5,7 @@
 
 /* global $, device, cordova */
 
-import * as main from './main.js'
+import * as variables from './variables.js'
 import * as functions from './functions.js'
 import * as text from './text.js'
 import * as file from './file.js'
@@ -14,7 +14,7 @@ import * as dbServerLink from './dbServerLink.js'
 var historicData
 
 export function updateHistoric () {
-  const requestHistoricUrl = main.urls.databaseServer.requestHistoric
+  const requestHistoricUrl = variables.urls.databaseServer.requestHistoric
   const uuid = device.uuid
   setLoadingIcon()
 
@@ -41,7 +41,7 @@ export function updateHistoric () {
 }
 
 export function requestNumberOfHistoricOccurrences (callback) {
-  const requestHistoricUrl = main.urls.databaseServer.requestHistoric
+  const requestHistoricUrl = variables.urls.databaseServer.requestHistoric
   const uuid = device.uuid
 
   console.log('Fetching historic with uuid ' + uuid)
@@ -82,7 +82,7 @@ function setLoadingIcon () {
 }
 
 function insertFetchedDataIntoHistoric () {
-  const getPhotosUrl = main.urls.databaseServer.getPhotos
+  const getPhotosUrl = variables.urls.databaseServer.getPhotos
 
   // resets and cleans <div id="historic">
   $('#historic').find('*').off() // removes all event handlers
@@ -264,7 +264,7 @@ function insertFetchedDataIntoHistoric () {
 }
 
 function sendReminderEmail (occurrence) {
-  const getPhotosUrl = main.urls.databaseServer.getPhotos
+  const getPhotosUrl = variables.urls.databaseServer.getPhotos
 
   var progressAlert = $.jAlert({
     class: 'ja_300px',

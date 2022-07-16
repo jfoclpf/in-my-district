@@ -2,7 +2,7 @@
 
 /* global $ */
 
-import * as main from './main.js'
+import * as variables from './variables.js'
 
 var currentMunicipality = {}
 var currentParish = {}
@@ -12,7 +12,7 @@ export function init () {
 
 export function setMunicipality (municipality) {
   $.ajax({
-    url: main.urls.geoApi.ptApi + '/municipio',
+    url: variables.urls.geoApi.ptApi + '/municipio',
     data: {
       nome: municipality
     },
@@ -31,7 +31,7 @@ export function setMunicipality (municipality) {
 
 export function setParish (parish, municipality, callback) {
   $.ajax({
-    url: main.urls.geoApi.ptApi + '/freguesia',
+    url: variables.urls.geoApi.ptApi + '/freguesia',
     data: {
       nome: parish,
       municipio: municipality

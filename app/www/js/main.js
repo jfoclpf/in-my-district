@@ -12,27 +12,12 @@ import * as historic from './historic.js'
 import * as text from './text.js'
 import * as dbServerLink from './dbServerLink.js'
 import * as photos from './photos.js'
+import * as variables from './variables.js'
 
 export var DEBUG = true
 export var APPversion
 
 var wasInit
-
-export const urls = {
-  databaseServer: {
-    photosUpload: 'https://servidor.nomeubairro.app/serverapp_img_upload', // used to upload an image
-    getPhotos: 'https://servidor.nomeubairro.app/image_server', // folder where all the images are stored
-    submissions: 'https://servidor.nomeubairro.app/serverapp', // to upload anew or update the data of an occurence
-    requestHistoric: 'https://servidor.nomeubairro.app/serverapp_get_historic' // to request all historic ocurrences of current user
-  },
-  androidApps: {
-    thisApp: 'https://play.google.com/store/apps/details?id=com.in.my.district'
-  },
-  geoApi: {
-    nominatimReverse: 'https://nominatim.openstreetmap.org/reverse',
-    ptApi: 'https://geoapi.pt/' // check https://www.geoapi.pt//
-  }
-}
 
 // list of municipalities, for which the APP will NOT allow sending emails
 // for exemple in Lisbon, the municipality explicitly rejects issues sent with this APP
@@ -215,7 +200,7 @@ function requestUserAppEvaluation () {
               class: 'jButtonAlert',
               onClick: function () {
                 window.localStorage.setItem('didUserAlreadyClickedToEvaluatedApp', 'true')
-                cordova.InAppBrowser.open(urls.androidApps.thisApp, '_system')
+                cordova.InAppBrowser.open(variables.urls.appStores.playStore, '_system')
               }
             }
           ]

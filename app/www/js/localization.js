@@ -2,7 +2,7 @@
 
 /* global $ */
 
-import * as main from './main.js'
+import * as variables from './variables.js'
 
 var Latitude, Longitude
 
@@ -53,7 +53,7 @@ export function getAddressForForm (latitude, longitude, mainCallback) {
   // makes two parallel async GET requests
   Promise.allSettled([
     $.ajax({
-      url: main.urls.geoApi.nominatimReverse,
+      url: variables.urls.geoApi.nominatimReverse,
       data: {
         lat: latitude,
         lon: longitude,
@@ -67,7 +67,7 @@ export function getAddressForForm (latitude, longitude, mainCallback) {
       crossDomain: true
     }),
     $.ajax({
-      url: main.urls.geoApi.ptApi + '/gps',
+      url: variables.urls.geoApi.ptApi + '/gps',
       data: {
         lat: latitude,
         lon: longitude
@@ -78,16 +78,16 @@ export function getAddressForForm (latitude, longitude, mainCallback) {
       crossDomain: true
     })
   ]).then(function (res) {
-    // from app.main.urls.geoApi.nominatimReverse
+    // from variables.urls.geoApi.nominatimReverse
     if (res[0].status !== 'fulfilled') {
       PositionError()
-      callback(Error(main.urls.geoApi.nominatimReverse + ' returns empty'))
+      callback(Error(variables.urls.geoApi.nominatimReverse + ' returns empty'))
     } else {
       var addressFromGeoApiPt
-      // from app.main.urls.geoApi.ptApi
+      // from variables.urls.geoApi.ptApi
       if (res[1].status !== 'fulfilled') {
         // this happens when user is not in Portugal
-        console.warn(main.urls.geoApi.ptApi + ' returns empty')
+        console.warn(variables.urls.geoApi.ptApi + ' returns empty')
       } else {
         addressFromGeoApiPt = res[1].value
       }

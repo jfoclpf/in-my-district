@@ -7,6 +7,7 @@
 /* global device, cordova, $, performance, L */
 
 import * as main from './main.js'
+import * as variables from './variables.js'
 import * as functions from './functions.js'
 import * as localization from './localization.js'
 import * as dbServerLink from './dbServerLink.js'
@@ -151,7 +152,7 @@ function initializeMap (callback) {
 }
 
 function getAllEntries (callback) {
-  const requestHistoricUrl = main.urls.databaseServer.requestHistoric
+  const requestHistoricUrl = variables.urls.databaseServer.requestHistoric
 
   // because there's parameter uuid, it gets all entries with PROD=1
   $.ajax({
@@ -178,7 +179,7 @@ function getAllEntries (callback) {
 }
 
 function processMapMarkers () {
-  const getPhotosUrl = main.urls.databaseServer.getPhotos
+  const getPhotosUrl = variables.urls.databaseServer.getPhotos
 
   // create an array for each type of occurence
   for (const key in markersGroups) {

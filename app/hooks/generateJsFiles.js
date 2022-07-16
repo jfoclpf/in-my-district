@@ -23,22 +23,20 @@ module.exports = function (context) {
   generateFile(appDir, path.join(appDir, 'www', 'js', 'appSecrets.js'), jsFileContent)
 
   // generate www/js/variables.js
-  const variables = {
-    urls: {
-      databaseServer: (() => {
-        const urls = {}
-        for (const key in configs.server.url.paths) {
-          urls[key] = configs.server.url.scheme + '://' + configs.server.url.host + configs.server.url.paths[key]
-        }
-        return urls
-      })(),
-      appStores: configs.appStores,
-      geoApi: configs.geoApi
-    }
+  const urls = {
+    databaseServer: (() => {
+      const serverUrls = {}
+      for (const key in configs.server.url.paths) {
+        serverUrls[key] = configs.server.url.scheme + '://' + configs.server.url.host + configs.server.url.paths[key]
+      }
+      return serverUrls
+    })(),
+    appStores: configs.appStores,
+    geoApi: configs.geoApi
   }
   jsFileContent =
     '/* eslint-disable */\n' +
-    `export const variables = ${JSON.stringify(variables, null, ' ')}\n`
+    `export const urls = ${JSON.stringify(urls, null, ' ')}\n`
   generateFile(appDir, path.join(appDir, 'www', 'js', 'variables.js'), jsFileContent)
 
   // just copy file
