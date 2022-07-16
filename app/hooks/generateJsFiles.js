@@ -23,6 +23,7 @@ module.exports = function (context) {
   generateFile(appDir, path.join(appDir, 'www', 'js', 'appSecrets.js'), jsFileContent)
 
   // generate www/js/variables.js
+  // it generates variables objects fetched from /keys-configs/configs.json
   const urls = {
     databaseServer: (() => {
       const serverUrls = {}
