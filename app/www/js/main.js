@@ -21,7 +21,7 @@ var wasInit
 export const urls = {
   databaseServer: {
     photosUpload: 'https://servidor.nomeubairro.app/serverapp_img_upload', // used to upload an image
-    photosDir: 'https://servidor.nomeubairro.app/image_server', // folder where all the images are stored
+    getPhotos: 'https://servidor.nomeubairro.app/image_server', // folder where all the images are stored
     submissions: 'https://servidor.nomeubairro.app/serverapp', // to upload anew or update the data of an occurence
     requestHistoric: 'https://servidor.nomeubairro.app/serverapp_get_historic' // to request all historic ocurrences of current user
   },
