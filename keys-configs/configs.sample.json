@@ -11,7 +11,8 @@
         "submissions": "/serverapp",
         "requestHistoric": "/serverapp_get_historic",
         "solvedOccurrence": "/resolvido",
-        "photosUpload": "/serverapp_img_upload"
+        "photosUpload": "/serverapp_img_upload",
+        "photosDir": "/image_server"
       }
     },
     "mainAppPort": 3045,
@@ -37,7 +38,7 @@
       "dkim": {
         "domainName": "nomeubairro.app",
         "keySelector": "'default",
-        "privateKey": "-----BEGIN RSA PRIVATE KEY-----\nMIIEow..."
+        "privateKey": "-----BEGIN RSA PRIVATE KEY-----\nMIIE..."
       }
     }
   },
@@ -49,7 +50,7 @@
     "playStore": "https://play.google.com/store/apps/details?id=com.in.my.district",
     "F-Droid": "https://f-droid.org/packages/com.in.my.district/"
   },
-  "geoApis": {
+  "geoApi": {
     "nominatimReverse": "https://nominatim.openstreetmap.org/reverse",
     "ptApi": "https://geoapi.pt/"
   }
