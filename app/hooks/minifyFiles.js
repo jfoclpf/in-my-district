@@ -10,7 +10,7 @@ const async = require('async')
 const walk = require('walk')
 
 // minification tools
-const UglifyJS = require('uglify-es')
+const UglifyJS = require('uglify-js')
 const uglifycss = require('uglifycss')
 const minifyHTML = require('html-minifier').minify
 

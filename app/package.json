@@ -103,7 +103,7 @@
     "npm-check-updates": "^7.1.1",
     "semver": "^7.3.5",
     "standard": "^14.3.4",
-    "uglify-es": "^3.3.9",
+    "uglify-js": "^3.16.2",
     "uglifycss": "0.0.29",
     "walk": "^2.3.14",
     "xml2js": "^0.4.23"
