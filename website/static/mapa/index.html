@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="profile" href="https://gmpg.org/xfn/11">
-	<title>Mapa da anomalias &#8211; No Meu Bairro!</title>
+	<title>Mapa de anomalias &#8211; No Meu Bairro!</title>
 <meta name="robots" content="max-image-preview:large">
 <link rel="dns-prefetch" href="//fonts.googleapis.com">
 <link rel="dns-prefetch" href="//s.w.org">
@@ -40,7 +40,7 @@ img.emoji {
 <link rel="https://api.w.org/" href="/wp-json/">
 <link rel="alternate" type="application/json" href="/wp-json/wp/v2/pages/232">
 <link rel="EditURI" type="application/rsd+xml" title="RSD" href="/xmlrpc.php?rsd">
-<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="/wp-includes/wlwmanifest.xml"> 
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="/wp-includes/wlwmanifest.xml">
 <meta name="generator" content="WordPress 5.9.3">
 <link rel="canonical" href="/mapa/">
 <link rel="shortlink" href="/?p=232">
@@ -129,7 +129,7 @@ img.emoji {
 								                                        <img src="/wp-content/uploads/2022/04/512-2.png" alt="No Meu Bairro!">
 
                                         <span>No Meu Bairro!</span>
-									
+
 									                            </a>
                         </h1>
 						                    </div>
@@ -141,7 +141,7 @@ img.emoji {
                             <i class="fa fa-bars" aria-hidden="true"></i>
                         </button>
 						<div class="menu-menu-1-container"><ul id="primary-menu" class="menu">
-<li id="menu-item-268" class="menu-item menu-item-type-post_type menu-item-object-page current-menu-item page_item page-item-232 current_page_item menu-item-268"><a href="/mapa/" aria-current="page">Mapa da anomalias</a></li>
+<li id="menu-item-268" class="menu-item menu-item-type-post_type menu-item-object-page current-menu-item page_item page-item-232 current_page_item menu-item-268"><a href="/mapa/" aria-current="page">Mapa de anomalias</a></li>
 <li id="menu-item-37" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-37"><a href="/#download-section">Instalar</a></li>
 <li id="menu-item-198" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-privacy-policy menu-item-198"><a href="/privacy-policy/">Política de Privacidade</a></li>
 <li id="menu-item-193" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-193"><a href="https://github.com/jfoclpf/in-my-district">Ver o código</a></li>
@@ -158,14 +158,14 @@ img.emoji {
             <div class="container">
                 <div class="row">
                     <div class="col-md-8 offset-md-2">
-                        
+
 <article id="post-232" class="post-232 page type-page status-publish hentry">
 	<header class="entry-header">
-		<h1 class="entry-title">Mapa da anomalias</h1>	</header><!-- .entry-header -->
+		<h1 class="entry-title">Mapa de anomalias</h1>	</header><!-- .entry-header -->
 
-	
+
 	<div class="entry-content">
-		
+
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.4.1/MarkerCluster.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.0/MarkerCluster.Default.min.css">
@@ -244,7 +244,7 @@ app.map = (function (thisModule) {
 
 			// to get all entries to show on the map, it does it in the init in the background
 			// after opening the app for faster processing when user clicks on map section
-			var tLoadMapInit = performance.now() // to measure 
+			var tLoadMapInit = performance.now() // to measure
 			getAllEntries((err) => {
 				if (!err) {
 				  processMapMarkers()
@@ -280,11 +280,11 @@ app.map = (function (thisModule) {
 				$('#map_view_select_count').text(`${totalNumberOfAnomalies} anomalias por resolver`)
 				tryToShowMap(selectedTypeOfOccurrence)
 			})
-			
+
 			tryToShowMap($('#map_view_select').val())
 		})
   }
-  
+
     // does not show map until the DB entries are loaded
   function tryToShowMap (selectOption) {
     if (!isMapInitiated) {
@@ -398,7 +398,7 @@ app.map = (function (thisModule) {
 
     // Sort markers and infowindows to the map
     const dbEntriesLength = allDbEntries.length
-	
+
     const mapIcons = {}
     for (const anomaly of anomalies) {
       const topicCode = anomaly.topicCode
@@ -481,7 +481,7 @@ app.map.init()
 																<h3 class="logo-container">
 							<img src="/wp-content/uploads/2022/04/512-1.png" alt="No Meu Bairro!">
 						</h3>
-										
+
 				</div>
 				<div class="col-md-6">
 					<div class="footer-details-container">
