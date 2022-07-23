@@ -126,7 +126,7 @@ app.post(submissionsUrlPath, function (req, res) {
   dBPoolConnections.query(query, function (err, results, fields) {
     if (err) {
       console.error('Error inserting user data into database: ', err)
-      res.status(501).json({ error: 'Error inserting user data into database' })
+      res.status(500).json({ error: 'Error inserting user data into database' })
     } else {
       debug('User data successfully added into ' +
             'database table ' + DBInfo.database + '->' + DBInfo.db_tables.ocorrencias + '\n\n')
@@ -176,7 +176,7 @@ app.get(requestHistoricUrlPath, function (req, res) {
     if (err) {
       // error handling code goes here
       console.error('Error fetching info from database: ', err)
-      res.status(501).json({ error: 'Error fetching info from database' })
+      res.status(500).json({ error: 'Error fetching info from database' })
     } else {
       debug('Entries from db query: ', results.length)
       res.json(results)
