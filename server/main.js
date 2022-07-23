@@ -139,6 +139,7 @@ app.post(submissionsUrlPath, function (req, res) {
 // to fetch information from occurrences from database
 app.get(requestHistoricUrlPath, function (req, res) {
   debug('Getting History')
+  debug(req.query)
 
   const uuid = req.query.uuid // device UUID
   const occurrenceUuid = req.query.occurrence_uuid
@@ -164,10 +165,23 @@ app.get(requestHistoricUrlPath, function (req, res) {
   } else if (occurrenceUuid) {
     // returns only single specific occurrence by its table_row_uuid (occurrence uuid)
     query += `WHERE table_row_uuid=${mysql.escape(occurrenceUuid)}`
-  } else {
+  } else if (Object.keys(req.query).some(el => fieldsArr.includes(el))) {
+    // test if any of the url query parameters keys are in the fieldsArr list
+    query += 'WHERE '
+    for (const queryKey in req.query) {
+      if (req.query.hasOwnProperty(queryKey) && fieldsArr.includes(queryKey)) {
+        query += `${mysql.escapeId(queryKey)}=${mysql.escape(req.query[queryKey])} AND `
+      }
+    }
+    query += 'PROD=1 AND deleted_by_admin=0 AND deleted_by_user=0 AND deleted_by_sys=0 ' +
+             'ORDER BY data_data ASC'
+  } else if (Object.keys(req.query).length === 0) {
     // get all unsolved production entries for all users except admin (ex: to generate a map of all entries)
     query += 'WHERE PROD=1 AND deleted_by_admin=0 AND deleted_by_user=0 AND deleted_by_sys=0 AND ocorrencia_resolvida=0 ' +
              `ORDER BY ${DBInfo.db_tables.ocorrencias}.uuid  ASC, ${DBInfo.db_tables.ocorrencias}.data_data ASC`
+  } else {
+    res.status(400).json({ error: 'Error on the query parameters' })
+    return
   }
 
   debug(sqlFormatter.format(query))
