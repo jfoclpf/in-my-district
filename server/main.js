@@ -146,8 +146,6 @@ app.get(requestHistoricUrlPath, function (req, res) {
   debug('\nGetting entries from' +
     'database table ' + DBInfo.database + '->' + DBInfo.db_tables.ocorrencias)
 
-  var query
-
   // not all fields should be public, other fields like name and email
   // are sensitive and confirmation keys are secret
   var fieldsArr = ['table_row_uuid', 'uuid', 'foto1', 'foto2', 'foto3', 'foto4',
@@ -157,20 +155,19 @@ app.get(requestHistoricUrlPath, function (req, res) {
     'ocorrencia_resolvida_por_op', 'ocorrencia_resolvida_por_municipio',
     'ocorrencia_resolvida_por_freguesia', 'ocorrencia_resolvida_por_utilizadores_adicionais']
 
+  var query = `SELECT ${mysql.escapeId(fieldsArr)} FROM ${DBInfo.database}.${DBInfo.db_tables.ocorrencias} `
+
   if (uuid) { // user device uuid
     // get the all entries for a specific user (ex: to generate historic for user)
-    query = `SELECT ${mysql.escapeId(fieldsArr)} FROM ${DBInfo.database}.${DBInfo.db_tables.ocorrencias} ` +
-            `WHERE uuid=${mysql.escape(uuid)} AND deleted_by_admin=0 AND deleted_by_user=0 AND deleted_by_sys=0 ` +
-            'ORDER BY data_data ASC'
+    query += `WHERE uuid=${mysql.escape(uuid)} AND deleted_by_admin=0 AND deleted_by_user=0 AND deleted_by_sys=0 ` +
+             'ORDER BY data_data ASC'
   } else if (occurrenceUuid) {
     // returns only single specific occurrence by its table_row_uuid (occurrence uuid)
-    query = `SELECT ${mysql.escapeId(fieldsArr)} FROM ${DBInfo.database}.${DBInfo.db_tables.ocorrencias} ` +
-            `WHERE table_row_uuid=${mysql.escape(occurrenceUuid)}`
+    query += `WHERE table_row_uuid=${mysql.escape(occurrenceUuid)}`
   } else {
     // get all unsolved production entries for all users except admin (ex: to generate a map of all entries)
-    query = `SELECT ${mysql.escapeId(fieldsArr)} FROM ${DBInfo.database}.${DBInfo.db_tables.ocorrencias} ` +
-            'WHERE PROD=1 AND deleted_by_admin=0 AND deleted_by_user=0 AND deleted_by_sys=0 AND ocorrencia_resolvida=0 ' +
-            `ORDER BY ${DBInfo.db_tables.ocorrencias}.uuid  ASC, ${DBInfo.db_tables.ocorrencias}.data_data ASC`
+    query += 'WHERE PROD=1 AND deleted_by_admin=0 AND deleted_by_user=0 AND deleted_by_sys=0 AND ocorrencia_resolvida=0 ' +
+             `ORDER BY ${DBInfo.db_tables.ocorrencias}.uuid  ASC, ${DBInfo.db_tables.ocorrencias}.data_data ASC`
   }
 
   debug(sqlFormatter.format(query))
