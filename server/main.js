@@ -76,7 +76,7 @@ app.post(submissionsUrlPath, function (req, res) {
   switch (serverCommand) {
     case 'submitNewEntryToDB': { // (new entry in table) builds sql query to insert user data
       databaseObj.table_row_uuid = generateUuid()
-      databaseObj.chave_confirmacao_ocorrencia_resolvida_por_op = generateUuid().slice(0, 8)
+      databaseObj.chave_confirmacao_ocorrencia_resolvida_por_op = generateUuid().slice(0, 8) // get some random key
 
       // just generates confirmation keys if email was indeed sent
       databaseObj.chave_confirmacao_ocorrencia_resolvida_por_municipio =
