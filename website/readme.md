@@ -5,9 +5,9 @@ This is the Wordpress directory for the website of this project located at https
 The directory `static/` is the export of the wordpress website as static files done with the plugin [Simply Static](https://wordpress.org/plugins/simply-static/).
 To update these files one must
 
- - regenerate the static files at the [Simply Static plugin page](https://nomeubairro.app/wp-admin/admin.php?page=simply-static),
- - download the zip file to this current directory (i.e. `in-my-district/website/`) and 
- - run `./update_static.sh`.
+ 1. regenerate the static files at the [Simply Static plugin page](https://nomeubairro.app/wp-admin/admin.php?page=simply-static),
+ 2. download the zip file to this current directory (i.e. `in-my-district/website/`) and 
+ 3. run `./update_static.sh`.
 
 ## `snippets/` directory
 
