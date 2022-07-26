@@ -11,4 +11,4 @@ To update these files one must
 
 ## `snippets/` directory
 
-The directory `snippets/` has PHP snippets that are embedded in the website with the plugin [Insert PHP Code Snippet](https://wordpress.org/plugins/insert-php-code-snippet/).
+The directory `snippets/` has PHP/JS snippets that are embedded in the website with the plugin [Insert PHP Code Snippet](https://wordpress.org/plugins/insert-php-code-snippet/).
