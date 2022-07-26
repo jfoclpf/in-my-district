@@ -1,4 +1,4 @@
-<!-- snippet to be inserted in the page https://nomeubairro.app/ocorrencia/
+<!-- snippet to be inserted in the page https://nomeubairro.app/ocorrencias/ (ocorrencias, plural)
      using the plugin Insert PHP Code Snippet -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
@@ -6,19 +6,27 @@
 <?php
 $municipio = $_GET['municipio'];
 $freguesia = $_GET['freguesia'];
-if ( $municipio || $freguesia) {
+
+if ( $municipio || $freguesia) { // ex.: /ocorrencias/?municipio=Lisboa&freguesia=Lumiar
 	$url = "https://servidor.nomeubairro.app/serverapp_get_historic";
 	if ( $municipio && $freguesia ) { 
 		$url .= "?data_concelho=".urlencode($municipio)."&data_freguesia=".urlencode($freguesia);
+		echo '<h3>'.$municipio.', '.$freguesia.'</h3>';
 	} else if ( $municipio ) {
 		$url .= "?data_concelho=".urlencode($municipio);
+		echo '<h3>'.$municipio.'</h3>';
 	} else {
 		$url .= "?data_freguesia=".urlencode($freguesia);
+		echo '<h3>'.$freguesia.'</h3>';
 	}
 
   	$occurence_array = json_decode(file_get_contents($url), true);
 	
-	echo "<ul class=\"list-group\">";
+	echo '<ul class="list-group">';
+	
+	if (count($occurence_array) == 0) {
+		echo 'Sem resultados';
+	}
 	
 	foreach ($occurence_array as $oc) {
 		if ( $oc["anomaly1"] && $oc["anomaly2"] && !$oc["ocorrencia_resolvida"]) {
@@ -62,13 +70,16 @@ if ( $municipio || $freguesia) {
 	
 	echo "</ul>";
 	
-} else {
+} else if (count($_GET) == 0) {
 	echo '<label for="select-municipio">Município</label>';
 	echo '<select class="form-control" id="select-municipio"></select>';
 	echo '<label for="select-freguesia">Junta de Freguesia</label>';
 	echo '<select class="form-control" id="select-freguesia"></select><br><br>';
 	
 	echo '<button type="button" id="btnSeeList" class="btn btn-primary">Ver</button>';
+} else {
+	http_response_code(404);
+	echo 'Pedido inváido';
 }
 ?>
 
@@ -88,46 +99,7 @@ const params = new Proxy(new URLSearchParams(window.location.search), {
 let municipio = params.municipio;
 let freguesia = params.freguesia;
 
-// when no get request parameters, shows a select dropdown to select município and freguesia
-if (!municipio && !freguesia) {
-	const selectMunicipality = document.getElementById('select-municipio')
-	const selectFreguesia = document.getElementById('select-freguesia')
-	const button = document.getElementById('btnSeeList')
-	
-	button.addEventListener('click', function() {
-		window.location.href = `/ocorrencias/?municipio=${selectMunicipality.value}&freguesia=${selectFreguesia.value}`;
-	})
-	
-	selectMunicipality.addEventListener('change', function() {
-		console.log(this.value)
-		fetch(`${geoApiUrl}/municipios/${this.value}/freguesias?json=1`).then(res => res.json())
-		.then(function(res) {
-			// clean select
-			var length = selectFreguesia.options.length;
-			for (i = length-1; i >= 0; i--) {
-  				selectFreguesia.options[i] = null;
-			}
-			
-			res.freguesias.forEach(el => {
-				selectFreguesia.options.add(new Option(el, el))
-			})
-		})
-		.catch(function(err) {
-			console.error('error fetching freguesias', err)
-		})
-	})
-
-	fetch(`${geoApiUrl}/municipios?json=1`).then(res => res.json())
-	.then(function(municipios) {	
-		municipios.forEach(el => {
-			selectMunicipality.options.add(new Option(el, el))
-		})
-	})
-	.catch(function(err) {
-		console.error('error fetching municipios', err)
-	})
-	
-} else {
+if (municipio || freguesia) {
 	// fetch lat and lon from html data element
 	var occurrences = document.getElementsByClassName('occurrence');
 
@@ -166,21 +138,59 @@ if (!municipio && !freguesia) {
 				`<b>Município</b>: ${el.data_concelho}<br>` +
 				`<b>Freguesia</b>: ${el.data_freguesia}<br>`
 
-				for (var photoIndex = 1; photoIndex <= 4; photoIndex++) {
-					if (el['foto' + photoIndex]) {
-						const photoUrl = requestImageUrl + '/' + el['foto' + photoIndex]
-						htmlInfoContent += `<img class="photo-in-popup" width="200px" src="${photoUrl}">`
-					}
+			for (var photoIndex = 1; photoIndex <= 4; photoIndex++) {
+				if (el['foto' + photoIndex]) {
+					const photoUrl = requestImageUrl + '/' + el['foto' + photoIndex]
+					htmlInfoContent += `<img class="photo-in-popup" width="200px" src="${photoUrl}">`
 				}
+			}
 
-				htmlInfoContent += '</div>'
+			htmlInfoContent += '</div>'
 
-				const popup = L.popup({ closeOnClick: false, autoClose: false, autoPan: true, maxHeight: 400 })
-					.setContent(htmlInfoContent)
+			const popup = L.popup({ closeOnClick: false, autoClose: false, autoPan: true, maxHeight: 400 })
+				.setContent(htmlInfoContent)
 
-				marker.bindPopup(popup)
-				marker.addTo(map)
+			marker.bindPopup(popup)
+			marker.addTo(map)
 		}
 	}
+} else { // when no get request parameters, shows a select dropdown to select município and freguesia
+	const selectMunicipality = document.getElementById('select-municipio')
+	const selectFreguesia = document.getElementById('select-freguesia')
+	const button = document.getElementById('btnSeeList')
+	
+	button.addEventListener('click', function() {
+		window.location.href = `/ocorrencias/?municipio=${selectMunicipality.value}&freguesia=${selectFreguesia.value}`;
+	})
+	
+	selectMunicipality.addEventListener('change', function() {
+		fetch(`${geoApiUrl}/municipios/${this.value}/freguesias?json=1`).then(res => res.json())
+		.then(function(res) {
+			// clean select
+			var length = selectFreguesia.options.length;
+			for (i = length-1; i >= 0; i--) {
+  				selectFreguesia.options[i] = null;
+			}
+			
+			res.freguesias.forEach(el => {
+				selectFreguesia.options.add(new Option(el, el))
+			})
+		})
+		.catch(function(err) {
+			console.error('error fetching freguesias', err)
+		})
+	})
+
+	fetch(`${geoApiUrl}/municipios?json=1`).then(res => res.json())
+	.then(function(municipios) {	
+		municipios.forEach(el => {
+			selectMunicipality.options.add(new Option(el, el))
+		})
+		
+		selectMunicipality.dispatchEvent(new Event('change'))
+	})
+	.catch(function(err) {
+		console.error('error fetching municipios', err)
+	})
 }
 </script>
