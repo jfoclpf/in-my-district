@@ -8,7 +8,7 @@ Here resides the NodeJS code of the sever that:
 
 The code also runs periodically to
 
- - marks entry in database as deleted if pathnames of photos don't exist in server (`cleanBadPhotos`)
+ - mark entries in the database as deleted if pathnames of photos don't exist in the server drive (`cleanBadPhotos`)
  - remove duplicated entries in database (`removeDuplicates.js`)
 
 The entry point of the server is `main.js`.
