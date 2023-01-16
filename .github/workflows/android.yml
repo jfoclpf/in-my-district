@@ -44,17 +44,19 @@ jobs:
     - name: Install Android SDK
       run: |
         sudo apt install android-sdk -y
-    - name: Uninstall SDK v31.0.0 and list SDKs
+    - name: List installed SDKs
       run: |
         /usr/local/lib/android/sdk/cmdline-tools/latest/bin/sdkmanager --version
-        /usr/local/lib/android/sdk/cmdline-tools/latest/bin/sdkmanager --uninstall 'build-tools;31.0.0'
         /usr/local/lib/android/sdk/cmdline-tools/latest/bin/sdkmanager --list_installed
-    - name: List SDK dir and cp
+    - name: List SDK dir and cp D8s to DXs
       run: |
         ls -la /usr/local/lib/android/sdk/build-tools/
-        cd /usr/local/lib/android/sdk/build-tools/32.0.0/
-        cp d8 dx && cd lib && cp d8.jar dx.jar
-        ls -la /usr/local/lib/android/sdk/build-tools/32.0.0/
+        cd /usr/local/lib/android/sdk/build-tools/
+        for DIR in */; do 
+          if [ -f "${DIR}d8" ]; then echo "copying ${DIR}d8 to ${DIR}dx"; cp ${DIR}d8 ${DIR}dx; fi
+          if [ -f "${DIR}lib/d8.jar" ]; then echo "copying ${DIR}lib/d8.jar to ${DIR}lib/dx.jar"; cp ${DIR}lib/d8.jar ${DIR}lib/dx.jar; fi
+        done
+        for DIR in */; do ls -l ${DIR}d*; done
     - name: Install Gradle
       run: sudo apt install gradle -y
     - name: echo PATH

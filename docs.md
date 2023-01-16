@@ -1,5 +1,9 @@
 ## Requisitos para a APP
 
+A forma mais prática, para preparar uma máquina para desenvolver e correr esta APP, é observar os ficheiros referentes à Integração Contínua (Github Continuous Integration):
+ - Android: [`/.github/workflows/android.yml`](/.github/workflows/android.yml)
+ - iOS: [`/.github/workflows/ios.yml`](/.github/workflows/ios.yml)
+
 ### [Apache Cordova](https://cordova.apache.org/)
 
 Este projeto faz uso de <a href="https://cordova.apache.org/">Apache Cordova</a> para converter código HTML5 e Javascript para uma aplicação de dispositivo móvel, como Android ou iOS. Precisa, portanto, de ter Apache Cordova instalado na sua máquina.

@@ -1,26 +1,31 @@
+<h1 align="center">
+  <a href="https://nomeubairro.app/"><img src="https://play-lh.googleusercontent.com/DX65ws86EvEk4-_c7bVtDHygeZPPnguGWe3IrSV6AMjj6J72y-pAdWc07g0Rz_3VVg=w200-h200-rw" alt="logo" width="200"/></a>
+  <br>
+  No meu Bairro!
+  <br>
+</h1>
+
+
 [![Node.js CI](https://github.com/jfoclpf/in-my-district/actions/workflows/android.yml/badge.svg)](https://github.com/jfoclpf/in-my-district/actions/workflows/android.yml)
 [![Node.js CI](https://github.com/jfoclpf/in-my-district/actions/workflows/ios.yml/badge.svg)](https://github.com/jfoclpf/in-my-district/actions/workflows/ios.yml)
 [![js-standard-style][js-standard-style_img]][js-standard-style_url]
-[![Total alerts](https://img.shields.io/lgtm/alerts/g/jfoclpf/in-my-district.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/jfoclpf/in-my-district/alerts/)
-[![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/jfoclpf/in-my-district.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/jfoclpf/in-my-district/context:javascript)
-<br>
 [![Donate with librepay](https://img.shields.io/liberapay/receives/joaopimentel1980.svg?logo=liberapay)](https://en.liberapay.com/joaopimentel1980)
 [![Donate with librepay](https://img.shields.io/badge/donate-Donate-yellow?logo=liberapay)](https://en.liberapay.com/joaopimentel1980/donate)
 
 [js-standard-style_img]: https://img.shields.io/badge/code%20style-standard-brightgreen.svg
 [js-standard-style_url]: https://standardjs.com/
 
-# No meu bairro!
-
 Aplicação móvel para comunicar ao seu Município e/ou Junta de Freguesia anomalias no seu bairro, como buracos na calçada ou lixo por recolher.
 
 O código está desenhado em Javascript para ser corrido num smartphone. Para tal faz uso da plataforma <a href="https://cordova.apache.org/">Apache Cordova</a>.
 
-* A APP para Android está aqui : <a href="https://f-droid.org/packages/com.in.my.district/">F-Droid</a>, <a href="https://play.google.com/store/apps/details?id=com.in.my.district">Google Play</a>
+A APP para Android está aqui: 
+ - [F-Droid](https://f-droid.org/packages/com.in.my.district/), 
+ - [Google Play](https://play.google.com/store/apps/details?id=com.in.my.district)
 
 ## Estrutura
 
-Este repositório contém o código de três componentes principais, contidos nas seguintes diretorias:
+Este mono-repositório contém o código de três componentes principais, contidos nas seguintes diretorias:
 
  - [`app/`](app/): Aplicação móvel para Android ou iOS, escrita em Apache Cordova (Javascript)
  - [`server/`](server/): Servidor em NodeJS para comunicar com a APP e com uma base de dados MySQL
@@ -29,9 +34,11 @@ Este repositório contém o código de três componentes principais, contidos na
 ## Como instalar e testar a APP
 ### Requisitos, _debug_ e eventuais problemas
 
-* ver [documentação](https://github.com/jfoclpf/in-my-district/blob/master/docs.md)
+* ver [documentação](/docs.md)
 
 ### Android
+
+Para preparar a máquina (Debian/Ubuntu) vede [`/.github/workflows/android.yml`](/.github/workflows/android.yml)
 
  1. Clone este projeto<br>`git clone https://github.com/jfoclpf/in-my-district.git`
  2. Entre na pasta recém criada<br>`cd in-my-district/app`
@@ -39,6 +46,9 @@ Este repositório contém o código de três componentes principais, contidos na
  3. Corra `cordova build android` para construir o projeto na sua máquina. Em Android cria o ficheiro APK na pasta `platforms/android/build/outputs/apk`
 
 ### iOS
+
+Para preparar a máquina macOS vede [`/.github/workflows/ios.yml`](/.github/workflows/ios.yml)
+
 ```
 git clone https://github.com/jfoclpf/in-my-district.git
 cd in-my-district/app
