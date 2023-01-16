@@ -18,7 +18,7 @@ O código está desenhado em Javascript para ser corrido num smartphone. Para ta
 
 ## Estrutura
 
-Este repositório contém o código de três componentes principais, contidos nas seguintes diretorias:
+Este mono-repositório contém o código de três componentes principais, contidos nas seguintes diretorias:
 
  - [`app/`](app/): Aplicação móvel para Android ou iOS, escrita em Apache Cordova (Javascript)
  - [`server/`](server/): Servidor em NodeJS para comunicar com a APP e com uma base de dados MySQL
