@@ -44,8 +44,7 @@ function onDeviceReady () {
   window.screen.orientation.lock('portrait')
 
   cordova.plugins.IsDebug.getIsDebug(function (isDebug) {
-    // in release mode the app is not debuggable (in chrome), thus I may stil want to debug with DEBUG=false
-    // but in release mode I want to be sure that DEBUG is always false
+    // in release mode the app is not debuggable (in chrome), though I want to be sure that DEBUG is always false
     if (!isDebug) { // release mode
       DEBUG = false
       console.log = () => {}
