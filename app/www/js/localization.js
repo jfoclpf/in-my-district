@@ -67,11 +67,7 @@ export function getAddressForForm (latitude, longitude, mainCallback) {
       crossDomain: true
     }),
     $.ajax({
-      url: variables.urls.geoApi.ptApi + '/gps',
-      data: {
-        lat: latitude,
-        lon: longitude
-      },
+      url: variables.urls.geoApi.ptApi + `/gps/${latitude},${longitude}/base`,
       dataType: 'json',
       type: 'GET',
       async: true,
