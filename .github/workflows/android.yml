@@ -14,7 +14,7 @@ jobs:
     strategy:
       matrix:
         platform: [ubuntu-18.04, ubuntu-20.04]
-        node-version: [lts/*]
+        node-version: [16]
         
     runs-on: ${{ matrix.platform }}
 
@@ -23,9 +23,9 @@ jobs:
         working-directory: app
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v2
+      uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
@@ -48,7 +48,7 @@ jobs:
       run: |
         /usr/local/lib/android/sdk/cmdline-tools/latest/bin/sdkmanager --version
         /usr/local/lib/android/sdk/cmdline-tools/latest/bin/sdkmanager --uninstall 'build-tools;31.0.0'
-        /usr/local/lib/android/sdk/cmdline-tools/latest/bin/sdkmanager --list
+        /usr/local/lib/android/sdk/cmdline-tools/latest/bin/sdkmanager --list_installed
     - name: List SDK dir and cp
       run: |
         ls -la /usr/local/lib/android/sdk/build-tools/
@@ -66,3 +66,4 @@ jobs:
         rm -rf platforms/android
         cordova platform add android
     - run: npm test
+    - run: cordova build android --release
