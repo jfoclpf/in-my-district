@@ -1,14 +1,19 @@
+<h1 align="center">
+  <img src="https://play-lh.googleusercontent.com/DX65ws86EvEk4-_c7bVtDHygeZPPnguGWe3IrSV6AMjj6J72y-pAdWc07g0Rz_3VVg=w200-h200-rw" alt="logo" width="200"/>
+  <br>
+  No meu Bairro!
+  <br>
+</h1>
+
+
 [![Node.js CI](https://github.com/jfoclpf/in-my-district/actions/workflows/android.yml/badge.svg)](https://github.com/jfoclpf/in-my-district/actions/workflows/android.yml)
 [![Node.js CI](https://github.com/jfoclpf/in-my-district/actions/workflows/ios.yml/badge.svg)](https://github.com/jfoclpf/in-my-district/actions/workflows/ios.yml)
 [![js-standard-style][js-standard-style_img]][js-standard-style_url]
-<br>
 [![Donate with librepay](https://img.shields.io/liberapay/receives/joaopimentel1980.svg?logo=liberapay)](https://en.liberapay.com/joaopimentel1980)
 [![Donate with librepay](https://img.shields.io/badge/donate-Donate-yellow?logo=liberapay)](https://en.liberapay.com/joaopimentel1980/donate)
 
 [js-standard-style_img]: https://img.shields.io/badge/code%20style-standard-brightgreen.svg
 [js-standard-style_url]: https://standardjs.com/
-
-# No meu Bairro!
 
 Aplicação móvel para comunicar ao seu Município e/ou Junta de Freguesia anomalias no seu bairro, como buracos na calçada ou lixo por recolher.
 
