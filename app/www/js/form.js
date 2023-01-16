@@ -130,7 +130,7 @@ export function isMessageReady () {
 
     if (invalidPersonalInfo) {
       jAlertErrMsg += 'Ao abrigo da alínea b) do artigo 102.º do Código do Procedimento Administrativo, ' +
-        'os seus dados de identificação necessitam de ser fornecidos, ' +
+        'os seus dados de identificação necessitam de ser fornecidos (em <b>Menu Principal &ndash;> Os meus dados</b>), ' +
         'para que possa submeter esta ocorrência junto de uma autoridade pública.<br><br>'
     }
     if (countEmptyFields === 1) {
