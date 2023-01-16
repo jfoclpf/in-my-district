@@ -125,12 +125,20 @@ function init () {
 function onOnline () {
   form.GPSLoadingOnFields(true)
   // this is used to get address on form
-  localization.getGeolocation((err) => {
-    form.GPSLoadingOnFields(false)
-    if (err) {
-      console.error(err)
-    }
-  })
+  localization.getGeolocation()
+    .then((res) => {
+      form.updatesFormMapToNewCoordinates(res.latitude, res.longitude)
+      localization.fillFormWithAddress(res.addressFromOSM, res.addressFromGeoApiPt)
+    })
+    .catch((err) => {
+      console.error('Error on localization.getGeolocation()')
+      if (err) {
+        console.error(err)
+      }
+    })
+    .finally(() => {
+      form.GPSLoadingOnFields(false)
+    })
 }
 
 function onResume () {

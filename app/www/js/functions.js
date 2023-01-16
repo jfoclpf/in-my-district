@@ -100,3 +100,7 @@ export function adaptURItoAndroid (imgUR) {
 export function setDebugValues () {
   $('#anomalies').val('bicicletas')
 }
+
+export function isNonEmptyString (str) {
+  return str && typeof str === 'string'
+}

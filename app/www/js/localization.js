@@ -3,22 +3,33 @@
 /* global $ */
 
 import * as variables from './variables.js'
+import { isNonEmptyString } from './functions.js'
 
 var Latitude, Longitude
 
 // Get GPS coordinates and then get address
-export function getGeolocation (callback) {
-  // detect if has Internet AND if the GoogleMaps API is loaded
-  if (navigator.onLine) {
-    var options = { timeout: 30000, enableHighAccuracy: true }
-    navigator.geolocation.getCurrentPosition(function (position) {
-      getAddressForForm(position.coords.latitude, position.coords.longitude, callback) // get address from coordinates
-    },
-    PositionError, options)
-  } else {
-    PositionError()
-    callback(Error('position error'))
-  }
+export function getGeolocation () {
+  return new Promise((resolve, reject) => {
+    // detect if has Internet
+    if (navigator.onLine) {
+      var options = { timeout: 30000, enableHighAccuracy: true }
+      navigator.geolocation.getCurrentPosition((position) => {
+        getAddressFromCoordinates(position.coords.latitude, position.coords.longitude, (err, res) => {
+          if (err) {
+            reject(err)
+          } else {
+            console.log('res', res)
+            resolve(res)
+          }
+        })
+      },
+      PositionError,
+      options)
+    } else {
+      PositionError()
+      reject(Error('position error'))
+    }
+  })
 }
 
 // to be used from outside of this module
@@ -39,7 +50,7 @@ function PositionError () {
 }
 
 // get address from coordinates and fill address in the main form fields
-export function getAddressForForm (latitude, longitude, mainCallback) {
+export function getAddressFromCoordinates (latitude, longitude, mainCallback) {
   console.log(`latitude, longitude: ${latitude}, ${longitude}`)
   Latitude = latitude
   Longitude = longitude
@@ -51,6 +62,7 @@ export function getAddressForForm (latitude, longitude, mainCallback) {
   }
 
   // makes two parallel async GET requests
+  // Promise.allSettled waits for all promises to complete, i.e., does not fail immediately if only one promise fails
   Promise.allSettled([
     $.ajax({
       url: variables.urls.geoApi.nominatimReverse,
@@ -74,52 +86,55 @@ export function getAddressForForm (latitude, longitude, mainCallback) {
       crossDomain: true
     })
   ]).then(function (res) {
-    // from variables.urls.geoApi.nominatimReverse
-    if (res[0].status !== 'fulfilled') {
-      PositionError()
-      callback(Error(variables.urls.geoApi.nominatimReverse + ' returns empty'))
-    } else {
-      var addressFromGeoApiPt
-      // from variables.urls.geoApi.ptApi
-      if (res[1].status !== 'fulfilled') {
-        // this happens when user is not in Portugal
-        console.warn(variables.urls.geoApi.ptApi + ' returns empty')
-      } else {
-        addressFromGeoApiPt = res[1].value
-      }
+    let addressFromOSM
+    let addressFromGeoApiPt
 
-      const addressFromOSM = res[0].value.address
-      console.log('getAddressForForm: ', addressFromOSM, addressFromGeoApiPt)
-      fillFormWithAddress(addressFromOSM, addressFromGeoApiPt)
-      callback(null, { latitude, longitude })
+    // from variables.urls.geoApi.nominatimReverse
+    if (res[0].status === 'fulfilled') {
+      addressFromOSM = res[0].value.address
+      console.success('address from OSM fetched')
+    } else {
+      console.warn(variables.urls.geoApi.nominatimReverse + ' returns empty')
     }
+
+    // from variables.urls.geoApi.ptApi
+    if (res[1].status === 'fulfilled') {
+      addressFromGeoApiPt = res[1].value
+      console.success('address from GeoApiPt fetched')
+    } else {
+      // this happens when user is not in Portugal
+      console.warn(variables.urls.geoApi.ptApi + ' returns empty, probably outside of Portugal')
+    }
+
+    console.log('getAddressFromCoordinates: ', addressFromOSM, addressFromGeoApiPt)
+    callback(null, { latitude, longitude, addressFromOSM, addressFromGeoApiPt })
   }).catch((err) => {
     callback(Error(err))
   })
 }
 
-function fillFormWithAddress (addressFromOSM, addressFromGeoApiPt) {
+export function fillFormWithAddress (addressFromOSM, addressFromGeoApiPt) {
   if (addressFromOSM) {
     $('#street').val(addressFromOSM.road || '') // nome da rua/avenida/etc.
     $('#street_number').val(addressFromOSM.house_number || '')
   }
 
   if (addressFromGeoApiPt) {
-    if (addressFromGeoApiPt.concelho) {
+    if (isNonEmptyString(addressFromGeoApiPt.concelho)) {
       $('#municipality').val(addressFromGeoApiPt.concelho.trim().toLowerCase())
-        .trigger('change', [true]) // triger with parameter, true to refer addressFromAPI
+        .trigger('change', [true]) // triger with parameter, true to refer addressFromGeoApiPt
     }
-    if (addressFromGeoApiPt.freguesia) {
+    if (isNonEmptyString(addressFromGeoApiPt.freguesia)) {
       $('#parish').val(addressFromGeoApiPt.freguesia.trim().toLowerCase())
         .trigger('change')
     }
   } else if (addressFromOSM) {
-    if (addressFromOSM.municipality) {
-      $('#municipality').val(addressFromOSM.municipality.trim().toLowerCase())
-    } else if (addressFromOSM.city) {
-      $('#municipality').val(addressFromOSM.city.trim().toLowerCase())
-    } else if (addressFromOSM.town) {
-      $('#municipality').val(addressFromOSM.town.trim().toLowerCase())
+    if (isNonEmptyString(addressFromOSM.municipality)) {
+      $('#municipality').val(addressFromOSM.municipality.trim().toLowerCase()).trigger('change')
+    } else if (isNonEmptyString(addressFromOSM.city)) {
+      $('#municipality').val(addressFromOSM.city.trim().toLowerCase()).trigger('change')
+    } else if (isNonEmptyString(addressFromOSM.town)) {
+      $('#municipality').val(addressFromOSM.town.trim().toLowerCase()).trigger('change')
     }
   }
 

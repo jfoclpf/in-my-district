@@ -15,34 +15,45 @@ var mainFormMap
 var anomalyMapMarker // map marker referring to the place where the anomaly is located
 
 export function init () {
-  const url = variables.urls.geoApi.ptApi + '/municipios/freguesias'
-  $.ajax({
-    url: url,
-    dataType: 'json',
-    type: 'GET',
-    async: true,
-    crossDomain: true
-  }).done(function (data) {
-    municipalities = data
-
-    $('#municipality').empty()
-    $.each(municipalities, function (key, val) {
-      $('#municipality').append(`<option value="${val.nome.trim().toLowerCase()}">${val.nome.trim()}</option>`)
-    })
-  }).fail(function (err) {
-    InternetError()
-    console.error('Error fetching from ' + url, err)
-  })
-
+  // loading spinner on
   GPSLoadingOnFields(true)
-  // this is used to get address on form
-  localization.getGeolocation((err) => {
-    GPSLoadingOnFields(false)
-    initMainFormMap()
-    if (err) {
+
+  Promise.allSettled([
+    $.ajax({
+      url: variables.urls.geoApi.ptApi + '/municipios/freguesias',
+      dataType: 'json',
+      type: 'GET',
+      async: true,
+      crossDomain: true
+    }),
+    localization.getGeolocation() // get GPS coordinates and addresses (municipality, parish, street and street number)
+  ])
+    .then((results) => {
+      if (results[0].status === 'fulfilled') {
+        municipalities = results[0].value
+        console.success('municipalities and parishes fetched')
+
+        $('#municipality').empty()
+        $.each(municipalities, function (key, val) {
+          $('#municipality').append(`<option value="${val.nome.trim().toLowerCase()}">${val.nome.trim()}</option>`)
+        })
+
+        if (results[1].status === 'fulfilled') {
+          localization.fillFormWithAddress(results[1].value.addressFromOSM, results[1].value.addressFromGeoApiPt)
+        }
+        initMainFormMap()
+      } else {
+        console.error('Error obtaining municipios and freguesias from ' + variables.urls.geoApi.ptApi)
+        InternetError()
+      }
+    })
+    .catch(function (err) {
+      InternetError()
       console.error(err)
-    }
-  })
+    })
+    .finally(() => {
+      GPSLoadingOnFields(false)
+    })
 }
 
 function InternetError () {
@@ -270,14 +281,21 @@ function updateImgContainers () {
 // botão get address by GPS (Atualizar)
 $('#getCurrentAddresBtn').on('click', function () {
   GPSLoadingOnFields(true)
-  localization.getGeolocation((err, coordinates) => {
-    GPSLoadingOnFields(false)
-    if (err) {
-      console.error(err)
-    } else {
-      updatesFormMapToNewCoordinates(coordinates.latitude, coordinates.longitude)
-    }
-  })
+  localization.getGeolocation()
+    .then((res) => {
+      updatesFormMapToNewCoordinates(res.latitude, res.longitude)
+      localization.fillFormWithAddress(res.addressFromOSM, res.addressFromGeoApiPt)
+    })
+    .catch((err) => {
+      console.error('Error on localization.getGeolocation()')
+      if (err) {
+        console.error(err)
+      }
+    })
+    .finally(() => {
+      GPSLoadingOnFields(false)
+    })
+
   functions.updateDateAndTime()
 })
 
@@ -294,7 +312,11 @@ $('#date').datepicker()
 /* ********************************************************************** */
 /* ********************* LOCAL OF OCCURRENCE **************************** */
 // when the select of municipalities is changed, updates the select of parishes
-$('#municipality').on('change', function (event, addressFromAPI) {
+$('#municipality').on('change', function (event, addressFromGeoApiPt) {
+  if (!$(this).val()) {
+    return
+  }
+
   const municipality = $(this).val().trim().toLowerCase()
   contacts.setMunicipality(municipality)
 
@@ -309,9 +331,9 @@ $('#municipality').on('change', function (event, addressFromAPI) {
     }
   })
 
-  // does not trigger parish select, if address was got from an API, because API will also set parish
+  // does not trigger parish select, if address was got from an GEO API PT, because it will also set parish
   // see module localization, function fillFormWithAddress
-  if (!addressFromAPI) {
+  if (!addressFromGeoApiPt) {
     $('#parish').trigger('change') // trigers event
   }
 })
@@ -392,7 +414,11 @@ export function initMainFormMap (callback) {
   anomalyMapMarker.on('moveend', function (e) {
     const newCoord = e.target.getLatLng()
     // get address from coordinates and fill address in the main form fields
-    localization.getAddressForForm(newCoord.lat, newCoord.lng)
+    localization.getAddressFromCoordinates(newCoord.lat, newCoord.lng, (err, res) => {
+      if (!err) {
+        localization.fillFormWithAddress(res.addressFromOSM, res.addressFromGeoApiPt)
+      }
+    })
   })
 
   setInterval(function () {
@@ -400,7 +426,7 @@ export function initMainFormMap (callback) {
   }, 500)
 }
 
-function updatesFormMapToNewCoordinates (latitude, longitude) {
+export function updatesFormMapToNewCoordinates (latitude, longitude) {
   mainFormMap.panTo(new L.LatLng(latitude, longitude))
   anomalyMapMarker.setLatLng(new L.LatLng(latitude, longitude))
 }

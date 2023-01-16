@@ -1,7 +1,8 @@
 /* global FileReader, $, Camera */
 
-import * as functions from './functions.js'
 import * as file from './file.js'
+import * as form from './form.js'
+import * as functions from './functions.js'
 import * as localization from './localization.js'
 
 // get Photo function
@@ -120,7 +121,15 @@ function cameraSuccess (result, imgNmbr, type, callback) {
       const lon = localization.convertDMSStringInfoToDD(metadata.gpsLongitude, metadata.gpsLongitudeRef)
 
       console.log('Coordinates fetched from photo: ', lat, lon)
-      localization.getAddressForForm(lat, lon)
+      if (Number(lat) && Number(lon)) {
+        form.GPSLoadingOnFields(true)
+        localization.getAddressFromCoordinates(lat, lon, (err, res) => {
+          form.GPSLoadingOnFields(false)
+          if (!err) {
+            localization.fillFormWithAddress(res.addressFromOSM, res.addressFromGeoApiPt)
+          }
+        })
+      }
     }
   }
 }
