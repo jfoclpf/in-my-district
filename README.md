@@ -14,7 +14,9 @@ Aplicação móvel para comunicar ao seu Município e/ou Junta de Freguesia anom
 
 O código está desenhado em Javascript para ser corrido num smartphone. Para tal faz uso da plataforma <a href="https://cordova.apache.org/">Apache Cordova</a>.
 
-* A APP para Android está aqui : <a href="https://f-droid.org/packages/com.in.my.district/">F-Droid</a>, <a href="https://play.google.com/store/apps/details?id=com.in.my.district">Google Play</a>
+A APP para Android está aqui: 
+ - [F-Droid](https://f-droid.org/packages/com.in.my.district/), 
+ - [Google Play](https://play.google.com/store/apps/details?id=com.in.my.district)
 
 ## Estrutura
 
