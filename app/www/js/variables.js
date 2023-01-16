@@ -5,8 +5,7 @@ export const urls = {
   "submissions": "https://servidor.nomeubairro.app/serverapp",
   "requestHistoric": "https://servidor.nomeubairro.app/serverapp_get_historic",
   "solvedOccurrence": "https://servidor.nomeubairro.app/resolvido",
-  "photosUpload": "https://servidor.nomeubairro.app/serverapp_img_upload",
-  "getPhotos": "https://servidor.nomeubairro.app/image_server"
+  "photosUpload": "https://servidor.nomeubairro.app/serverapp_img_upload"
  },
  "appStores": {
   "playStore": "https://play.google.com/store/apps/details?id=com.in.my.district",
@@ -14,6 +13,6 @@ export const urls = {
  },
  "geoApi": {
   "nominatimReverse": "https://nominatim.openstreetmap.org/reverse",
-  "ptApi": "https://geoapi.pt/"
+  "ptApi": "https://geoapi.pt"
  }
 }
