@@ -2,6 +2,7 @@
 
 import * as map from './map.js'
 import * as historic from './historic.js'
+import * as variables from './variables.js'
 
 export function init () {
   $('#sidebarCollapse').on('click', function (e) {
@@ -55,6 +56,10 @@ export function init () {
   $('#privacy_policy_shows').on('click', function () {
     showSection('privacy_policy')
     toggleSidebar(false)
+  })
+
+  $('#app_evaluation_link').on('click', function () {
+    cordova.InAppBrowser.open(variables.urls.appStores.playStore, '_system')
   })
 }
 
