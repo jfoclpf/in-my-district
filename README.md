@@ -27,7 +27,7 @@ Este repositório contém o código de três componentes principais, contidos na
 ## Como instalar e testar a APP
 ### Requisitos, _debug_ e eventuais problemas
 
-* ver [documentação](https://github.com/jfoclpf/in-my-district/blob/master/docs.md)
+* ver [documentação](/docs.md)
 
 ### Android
 
