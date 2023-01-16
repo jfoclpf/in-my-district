@@ -13,9 +13,10 @@ module.exports = function (context) {
   var appDir = context.opts.projectRoot
 
   // fetch config JSON file to generate Javascript files
-  const configs = JSON.parse(
-    fs.readFileSync(path.join(appDir, '..', 'keys-configs', 'configs.json'), 'utf8')
-  )
+  // use sample file if used by Continuous Integration (Github CI Actions)
+  const configsFile = path.join(appDir, '..', 'keys-configs', process.env.CI ? 'configs.sample.json' : 'configs.json')
+  const configs = JSON.parse(fs.readFileSync(configsFile, 'utf8'))
+  console.log(`${twoSpaces}Configuration file: ${path.relative(appDir, configsFile)}`)
 
   // generate www/js/appSecrets.js
   var jsFileContent =
