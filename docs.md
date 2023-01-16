@@ -1,6 +1,6 @@
 ## Requisitos para a APP
 
-A forma mais prática de preparar uma máquina Ubuntu para desenvolver e correr esta APP, é observar os ficheiros referentes à Integração Contínua (Github Continuous Integration):
+A forma mais prática de preparar uma máquina para desenvolver e correr esta APP, é observar os ficheiros referentes à Integração Contínua (Github Continuous Integration):
  - Android: [`/.github/workflows/android.yml`](/.github/workflows/android.yml)
  - iOS: [`/.github/workflows/ios.yml`](/.github/workflows/ios.yml)
 
