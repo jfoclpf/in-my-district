@@ -34,7 +34,7 @@ jobs:
       run: |
         sudo apt update -y
         sudo apt install openjdk-8-jdk -y
-    - name: Changing to Java 8
+    - name: Changing to Java 11
       run: | 
         java -version
         sudo update-java-alternatives -l || echo OK
