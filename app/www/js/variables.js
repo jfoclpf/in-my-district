@@ -5,7 +5,8 @@ export const urls = {
   "submissions": "https://servidor.nomeubairro.app/serverapp",
   "requestHistoric": "https://servidor.nomeubairro.app/serverapp_get_historic",
   "solvedOccurrence": "https://servidor.nomeubairro.app/resolvido",
-  "photosUpload": "https://servidor.nomeubairro.app/serverapp_img_upload"
+  "photosUpload": "https://servidor.nomeubairro.app/serverapp_img_upload",
+  "getPhotos": "https://servidor.nomeubairro.app/image_server"
  },
  "appStores": {
   "playStore": "https://play.google.com/store/apps/details?id=com.in.my.district",
