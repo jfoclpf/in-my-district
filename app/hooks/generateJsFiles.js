@@ -10,7 +10,7 @@ const twoSpaces = '  ' // for log indentation
 module.exports = function (context) {
   console.log(`${context.hook} : ${path.relative(context.opts.projectRoot, context.scriptLocation)}`)
 
-  var appDir = context.opts.projectRoot
+  const appDir = context.opts.projectRoot
 
   // fetch config JSON file to generate Javascript files
   // use sample file if used by Continuous Integration (Github CI Actions)
@@ -19,7 +19,7 @@ module.exports = function (context) {
   console.log(`${twoSpaces}Configuration file: ${path.relative(appDir, configsFile)}`)
 
   // generate www/js/appSecrets.js
-  var jsFileContent =
+  let jsFileContent =
     `export const adminDevicesUuids = ${JSON.stringify(configs.adminDevicesUuids)} // eslint-disable-line\n`
   generateFile(appDir, path.join(appDir, 'www', 'js', 'appSecrets.js'), jsFileContent)
 
