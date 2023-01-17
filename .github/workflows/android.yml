@@ -30,11 +30,11 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
         cache-dependency-path: app/package-lock.json
-    - name: Installing Java 8
+    - name: Installing Java 11
       run: |
         sudo apt update -y
-        sudo apt install openjdk-8-jdk -y
-    - name: Changing to Java 11
+        sudo apt install openjdk-11-jdk openjdk-11-jre -y
+    - name: Forcing the use of Java 11
       run: | 
         java -version
         sudo update-java-alternatives -l || echo OK
