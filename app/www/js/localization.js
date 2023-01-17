@@ -5,14 +5,14 @@
 import * as variables from './variables.js'
 import { isNonEmptyString } from './functions.js'
 
-var Latitude, Longitude
+let Latitude, Longitude
 
 // Get GPS coordinates and then get address
 export function getGeolocation () {
   return new Promise((resolve, reject) => {
     // detect if has Internet
     if (navigator.onLine) {
-      var options = { timeout: 30000, enableHighAccuracy: true }
+      const options = { timeout: 30000, enableHighAccuracy: true }
       navigator.geolocation.getCurrentPosition((position) => {
         getAddressFromCoordinates(position.coords.latitude, position.coords.longitude, (err, res) => {
           if (err) {
@@ -34,7 +34,7 @@ export function getGeolocation () {
 
 // to be used from outside of this module
 export function getCoordinates () {
-  var coordinates = {
+  const coordinates = {
     latitude: Latitude,
     longitude: Longitude
   }
@@ -147,10 +147,10 @@ export function fillFormWithAddress (addressFromOSM, addressFromGeoApiPt) {
 // converts latitude, longitude coordinates from Degrees Minutes Second (DMS) to Decimal Degrees (DD)
 // the input string of the DMS is on the format "52/1,0/1,376693/10000"
 export function convertDMSStringInfoToDD (gpsString, direction) {
-  var i, temp
-  var values = []
+  let i, temp
+  const values = []
 
-  var gpsArray = gpsString.split(',')
+  const gpsArray = gpsString.split(',')
 
   for (i = 0; i < gpsArray.length; i++) {
     // if the value is presented in ratio, example "376693/10000"
@@ -162,11 +162,11 @@ export function convertDMSStringInfoToDD (gpsString, direction) {
     }
   }
 
-  var deg = values[0]
-  var min = values[1]
-  var sec = values[2]
+  const deg = values[0]
+  const min = values[1]
+  const sec = values[2]
 
-  var dd = deg + min / 60 + sec / (60 * 60)
+  let dd = deg + min / 60 + sec / (60 * 60)
 
   if (direction === 'S' || direction === 'W') {
     dd = dd * -1
