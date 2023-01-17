@@ -1,6 +1,6 @@
 /* global cordova, $ */
 
-var anomalies = {}
+let anomalies = {}
 
 export function getAnomalies () {
   return anomalies

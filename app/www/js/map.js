@@ -13,11 +13,11 @@ import * as localization from './localization.js'
 import * as dbServerLink from './dbServerLink.js'
 import * as anomaliesMod from './anomalies.js'
 
-var map
-var markersGroups // groups of markers, by type of anomaly
-var allDbEntries // all entries fetched from database
-var anomalies // object with all the possible anomalies
-var isMapInitiated = false
+let map
+let markersGroups // groups of markers, by type of anomaly
+let allDbEntries // all entries fetched from database
+let anomalies // object with all the possible anomalies
+let isMapInitiated = false
 
 export function init () {
   // populate select box to select map view, i.e, filter ocurrences/drops in the map
@@ -36,7 +36,7 @@ export function init () {
 
   // to get all entries to show on the map, it does it in the init in the background
   // after opening the app for faster processing when user clicks on map section
-  var tLoadMapInit = performance.now() // to measure performance
+  const tLoadMapInit = performance.now() // to measure performance
   getAllEntries((err) => {
     if (!err) {
       processMapMarkers()
@@ -97,8 +97,8 @@ function showMap (selectOption) {
 
 function initializeMap (callback) {
   // get coordinates for the map center
-  var currentLocation = localization.getCoordinates() // current position of user
-  var latitude, longitude
+  const currentLocation = localization.getCoordinates() // current position of user
+  let latitude, longitude
   if (currentLocation.latitude && currentLocation.longitude && !main.DEBUG) {
     latitude = currentLocation.latitude
     longitude = currentLocation.longitude
@@ -140,7 +140,7 @@ function initializeMap (callback) {
   map.whenReady(function () {
     // adjust height of map_section div, the heigh of map should be the height of content
     // minus the height of header and minus height of a spacer (<hr>)
-    var height = window.innerHeight - // screen useful height
+    const height = window.innerHeight - // screen useful height
       $('#content hr').outerHeight(true) - // spacer between header and lower section
       $('#content .container-fluid.section-head.d-flex.flex-row').outerHeight(true) - // header
       ($('#content').innerWidth() - $('#content').width()) // pading of #content
@@ -222,7 +222,7 @@ function processMapMarkers () {
         `<b>Município</b>: ${el.data_concelho}<br>` +
         `<b>Freguesia</b>: ${el.data_freguesia}<br>`
 
-    for (var photoIndex = 1; photoIndex <= 4; photoIndex++) {
+    for (let photoIndex = 1; photoIndex <= 4; photoIndex++) {
       if (el['foto' + photoIndex]) {
         const photoUrl = getPhotosUrl + '/' + el['foto' + photoIndex]
         htmlInfoContent += `<img class="photo-in-popup" width="200px" src="${photoUrl}">`
