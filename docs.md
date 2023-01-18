@@ -17,9 +17,9 @@ Alguns scripts do projeto também fazem uso do `nodejs`.
 
 O gradle é usado para fazer o `build` dos projetos Apache Cordova
 
-### Java 8
+### Java
 
-É uma exigência do Apache Cordova que seja a versão 8. Em Debian/Ubuntu `sudo apt install openjdk-8-jdk`
+É uma exigência do Apache Cordova a instalação do Java.
 
 ### [Android SDK](https://stackoverflow.com/questions/34556884/how-to-install-android-sdk-on-ubuntu) ou [Android Studio](https://developer.android.com/studio/install)
 
@@ -27,26 +27,11 @@ O Android SDK (que é instalado automaticamente quando se instala o Android Stud
 
 ## Eventuais problemas com versões do Java
 
-Um problema comum está relacionado com as versões do Java, considerando que o Apache Cordova exige Java 8.
+Um problema comum pode estar relacionado com as versões do Java. Para saber a versão corra `java -c` e `javac -version` (compilador).
 
-Para saber a versão corra `java -c` e `javac -version` (compilador). O compilador `javac` deverá retornar `1.8.x`
+Em Debian/Ubuntu para escolher a versão correta, corra `sudo update-alternatives --config javac`. Em macOS, por exemplo, `export JAVA_HOME=/usr/libexec/java_home -v 1.11`.
 
-```
-$ javac -version
-javac 1.8.0_292
-```
-
-### Debian/Ubuntu
-Caso haja várias versões instaladas, para escolher a versão correta, corra:
-
-`sudo update-alternatives --config javac` 
-
-ou de uma forma mais automática para escolher a versão 8
-
-`sudo update-java-alternatives -s $(sudo update-java-alternatives -l | grep 8 | cut -d " " -f1)`
-
-### macos
-`export JAVA_HOME=/usr/libexec/java_home -v 1.8`
+Edite também a variável `JAVA_HOME` em conformidade com a versão pretendida.
 
 ## Eventuais problemas com Gradle
 
@@ -60,10 +45,6 @@ Tal pode dar problemas porque diferentes versões de gradle dependem de diferent
 `export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/` ou<br>
 `export JAVA_HOME=/usr/lib/jvm/jdk1.8.0_131/` ou<br>
 mesmo apagar com `export JAVA_HOME=`
-
-Em Debian/Ubuntu, para escolher a versão correta do Java:
-
-`sudo update-java-alternatives -s $(sudo update-java-alternatives -l | grep 8 | cut -d " " -f1)`
 
 ## Testar num smartphone
 
