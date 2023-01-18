@@ -11,6 +11,8 @@ on:
 
 env:
   JAVA_HOME: /usr/lib/jvm/java-1.11.0-openjdk-amd64
+  ANDROID_HOME: /usr/local/lib/android/sdk
+  ANDROID_SDK_ROOT: /usr/local/lib/android/sdk
 
 jobs:
   android:
