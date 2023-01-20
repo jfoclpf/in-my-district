@@ -1,4 +1,5 @@
 /* eslint camelcase: off */
+/* eslint no-var: off */
 /* global cordova, $, device */
 
 import * as appSecrets from './appSecrets.js'

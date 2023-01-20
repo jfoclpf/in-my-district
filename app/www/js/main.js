@@ -14,10 +14,10 @@ import * as dbServerLink from './dbServerLink.js'
 import * as photos from './photos.js'
 import * as variables from './variables.js'
 
-export var DEBUG = true
-export var APPversion
+export let DEBUG = true
+export let APPversion
 
-var wasInit
+let wasInit
 
 // list of municipalities, for which the APP will NOT allow sending emails
 // for exemple in Lisbon, the municipality explicitly rejects issues sent with this APP
@@ -194,7 +194,7 @@ function requestUserAppEvaluation () {
       }
 
       if (result > minimumOccurencesToRequestUserToEvaluteApp) {
-        var msg = 'Reparámos que tem usado esta APP, que é gratuita, de código aberto e sem publicidade. Fizemo-lo dentro do espírito de serviço público.<br><br>' +
+        const msg = 'Reparámos que tem usado esta APP, que é gratuita, de código aberto e sem publicidade. Fizemo-lo dentro do espírito de serviço público.<br><br>' +
           'Ajude-nos avaliando o nosso trabalho cívico. Muito obrigados'
 
         $.jAlert({
@@ -249,7 +249,7 @@ $('#generate_message').on('click', function () {
     return
   }
 
-  var mainMessage = text.getMainMessage('cleanBody')
+  const mainMessage = text.getMainMessage('cleanBody')
   $('#message').html(mainMessage)
   $('#mail_message').show()
 
@@ -311,7 +311,7 @@ function sendEMailMessage () {
   )
 
   try {
-    var imagesArray = photos.getPhotosForEmailAttachment()
+    const imagesArray = photos.getPhotosForEmailAttachment()
     // console.log(JSON.stringify(imagesArray, 0, 3))
     attachments = imagesArray.map((path, i) => cordova.plugins.email.adaptPhotoInfoForEmailAttachment(path, i))
   } catch (err) {
@@ -331,7 +331,7 @@ function sendEMailMessage () {
     }
   })
 
-  var emailTo = []
+  const emailTo = []
   // the system already forces the user to chose at least one of municipality or parish checkbox, anyway double-check
   if (!$('#send_to_municipality_checkbox').is(':checked') && !$('#send_to_parish_checkbox').is(':checked')) {
     window.alert('Erro, email tem de ser enviado pelo menos para municipio ou junta de freguesa')
@@ -349,7 +349,7 @@ function sendEMailMessage () {
     try {
       cordova.plugins.email.open({
         to: emailTo, // email addresses for TO field
-        attachments: attachments,
+        attachments,
         subject: text.getMainMessage('subject'), // subject of the email
         body: text.getMainMessage('body', dbEntryResultData), // email body (for HTML, set isHtml to true)
         isHtml: true // indicats if the body is HTML or plain text
