@@ -1,5 +1,7 @@
 /* global cordova, $ */
 
+import { readFile } from './file.js'
+
 let anomalies = {}
 
 export function getAnomalies () {
@@ -7,7 +9,9 @@ export function getAnomalies () {
 }
 
 export function populatesAnomaliesSelect (callback) {
-  $.getJSON(cordova.file.applicationDirectory + 'www/json/anomalies.json', function (data) {
+  readFile(cordova.file.applicationDirectory + 'www/json/anomalies.json').then((res) => {
+    const data = JSON.parse(res)
+
     // filter out comments, check anomalies.json
     anomalies = data.filter((el) => {
       return !Object.keys(el).find(el2 => el2.startsWith('__comment'))
@@ -66,7 +70,7 @@ export function populatesAnomaliesSelect (callback) {
     }).trigger('change')
 
     callback()
-  }).fail(function (err) {
+  }).catch(function (err) {
     callback(Error(err))
   })
 }

@@ -12,6 +12,7 @@ import * as functions from './functions.js'
 import * as localization from './localization.js'
 import * as dbServerLink from './dbServerLink.js'
 import * as anomaliesMod from './anomalies.js'
+import { readFile } from './file.js'
 
 let map
 let markersGroups // groups of markers, by type of anomaly
@@ -194,62 +195,76 @@ function processMapMarkers () {
   const isCurrentUserAnAdmin = functions.isCurrentUserAnAdmin()
   const dbEntriesLength = allDbEntries.length
 
-  const mapIcons = {}
-  for (const anomaly of anomalies) {
-    const topicCode = anomaly.topicCode
-    const mapIcon = L.icon({
-      iconUrl: `${cordova.file.applicationDirectory}www/img/map-icons/${topicCode}.png`,
-      iconSize: [50, 50],
-      iconAnchor: [25, 50]
-    })
-    mapIcons[topicCode] = mapIcon
-  }
-
-  for (let i = 0; i < dbEntriesLength; i++) {
-    const el = allDbEntries[i]
-    const topicCode = el.anomaly_code.match(/[a-zA-Z]+/)[0] // ex: "PA", "AAU", etc.
-
-    const marker = L.marker(
-      [el.data_coord_latit, el.data_coord_long],
-      { icon: mapIcons[topicCode] }
+  const iconsProms = []
+  for (let i = 0; i < anomalies.length; i++) {
+    const anomaly = anomalies[i]
+    iconsProms.push(
+      readFile(
+        `${cordova.file.applicationDirectory}www/img/map-icons/${anomaly.topicCode}.png`,
+        { format: 'dataURL' }
+      )
     )
-
-    let htmlInfoContent =
-      '<div style="width:200px">' +
-        `<b>Ocorrência</b>: ${el.anomaly1} - ${el.anomaly2}<br>` +
-        `<b>Local</b>: ${el.data_local} n. ${el.data_num_porta}, ${el.data_concelho}<br>` +
-        `<b>Data</b>: ${(new Date(el.data_data)).toLocaleDateString('pt-PT')} às ${el.data_hora.slice(0, 5)}<br>` +
-        `<b>Município</b>: ${el.data_concelho}<br>` +
-        `<b>Freguesia</b>: ${el.data_freguesia}<br>`
-
-    for (let photoIndex = 1; photoIndex <= 4; photoIndex++) {
-      if (el['foto' + photoIndex]) {
-        const photoUrl = getPhotosUrl + '/' + el['foto' + photoIndex]
-        htmlInfoContent += `<img class="photo-in-popup" width="200px" src="${photoUrl}">`
-      }
-    }
-
-    htmlInfoContent += '</div>'
-
-    // an admin is able to mark an entry in the db as deleted
-    if (isCurrentUserAnAdmin) {
-      htmlInfoContent += '<hr><b>Opções de administrador</b><br><br>' +
-        `<button type="button" class="btn btn-primary btn-sm m-1" onclick="app.map.setEntryInDbAsDeletedByAdmin('${encodeURIComponent(JSON.stringify(el))}')"><i class="fa fa-trash"></i></button><br><br>`
-    }
-
-    const popup = L.popup({ closeOnClick: false, autoClose: false, autoPan: true, maxHeight: 400 })
-      .setContent(htmlInfoContent)
-
-    marker.bindPopup(popup)
-
-    if (markersGroups[topicCode]) {
-      markersGroups[topicCode].markerClusterGroup.addLayer(marker)
-    }
-    if (el.uuid === device.uuid) {
-      markersGroups.mine.markerClusterGroup.addLayer(marker)
-    }
-    markersGroups.all.markerClusterGroup.addLayer(marker)
   }
+
+  Promise.all(iconsProms).then((values) => {
+    const mapIcons = {}
+    for (let i = 0; i < anomalies.length; i++) {
+      const anomaly = anomalies[i]
+      const topicCode = anomaly.topicCode
+      const mapIcon = L.icon({
+        iconUrl: values[i],
+        iconSize: [50, 50],
+        iconAnchor: [25, 50]
+      })
+      mapIcons[topicCode] = mapIcon
+    }
+
+    for (let i = 0; i < dbEntriesLength; i++) {
+      const el = allDbEntries[i]
+      const topicCode = el.anomaly_code.match(/[a-zA-Z]+/)[0] // ex: "PA", "AAU", etc.
+
+      const marker = L.marker(
+        [el.data_coord_latit, el.data_coord_long],
+        { icon: mapIcons[topicCode] }
+      )
+
+      let htmlInfoContent =
+        '<div style="width:200px">' +
+          `<b>Ocorrência</b>: ${el.anomaly1} - ${el.anomaly2}<br>` +
+          `<b>Local</b>: ${el.data_local} n. ${el.data_num_porta}, ${el.data_concelho}<br>` +
+          `<b>Data</b>: ${(new Date(el.data_data)).toLocaleDateString('pt-PT')} às ${el.data_hora.slice(0, 5)}<br>` +
+          `<b>Município</b>: ${el.data_concelho}<br>` +
+          `<b>Freguesia</b>: ${el.data_freguesia}<br>`
+
+      for (let photoIndex = 1; photoIndex <= 4; photoIndex++) {
+        if (el['foto' + photoIndex]) {
+          const photoUrl = getPhotosUrl + '/' + el['foto' + photoIndex]
+          htmlInfoContent += `<img class="photo-in-popup" width="200px" src="${photoUrl}">`
+        }
+      }
+
+      htmlInfoContent += '</div>'
+
+      // an admin is able to mark an entry in the db as deleted
+      if (isCurrentUserAnAdmin) {
+        htmlInfoContent += '<hr><b>Opções de administrador</b><br><br>' +
+          `<button type="button" class="btn btn-primary btn-sm m-1" onclick="app.map.setEntryInDbAsDeletedByAdmin('${encodeURIComponent(JSON.stringify(el))}')"><i class="fa fa-trash"></i></button><br><br>`
+      }
+
+      const popup = L.popup({ closeOnClick: false, autoClose: false, autoPan: true, maxHeight: 400 })
+        .setContent(htmlInfoContent)
+
+      marker.bindPopup(popup)
+
+      if (markersGroups[topicCode]) {
+        markersGroups[topicCode].markerClusterGroup.addLayer(marker)
+      }
+      if (el.uuid === device.uuid) {
+        markersGroups.mine.markerClusterGroup.addLayer(marker)
+      }
+      markersGroups.all.markerClusterGroup.addLayer(marker)
+    }
+  })
 }
 
 export function setEntryInDbAsDeletedByAdmin (dbElement) {

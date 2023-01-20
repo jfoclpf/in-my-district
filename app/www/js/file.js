@@ -1,5 +1,41 @@
 /* global cordova, XMLHttpRequest, FileReader, Blob, FormData  */
 
+export function readFile (path, options) {
+  options = options || {}
+
+  return new Promise(function (resolve, reject) {
+    window.resolveLocalFileSystemURL(path, (fileEntry) => {
+      fileEntry.file((file) => {
+        const reader = new FileReader()
+        reader.onloadend = () => {
+          resolve(reader.result)
+        }
+
+        const format = options.format
+        switch (format) {
+          case 'arrayBuffer':
+            reader.readAsArrayBuffer(file)
+            break
+          case 'binaryString':
+            reader.readAsBinaryString(file)
+            break
+          case 'dataURL':
+            reader.readAsDataURL(file)
+            break
+          default:
+            reader.readAsText(file)
+        }
+
+        reader.onerror = () => {
+          reject(Error(`Error occurred reading file: ${path}`))
+        }
+      })
+    }, (error) => {
+      reject(Error('resolve error', error))
+    })
+  })
+}
+
 // 'file://path/to/photo.jpg?123' => 'file://path/to/photo123.jpg'
 // this function is very important cause the getpicture plugin returns a unique tag after ?
 // on the file uri, such that files don't get messed with each other, since the plugin uses the cache

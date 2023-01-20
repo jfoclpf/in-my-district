@@ -1,4 +1,5 @@
 /* eslint camelcase: off */
+/* eslint no-var: off */
 /* global cordova, $, L, leafletImage */
 
 import * as main from './main.js'
@@ -8,6 +9,7 @@ import * as functions from './functions.js'
 import * as personalInfo from './personalInfo.js'
 import * as localization from './localization.js'
 import * as photos from './photos.js'
+import { readFile } from './file.js'
 
 // array of municipalities with parishes, ex: {"nome":"Abrantes", "freguesias":[ "Bemposta", etc.] }
 var municipalities = []
@@ -399,31 +401,37 @@ export function initMainFormMap (callback) {
     subdomains: ['a', 'b', 'c']
   }).addTo(mainFormMap)
 
-  const mapIcon = L.icon({
-    iconUrl: cordova.file.applicationDirectory + 'www/img/map_icon.png',
-    iconSize: [80, 80],
-    iconAnchor: [40, 80]
-  })
+  readFile(cordova.file.applicationDirectory + 'www/img/map_icon.png', { format: 'dataURL' })
+    .then((dataURL) => {
+      const mapIcon = L.icon({
+        iconUrl: dataURL,
+        iconSize: [80, 80],
+        iconAnchor: [40, 80]
+      })
 
-  anomalyMapMarker = L.marker([latitude, longitude], {
-    draggable: true,
-    autoPan: true,
-    icon: mapIcon
-  }).addTo(mainFormMap)
+      anomalyMapMarker = L.marker([latitude, longitude], {
+        draggable: true,
+        autoPan: true,
+        icon: mapIcon
+      }).addTo(mainFormMap)
 
-  anomalyMapMarker.on('moveend', function (e) {
-    const newCoord = e.target.getLatLng()
-    // get address from coordinates and fill address in the main form fields
-    localization.getAddressFromCoordinates(newCoord.lat, newCoord.lng, (err, res) => {
-      if (!err) {
-        localization.fillFormWithAddress(res.addressFromOSM, res.addressFromGeoApiPt)
-      }
+      anomalyMapMarker.on('moveend', function (e) {
+        const newCoord = e.target.getLatLng()
+        // get address from coordinates and fill address in the main form fields
+        localization.getAddressFromCoordinates(newCoord.lat, newCoord.lng, (err, res) => {
+          if (!err) {
+            localization.fillFormWithAddress(res.addressFromOSM, res.addressFromGeoApiPt)
+          }
+        })
+      })
+
+      setInterval(function () {
+        mainFormMap.invalidateSize()
+      }, 500)
     })
-  })
-
-  setInterval(function () {
-    mainFormMap.invalidateSize()
-  }, 500)
+    .catch((err) => {
+      console.error(err)
+    })
 }
 
 export function updatesFormMapToNewCoordinates (latitude, longitude) {
