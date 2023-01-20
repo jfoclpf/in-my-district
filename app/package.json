@@ -70,9 +70,6 @@
       "cordova-plugin-inappbrowser": {},
       "cordova-plugin-is-debug": {},
       "cordova-plugin-androidx-adapter": {},
-      "cordova-plugin-file": {
-        "ANDROIDX_WEBKIT_VERSION": "1.4.0"
-      },
       "cordova-plugin-camera": {
         "ANDROID_SUPPORT_V4_VERSION": "27.+",
         "ANDROIDX_CORE_VERSION": "1.6.+"
@@ -82,6 +79,9 @@
       "@globules-io/cordova-plugin-ios-xhr": {},
       "cordova-plugin-simple-image-resizer": {
         "ANDROID_EXIFINTERFACES_VERSION": "27.+"
+      },
+      "cordova-plugin-file": {
+        "ANDROIDX_WEBKIT_VERSION": "1.4.0"
       }
     },
     "platforms": [
