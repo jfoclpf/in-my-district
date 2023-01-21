@@ -11,6 +11,7 @@ on:
 
 env:
   JAVA_HOME: /usr/local/opt/openjdk@11/bin
+  HOMEBREW_NO_INSTALL_CLEANUP: 1
 
 jobs:
   ios:
@@ -38,7 +39,8 @@ jobs:
         brew update
         brew install java11
         sudo ln -sfn /usr/local/opt/openjdk@11/libexec/openjdk.jdk /Library/Java/JavaVirtualMachines/openjdk-11.jdk
-        ls /usr/local/opt
+        ls /usr/local/opt/openjdk*
+        /usr/libexec/java_home -V
         javac -version
     - name: Install Apache Cordova
       run: npm install -g cordova
