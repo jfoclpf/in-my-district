@@ -241,6 +241,7 @@ export function removeImage (id, num) {
   elem.src = ''
   elem.style.display = 'none'
   photosUriOnFileSystem[num] = null
+  photosForEmailAttachment[num] = null
 }
 
 function resizeImage (imageUri, callback) {
