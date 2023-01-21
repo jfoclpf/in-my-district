@@ -9,6 +9,10 @@ on:
   pull_request:
     branches: [ main ]
 
+env:
+  JAVA_HOME: /usr/local/opt/openjdk@11/bin
+  HOMEBREW_NO_INSTALL_CLEANUP: 1
+
 jobs:
   ios:
     strategy:
@@ -17,27 +21,38 @@ jobs:
         node-version: [lts/*]
         
     runs-on: ${{ matrix.platform }}
+    
+    defaults:
+      run:
+        working-directory: app
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v2
+      uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
         cache-dependency-path: app/package-lock.json
-    - name: Changing to Java 8
-      run: | 
+    - name: Installing Java 11
+      run: |
+        brew update
+        brew install java11
+        sudo ln -sfn /usr/local/opt/openjdk@11/libexec/openjdk.jdk /Library/Java/JavaVirtualMachines/openjdk-11.jdk
+        /usr/libexec/java_home -V
+        export JAVA_HOME=`/usr/libexec/java_home -v 11.0`
         javac -version
-        export JAVA_HOME=`/usr/libexec/java_home -v 1.8` || echo OK
-        javac -version
+    - name: Requirements
+      run: |
+        brew install ios-deploy
+        sudo gem install cocoapods
     - name: Install Apache Cordova
       run: npm install -g cordova
-    - name: Add iOS Platform
+    - name: Purge Android and add iOS Platform
       run: |
-        cd app/
         cordova platform rm android
+        cordova platform rm ios
+        rm -rf platforms/ plugins/
         cordova platform add ios
-    - run: |
-        cd app/
-        npm test
+    - run: npm test
+    - run: cordova build ios --production
