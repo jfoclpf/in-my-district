@@ -51,6 +51,7 @@ jobs:
     - name: Purge Android and add iOS Platform
       run: |
         cordova platform rm android
+        cordova platform rm ios
         rm -rf platforms/ plugins/
         cordova platform add ios
     - run: npm test
