@@ -1,9 +1,10 @@
-/* global FileReader, $, Camera */
+/* global $, Camera */
 
 import * as file from './file.js'
 import * as form from './form.js'
 import * as functions from './functions.js'
 import * as localization from './localization.js'
+import { readFile } from './file.js'
 
 // get Photo function
 // type depends if the photo is got from camera or the photo library
@@ -35,55 +36,56 @@ function cameraSuccess (result, imgNmbr, type, callback) {
     thisResult = JSON.parse(result)
     imageUri = thisResult.filename
     isCameraWithExifInfoAvailable = true
-    console.log('using plugin: cordova-plugin-camera-with-exif')
+    console.log('Using plugin: cordova-plugin-camera-with-exif')
   } catch (e) {
     imageUri = result
     isCameraWithExifInfoAvailable = false
-    console.log('using plugin: cordova-plugin-camera')
+    console.log('Using plugin: cordova-plugin-camera')
   }
 
-  console.log('imageUri a) ' + imageUri)
+  console.log('ImageUri a) ' + imageUri)
 
   // adds "file://" at the begining if missing as requested by Android systems
   // see: https://cordova.apache.org/docs/en/latest/reference/cordova-plugin-file/
   if (functions.isThisAndroid()) {
     imageUri = functions.adaptURItoAndroid(imageUri)
-    console.log('imageUri b) ' + imageUri)
+    console.log('ImageUri b) ' + imageUri)
   }
 
   photosUriOnFileSystem[imgNmbr] = imageUri
 
-  if (functions.isThisAndroid()) { // this plugin is just working on android
+  if (functions.isThisAndroid()) {
+    // resizeImage plugin is just working on android
     resizeImage(imageUri, function (resizedImgUri, err) {
-      var imgToShowUri = !err ? resizedImgUri : imageUri
-      displayImage(imgToShowUri, 'myImg_' + imgNmbr)
-      console.log('display image ' + imgNmbr + ' : ' + imgToShowUri)
-      photosForEmailAttachment[imgNmbr] = resizedImgUri
-      callback(imgNmbr)
+      const imgToShowUri = !err ? resizedImgUri : imageUri
+
+      readFile(imgToShowUri, { format: 'dataURL' })
+        .then((dataURL) => {
+          displayImage(dataURL, 'myImg_' + imgNmbr)
+          photosForEmailAttachment[imgNmbr] = dataURL
+        })
+        .catch((err) => {
+          console.error(err)
+        })
+        .finally(() => {
+          callback(imgNmbr)
+        })
     })
   } else if (functions.isThis_iOS()) {
-    displayImage(imageUri, 'myImg_' + imgNmbr)
-    console.log('display image ' + imgNmbr + ' : ' + imageUri)
-
-    // ios is a mess with file location, thus for email attachment convert photo to base64
-    window.resolveLocalFileSystemURL(imageUri, function (fileEntry) {
-      fileEntry.file((file) => {
-        if (!file.size) { console.error('File is empty (on fileEntry from resolveLocalFileSystemURL)'); return }
-        const reader = new FileReader()
-        reader.onloadend = () => {
-          photosForEmailAttachment[imgNmbr] = reader.result
-        }
-        reader.onerror = (err) => { console.error('Error on FileReader', err) }
-        reader.readAsDataURL(file)
-      }, (err) => { console.error('Error on fileEntry.file', err) })
-    }, (err) => { console.error('Error on resolveLocalFileSystemURL', err) })
-
-    callback(imgNmbr)
+    // in iOS the photos to be attached must also be stored as dataURL
+    readFile(imageUri, { format: 'dataURL' })
+      .then((dataURL) => {
+        displayImage(dataURL, 'myImg_' + imgNmbr)
+        photosForEmailAttachment[imgNmbr] = dataURL
+      })
+      .catch((err) => {
+        console.error(err)
+      })
+      .finally(() => {
+        callback(imgNmbr)
+      })
   } else {
-    displayImage(imageUri, 'myImg_' + imgNmbr)
-    console.log('display image ' + imgNmbr + ' : ' + imageUri)
-    photosForEmailAttachment[imgNmbr] = imageUri
-    callback(imgNmbr)
+    window.alert('This APP only works in Android or iOS')
   }
 
   // if user selects a photo from the library
