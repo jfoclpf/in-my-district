@@ -17,27 +17,34 @@ jobs:
         node-version: [lts/*]
         
     runs-on: ${{ matrix.platform }}
+    
+    defaults:
+      run:
+        working-directory: app
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v2
+      uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
         cache-dependency-path: app/package-lock.json
-    - name: Changing to Java 8
+    - name: Installing Java 11
+      run: |
+        brew update
+        brew install java11
+    - name: Changing to Java 11
       run: | 
         javac -version
-        export JAVA_HOME=`/usr/libexec/java_home -v 1.8` || echo OK
+        export JAVA_HOME=`/usr/libexec/java_home -v 1.11` || echo OK
         javac -version
     - name: Install Apache Cordova
       run: npm install -g cordova
-    - name: Add iOS Platform
+    - name: Purge Android and add iOS Platform
       run: |
-        cd app/
         cordova platform rm android
+        rm -rf platforms/ plugins/
         cordova platform add ios
-    - run: |
-        cd app/
-        npm test
+    - run: npm test
+    - run: cordova build ios --release
