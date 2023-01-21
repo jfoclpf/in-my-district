@@ -29,7 +29,7 @@ export function getPhoto (imgNmbr, type, callback) {
 
 function cameraSuccess (result, imgNmbr, type, callback) {
   // checks if plugin cordova-plugin-camera-with-exif is available
-  // some times this plugin has bugs, but it allows to check GPS coordinates of photo
+  // sometimes this plugin has bugs, but it allows to check GPS coordinates of photo
   let isCameraWithExifInfoAvailable, thisResult, imageUri
   try {
     // convert JSON string to JSON Object
