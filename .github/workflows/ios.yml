@@ -42,6 +42,11 @@ jobs:
         /usr/libexec/java_home -V
         export JAVA_HOME=`/usr/libexec/java_home -v 11.0`
         javac -version
+    - name: Requirements
+      run: |
+        xcode-select --install
+        brew install ios-deploy
+        sudo gem install cocoapods
     - name: Install Apache Cordova
       run: npm install -g cordova
     - name: Purge Android and add iOS Platform
