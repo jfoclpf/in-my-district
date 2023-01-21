@@ -13,7 +13,7 @@ import * as photos from './photos.js'
 // after entry is submitted into DB
 export function getMainMessage (option, dbEntryResultData) {
   if (option === 'body' || option === 'cleanBody') {
-    var message = ''
+    let message = ''
 
     const municipality = $('#municipality option:selected').text().trim()
     const parish = $('#parish option:selected').text().trim()
@@ -104,7 +104,7 @@ export function getMainMessage (option, dbEntryResultData) {
 
 // called by historic module
 export function getReminderMessage (occurrence) {
-  var text = `${getRandomGreetings()} do Municipio de ${occurrence.data_concelho} e da Junta de Freguesia de ${occurrence.data_freguesia}<br><br>` +
+  const text = `${getRandomGreetings()} do Municipio de ${occurrence.data_concelho} e da Junta de Freguesia de ${occurrence.data_freguesia}<br><br>` +
     `No seguimento da anamoalia já enviada anteriormente a V. Exas. relacionada com ${occurrence.anomaly1}, mais precisamente com ${occurrence.anomaly2} ` +
     `na ${occurrence.data_local}${occurrence.data_num_porta ? ' junto ao n. ' + occurrence.data_num_porta : ''}, ${occurrence.data_concelho}, ` +
     `no dia ${(new Date(occurrence.data_data)).toLocaleDateString('pt-PT')} às ${occurrence.data_hora.slice(0, 5)}, ` +
@@ -116,7 +116,7 @@ export function getReminderMessage (occurrence) {
 }
 
 function getRandomGreetings () {
-  var greetingsArray = [
+  const greetingsArray = [
     'Excelentíssimos senhores',
     'Prezados senhores',
     'Caros senhores',
@@ -130,7 +130,7 @@ function getRandomGreetings () {
 // Andrey
 export function getRegards () {
   // gets a random regard
-  var regards = [
+  const regards = [
     'Agradecendo antecipadamente a atenção de V. Ex.as, apresento os meus melhores cumprimentos',
     'Com os melhores cumprimentos',
     'Com os meus melhores cumprimentos',
@@ -141,14 +141,14 @@ export function getRegards () {
     'Respeitosamente'
   ]
 
-  var regard = regards[Math.floor(Math.random() * regards.length)]
+  const regard = regards[Math.floor(Math.random() * regards.length)]
 
   // full name
-  var Name = $('#name').val()
+  const Name = $('#name').val()
   // gets first and last name
-  var ShortName = Name.split(' ')[0] + ' ' + Name.split(' ')[(Name.split(' ')).length - 1]
+  const ShortName = Name.split(' ')[0] + ' ' + Name.split(' ')[(Name.split(' ')).length - 1]
 
-  var msgEnd = regard + ',<br>' + ShortName
+  const msgEnd = regard + ',<br>' + ShortName
 
   return msgEnd
 }

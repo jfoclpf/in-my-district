@@ -1,5 +1,4 @@
 /* eslint camelcase: off */
-/* eslint no-var: off */
 /* global cordova, $, device */
 
 import * as appSecrets from './appSecrets.js'
@@ -24,7 +23,7 @@ export function isCurrentUserAnAdmin () {
 // limpar a mensagem para o email, remove HTML tags,
 // pois o mailto não aceita HTML tags, apenas texto simples
 export function clean_message (message) {
-  var temp = message
+  let temp = message
   temp = temp.replace(/<b\s*\/?>/mg, '')
   temp = temp.replace(/<\/b\s*\/?>/mg, '')
   temp = temp.replace(/<br\s*\/?>/mg, '\n')
@@ -33,15 +32,15 @@ export function clean_message (message) {
 
 // add zeros to numbers, ex: pad(7, 3)="007"
 export function pad (num, size) {
-  var s = num + ''
+  let s = num + ''
   while (s.length < size) s = '0' + s
   return s
 }
 
 // Will remove all falsy values: undefined, null, 0, false, NaN and "" (empty string)
 export function cleanArray (actual) {
-  var newArray = []
-  for (var i = 0; i < actual.length; i++) {
+  const newArray = []
+  for (let i = 0; i < actual.length; i++) {
     if (actual[i]) {
       newArray.push(actual[i])
     }
@@ -51,9 +50,9 @@ export function cleanArray (actual) {
 
 // initializes date and time with current date and time
 export function updateDateAndTime () {
-  var date = new Date()
+  const date = new Date()
   $('#date').datepicker('setDate', date)
-  var currentTime = pad(date.getHours(), 2) + ':' + pad(date.getMinutes(), 2)
+  const currentTime = pad(date.getHours(), 2) + ':' + pad(date.getMinutes(), 2)
   $('#time').val(currentTime)
 }
 

@@ -3,9 +3,6 @@
    and in case there are entries whose all photos are invalid (inexistent photos)
    the script marks the entry field `deleted_by_sys` as true */
 
-/* eslint prefer-const: "off" */
-/* eslint no-var: "off" */
-
 const fs = require('fs')
 const path = require('path')
 const async = require('async')

@@ -1,5 +1,4 @@
 /* eslint camelcase: off */
-/* eslint no-var: off */
 /* eslint object-shorthand: off */
 /* global device, $ */
 
@@ -23,9 +22,9 @@ export function submitNewEntryToDB (callback1, callback2) {
 
   // generates file names array for images
   const randomString = getRandomString(10) // serves to uniquely identify the filenames
-  var imgFileNames = []
-  var imagesArray = photos.getPhotosUriOnFileSystem()
-  var numberOfImages = imagesArray.length
+  const imgFileNames = []
+  const imagesArray = photos.getPhotosUriOnFileSystem()
+  const numberOfImages = imagesArray.length
   for (let i = 0; i < 4; i++) {
     if (i < numberOfImages) {
       const fileName = `${main.DEBUG ? 'debug_' : ''}n${i + 1}_${dateYYYY_MM_DD}_${timeHH_MM}_${municipality}_${freguesia}_${randomString}.jpg`
@@ -43,7 +42,7 @@ export function submitNewEntryToDB (callback1, callback2) {
     return
   }
 
-  var databaseObj = {
+  const databaseObj = {
     PROD: !main.DEBUG ? 1 : 0,
     uuid: device.uuid,
     foto1: imgFileNames[0],
@@ -117,10 +116,10 @@ export function submitNewEntryToDB (callback1, callback2) {
 
 // generate random string
 function getRandomString (length) {
-  var result = ''
-  var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
-  var charactersLength = characters.length
-  for (var i = 0; i < length; i++) {
+  let result = ''
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+  const charactersLength = characters.length
+  for (let i = 0; i < length; i++) {
     result += characters.charAt(Math.floor(Math.random() * charactersLength))
   }
   return result
@@ -129,7 +128,7 @@ function getRandomString (length) {
 // for a certain occurence it sets that it was dealt, or not, by authority
 export function setSolvedOccurrenceStatus (occurence, status, callback) {
   const submissionsUrl = variables.urls.databaseServer.submissions
-  var databaseObj = Object.assign({}, occurence) // cloning Object
+  const databaseObj = Object.assign({}, occurence) // cloning Object
 
   databaseObj.ocorrencia_resolvida = status ? 1 : 0
 
@@ -156,7 +155,7 @@ export function setSolvedOccurrenceStatus (occurence, status, callback) {
 
 export function setEntryInDbAsDeleted (dbEntry, deleter, callback) {
   const submissionsUrl = variables.urls.databaseServer.submissions
-  var databaseObj = Object.assign({}, dbEntry) // cloning Object
+  const databaseObj = Object.assign({}, dbEntry) // cloning Object
 
   let dbCommand
   if (deleter === 'admin') {

@@ -1,5 +1,4 @@
 /* eslint camelcase: off */
-/* eslint no-var: off */
 /* global cordova, $, L, leafletImage */
 
 import * as main from './main.js'
@@ -12,9 +11,9 @@ import * as photos from './photos.js'
 import { readFile } from './file.js'
 
 // array of municipalities with parishes, ex: {"nome":"Abrantes", "freguesias":[ "Bemposta", etc.] }
-var municipalities = []
-var mainFormMap
-var anomalyMapMarker // map marker referring to the place where the anomaly is located
+let municipalities = []
+let mainFormMap
+let anomalyMapMarker // map marker referring to the place where the anomaly is located
 
 export function init () {
   // loading spinner on
@@ -78,7 +77,7 @@ export function getTimeHH_MM () {
 }
 
 export function getFullAddress () {
-  var fullAddress
+  let fullAddress
 
   const streetNumber = getStreetNumber()
   if (streetNumber) {
@@ -118,14 +117,14 @@ export function isMessageReady () {
     return true
   }
 
-  var to_break = false // this is true when one mandatory form field is empty or invalid
-  var invalidPersonalInfo = false // at least one field of personal info is not filled or it is invalid
-  var countEmptyFields = 0 // numer of invalid or empty mandatory user form fields
-  var error_string = ''
+  let to_break = false // this is true when one mandatory form field is empty or invalid
+  let invalidPersonalInfo = false // at least one field of personal info is not filled or it is invalid
+  let countEmptyFields = 0 // numer of invalid or empty mandatory user form fields
+  let error_string = ''
 
   // loops through mandatory fields
   $('.mandatory').each(function () {
-    var val = $(this).val()
+    const val = $(this).val()
     if (val == null || val === undefined || val === '' || (val).length === 0 || (val).replace(/^\s+|\s+$/g, '').length === 0) {
       console.log('Error on #' + $(this).attr('id'))
       error_string += '- ' + $(this).attr('name') + '<br>'
@@ -160,7 +159,7 @@ export function isMessageReady () {
   }
 
   // detects if the name is correctly filled in
-  var Name = $('#name').val()
+  const Name = $('#name').val()
   if (!personalInfo.isFullNameOK(Name) && !main.DEBUG) {
     $.jAlert({
       title: 'Erro no nome!',
@@ -196,7 +195,7 @@ export function isMessageReady () {
 // removes leading and trailing spaces on every text field "on focus out"
 $(':text').each(function (index) {
   $(this).focusout(function () {
-    var text = $(this).val()
+    let text = $(this).val()
     text = $.trim(text)
     text = text.replace(/\s\s+/g, ' ') // removes consecutive spaces in-between
     $(this).val(text)
@@ -211,12 +210,12 @@ $(':text').each(function (index) {
 // buttons "Add Image"
 $('#addImg_1, #addImg_2, #addImg_3, #addImg_4').on('click', function () {
   // get id, for example #remImg_2
-  var id = $(this).attr('id')
+  const id = $(this).attr('id')
   console.log('photo id: ' + id)
   // gets the number of the element, by obtaining the last character of the id
-  var num = id[id.length - 1]
+  const num = id[id.length - 1]
 
-  var callback = function (imgNmbr) {
+  const callback = function (imgNmbr) {
     // hides "Adds image" button
     $('#' + 'addImg_' + imgNmbr).html('<i class="fa fa-edit"></i>')
     $('#' + 'remImg_' + imgNmbr).show()
@@ -247,9 +246,9 @@ $('#addImg_1, #addImg_2, #addImg_3, #addImg_4').on('click', function () {
 // buttons "Remove Image"
 $('#remImg_1, #remImg_2, #remImg_3, #remImg_4').on('click', function () {
   // get id, for example #remImg_2
-  var id = $(this).attr('id')
+  const id = $(this).attr('id')
   // gets the number of the element, by obtaining the last character of the id
-  var num = id[id.length - 1]
+  const num = id[id.length - 1]
 
   photos.removeImage('myImg_' + num, num)
   $(this).hide()
@@ -260,11 +259,11 @@ $('#remImg_1, #remImg_2, #remImg_3, #remImg_4').on('click', function () {
 })
 
 function updateImgContainers () {
-  var numberOfContainers = $('#image_selector .img-container').length
-  var hasShownButton = false
-  for (var i = 0; i < numberOfContainers; i++) {
+  const numberOfContainers = $('#image_selector .img-container').length
+  let hasShownButton = false
+  for (let i = 0; i < numberOfContainers; i++) {
     console.log(i)
-    var $this = $('#image_selector .img-container').eq(i)
+    const $this = $('#image_selector .img-container').eq(i)
     if (!$this.find('img').attr('src')) {
       if (!hasShownButton) {
         console.log('show')
@@ -373,8 +372,8 @@ $('#street').on('input', function () {
 
 export function initMainFormMap (callback) {
   // get coordinates for the map center
-  var currentLocation = localization.getCoordinates() // current position of user
-  var latitude, longitude
+  const currentLocation = localization.getCoordinates() // current position of user
+  let latitude, longitude
   if (currentLocation.latitude && currentLocation.longitude) {
     latitude = currentLocation.latitude
     longitude = currentLocation.longitude

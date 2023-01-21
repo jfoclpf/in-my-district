@@ -6,8 +6,8 @@ import * as main from './main.js'
 // populates personal in fields information if available in storage
 export function loadsPersonalInfo () {
   $('.personal_info').each(function () {
-    var id = $(this).attr('id')
-    var value = window.localStorage.getItem(id)
+    const id = $(this).attr('id')
+    const value = window.localStorage.getItem(id)
     if (value) {
       $(this).val(value)
     }
@@ -17,9 +17,9 @@ export function loadsPersonalInfo () {
 // save to storage for later usage on every select
 $('select.personal_info').each(function () {
   $(this).on('change', function () {
-    var id = $(this).attr('id')
+    const id = $(this).attr('id')
     console.log(id)
-    var value = $(this).val()
+    const value = $(this).val()
     window.localStorage.setItem(id, value)
   })
 })
@@ -27,9 +27,9 @@ $('select.personal_info').each(function () {
 // save to storage for later usage on every "focus out" of text input fields
 $('input.personal_info').each(function () {
   $(this).focusout(function () {
-    var id = $(this).attr('id')
+    const id = $(this).attr('id')
     console.log(id)
-    var value = $(this).val()
+    let value = $(this).val()
     value = $.trim(value)
     value = value.replace(/\s\s+/g, ' ') // removes consecutive spaces in-between
     window.localStorage.setItem(id, value)
@@ -52,7 +52,7 @@ $('#name').on('input', function () {
 // detects if user has inserted full name
 export function isFullNameOK (fullName) {
   // removes all non-alphabetic characters
-  var name = fullName.replace(/[^a-zA-Z ]/g, '')
+  let name = fullName.replace(/[^a-zA-Z ]/g, '')
   // removes consecutive spaces in-between
   name = name.replace(/\s\s+/g, ' ')
 
@@ -60,12 +60,12 @@ export function isFullNameOK (fullName) {
   name = $.trim(name)
 
   // gets the number of words / names
-  var name_array = name.split(' ')
-  var number_of_names = name_array.length
+  const name_array = name.split(' ')
+  let number_of_names = name_array.length
 
   // disconsider small particles which are not a name
-  var el
-  for (var i in name_array) {
+  let el
+  for (const i in name_array) {
     el = name_array[i]
     if (el === 'dos' || el === 'da' || el === 'do' || el === 'das') {
       number_of_names--
@@ -140,7 +140,7 @@ $('#postal_code').on('input', function () {
 
 // detects if the postal code is correctly filled in
 export function isPostalCodeOK () {
-  var plate_str = $('#postal_code').val()
+  let plate_str = $('#postal_code').val()
 
   plate_str = $.trim(plate_str)
 

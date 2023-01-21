@@ -1,8 +1,6 @@
 /* server app that receives occurences from the users
 and stores it in the dabatase */
 
-/* eslint prefer-const: "off" */
-/* eslint no-var: "off" */
 /* eslint no-prototype-builtins: "off" */
 
 const fs = require('fs')

@@ -4,8 +4,8 @@
 
 import * as variables from './variables.js'
 
-var currentMunicipality = {}
-var currentParish = {}
+let currentMunicipality = {}
+let currentParish = {}
 
 export function init () {
 }

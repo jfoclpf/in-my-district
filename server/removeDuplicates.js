@@ -3,9 +3,6 @@
    even if they have different names. If two entries have exactly the same photos (same file JPG data content),
    and if they are from the same user, the older entry is considered a duplicate and it is marked as deleted */
 
-/* eslint prefer-const: "off" */
-/* eslint no-var: "off" */
-
 const fs = require('fs')
 const path = require('path')
 const async = require('async')

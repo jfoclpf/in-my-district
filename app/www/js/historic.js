@@ -11,7 +11,7 @@ import * as text from './text.js'
 import * as file from './file.js'
 import * as dbServerLink from './dbServerLink.js'
 
-var historicData
+let historicData
 
 export function updateHistoric () {
   const requestHistoricUrl = variables.urls.databaseServer.requestHistoric
@@ -22,7 +22,7 @@ export function updateHistoric () {
   $.ajax({
     url: requestHistoricUrl,
     type: 'GET',
-    data: { uuid: uuid },
+    data: { uuid },
     crossDomain: true,
     success: function (data) {
       console.log('Returned: ', data)
@@ -48,7 +48,7 @@ export function requestNumberOfHistoricOccurrences (callback) {
   $.ajax({
     url: requestHistoricUrl,
     type: 'GET',
-    data: { uuid: uuid },
+    data: { uuid },
     crossDomain: true,
     success: function (data) {
       console.log('Returned: ', data)
@@ -97,7 +97,7 @@ function insertFetchedDataIntoHistoric () {
 
   // since the results are stored as they are submitted, they are ordered by time
   // we want to show on top the most recent ones, i.e., the last on the array
-  for (var i = historicData.length - 1; i >= 0; i--) {
+  for (let i = historicData.length - 1; i >= 0; i--) {
     const el = historicData[i]
     let elHtmlToAppend =
       `<div class="list-group-item historic_element" data-index="${i}">
@@ -121,7 +121,7 @@ function insertFetchedDataIntoHistoric () {
         <div class="mt-2">`
 
     // DB has 4 fields for images for the same DB entry: foto1, foto2, foto3 and foto4
-    for (var photoIndex = 1; photoIndex <= 4; photoIndex++) {
+    for (let photoIndex = 1; photoIndex <= 4; photoIndex++) {
       if (historicData[i]['foto' + photoIndex]) { // if that photo index exists in the DB entry
         const fullImgUrl = getPhotosUrl + '/' + historicData[i]['foto' + photoIndex]
         elHtmlToAppend += `<img src="${fullImgUrl}">`
@@ -266,17 +266,17 @@ function insertFetchedDataIntoHistoric () {
 function sendReminderEmail (occurrence) {
   const getPhotosUrl = variables.urls.databaseServer.getPhotos
 
-  var progressAlert = $.jAlert({
+  const progressAlert = $.jAlert({
     class: 'ja_300px',
     closeBtn: false,
     content: `Carregando as imagens&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="${cordova.file.applicationDirectory + 'www/css/res/images/loading.gif'}" />`
   })
   // download images from server to cache to attach them in email
   // DB has 4 fields for images for the same DB entry: foto1, foto2, foto3 and foto4
-  var photosDeferred = []
+  const photosDeferred = []
   console.log('start sendReminderEmail')
-  var downloadFileToDevice = function (photoIndex, fullImgUrl, fileName) {
-    var destPathDir
+  const downloadFileToDevice = function (photoIndex, fullImgUrl, fileName) {
+    let destPathDir
     if (functions.isThisAndroid()) {
       // https://cordova.apache.org/docs/en/latest/reference/cordova-plugin-file/#file-system-layouts
       destPathDir = cordova.file.cacheDirectory // normally: file:///data/data/<app-id>/cache
@@ -295,7 +295,7 @@ function sendReminderEmail (occurrence) {
       })
   }
 
-  for (var photoIndex = 1; photoIndex <= 4; photoIndex++) {
+  for (let photoIndex = 1; photoIndex <= 4; photoIndex++) {
     if (occurrence['foto' + photoIndex]) { // if that photo index exists in the DB entry
       const fileName = occurrence['foto' + photoIndex]
       const fullImgUrl = getPhotosUrl + '/' + fileName
@@ -306,7 +306,7 @@ function sendReminderEmail (occurrence) {
   }
 
   $.when(...photosDeferred).done(function (/* arguments array */) {
-    var attachments = []
+    const attachments = []
     for (let i = 0; i < arguments.length; i++) {
       if (arguments[i]) {
         attachments.push(arguments[i])
@@ -314,13 +314,13 @@ function sendReminderEmail (occurrence) {
     }
     console.log(JSON.stringify(attachments, 0, 3))
 
-    var emailSubject = `Anomalia com ${occurrence.anomaly1}, ${occurrence.anomaly2} na ${occurrence.data_local}, ${occurrence.data_concelho} - Inquirição sobre estado processual da ocorrência`
+    const emailSubject = `Anomalia com ${occurrence.anomaly1}, ${occurrence.anomaly2} na ${occurrence.data_local}, ${occurrence.data_concelho} - Inquirição sobre estado processual da ocorrência`
 
     setTimeout(() => {
       progressAlert.closeAlert()
       cordova.plugins.email.open({
         to: [occurrence.email_concelho, occurrence.email_freguesia],
-        attachments: attachments, // file paths or base64 data streams
+        attachments, // file paths or base64 data streams
         subject: emailSubject, // subject of the email
         body: text.getReminderMessage(occurrence), // email body (for HTML, set isHtml to true)
         isHtml: true // indicats if the body is HTML or plain text

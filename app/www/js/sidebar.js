@@ -20,7 +20,7 @@ export function init () {
 
   // opens http links with system browser
   $('a[href]').on('click', function (event) {
-    var href = $(this).attr('href')
+    const href = $(this).attr('href')
     if (href.startsWith('https://') || href.startsWith('http://')) {
       event.preventDefault()
 
@@ -100,8 +100,8 @@ export function toggleSidebar (status) {
 
   // for touch screens detects when the user slides the sidebar with the finger
   (function () {
-    var ts
-    var wrapper = document.getElementsByClassName('wrapper')[0]
+    let ts
+    const wrapper = document.getElementsByClassName('wrapper')[0]
 
     wrapper.addEventListener('touchstart', function (e) {
       if ($('#sidebar').hasClass('active')) {
@@ -111,7 +111,7 @@ export function toggleSidebar (status) {
 
     wrapper.addEventListener('touchend', function (e) {
       if ($('#sidebar').hasClass('active')) {
-        var te = e.changedTouches[0].clientX
+        const te = e.changedTouches[0].clientX
         if (ts > te + 5) {
           // console.log('slided left')
           toggleSidebar(false)
