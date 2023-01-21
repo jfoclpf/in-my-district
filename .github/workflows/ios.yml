@@ -50,4 +50,4 @@ jobs:
         rm -rf platforms/ plugins/
         cordova platform add ios
     - run: npm test
-    - run: cordova build ios --device --release
+    - run: cordova build ios --device --debug
