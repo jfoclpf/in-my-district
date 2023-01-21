@@ -1,4 +1,6 @@
-/* eslint camelcase: "off" */
+/* eslint camelcase: off */
+/* eslint no-var: off */
+/* eslint object-shorthand: off */
 /* global device, $ */
 
 import * as main from './main.js'
