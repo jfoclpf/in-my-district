@@ -36,9 +36,9 @@ jobs:
     - name: Installing Java 11
       run: |
         brew update
-        brew remove java17
         brew install java11
         sudo ln -sfn /usr/local/opt/openjdk@11/libexec/openjdk.jdk /Library/Java/JavaVirtualMachines/openjdk-11.jdk
+        ls /usr/local/opt
         javac -version
     - name: Install Apache Cordova
       run: npm install -g cordova
