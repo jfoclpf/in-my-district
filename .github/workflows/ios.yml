@@ -44,9 +44,8 @@ jobs:
         javac -version
     - name: Requirements
       run: |
-        xcode-select --install; echo 'OK'
-        brew install ios-deploy; echo 'OK'
-        sudo gem install cocoapods; echo 'OK'
+        brew install ios-deploy
+        sudo gem install cocoapods
     - name: Install Apache Cordova
       run: npm install -g cordova
     - name: Purge Android and add iOS Platform
