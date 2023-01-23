@@ -19,6 +19,8 @@ export function init () {
   // loading spinner on
   GPSLoadingOnFields(true)
 
+  initPullToRefresh()
+
   Promise.allSettled([
     $.ajax({
       url: variables.urls.geoApi.ptApi + '/municipios/freguesias',
@@ -281,7 +283,9 @@ function updateImgContainers () {
 
 // botão get address by GPS (Atualizar)
 $('#getCurrentAddresBtn').on('click', function () {
+  spinnerOnButton(true)
   GPSLoadingOnFields(true)
+
   localization.getGeolocation()
     .then((res) => {
       updatesFormMapToNewCoordinates(res.latitude, res.longitude)
@@ -295,10 +299,20 @@ $('#getCurrentAddresBtn').on('click', function () {
     })
     .finally(() => {
       GPSLoadingOnFields(false)
+      spinnerOnButton(false)
     })
 
   functions.updateDateAndTime()
 })
+
+/* spinner */
+function spinnerOnButton (flag) {
+  if (flag) {
+    $('#getCurrentAddresBtn').removeClass('btn btn-primary').addClass('spinner-border text-primary')
+  } else {
+    $('#getCurrentAddresBtn').removeClass('spinner-border text-primary').addClass('btn btn-primary')
+  }
+}
 
 /* ********************************************************************** */
 /* ********************* DATE OF OCCURRENCE ***************************** */
@@ -480,4 +494,68 @@ export function bSendToMunicipality () {
 
 export function bSendToParish () {
   return $('#send_to_parish_checkbox').is(':checked')
+}
+
+/* **************************************************************************** */
+/* ********************* PULL TO REFRESH FUNCTIONS **************************** */
+function initPullToRefresh () {
+  const pStart = { x: 0, y: 0 }
+  const pStop = { x: 0, y: 0 }
+
+  function swipeStart (e) {
+    if (typeof e.targetTouches !== 'undefined') {
+      const touch = e.targetTouches[0]
+      pStart.x = touch.screenX
+      pStart.y = touch.screenY
+    } else {
+      pStart.x = e.screenX
+      pStart.y = e.screenY
+    }
+  }
+
+  function swipeEnd (e) {
+    if (typeof e.changedTouches !== 'undefined') {
+      const touch = e.changedTouches[0]
+      pStop.x = touch.screenX
+      pStop.y = touch.screenY
+    } else {
+      pStop.x = e.screenX
+      pStop.y = e.screenY
+    }
+
+    swipeCheck()
+  }
+
+  function swipeCheck () {
+    const changeY = pStart.y - pStop.y
+    const changeX = pStart.x - pStop.x
+    if (isPullDown(changeY, changeX)) {
+      // user has pulled to refresh
+      $('#getCurrentAddresBtn').click()
+    }
+  }
+
+  function isPullDown (dY, dX) {
+    // methods of checking slope, length, direction of line created by swipe action
+    return (
+      dY < 0 &&
+      ((Math.abs(dX) <= 100 && Math.abs(dY) >= 300) ||
+        (Math.abs(dX) / Math.abs(dY) <= 0.3 && dY >= 60))
+    )
+  }
+
+  document.addEventListener(
+    'touchstart',
+    function (e) {
+      swipeStart(e)
+    },
+    false
+  )
+  document.addEventListener(
+    'touchend',
+    function (e) {
+      swipeEnd(e)
+    },
+    false
+  )
 }
