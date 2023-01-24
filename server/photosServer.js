@@ -1,4 +1,4 @@
-// server app used for the uploading of photos from occurrences
+// server app used to get and upload photos from occurrences
 
 const path = require('path')
 const express = require('express')
@@ -16,7 +16,8 @@ module.exports.init = (data) => {
   app.use(bodyParser.json({ limit: '50mb' }))
   app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }))
 
-  app.use('/image_server', express.static(path.join(__dirname, 'uploadedImages')))
+  // endpoint to get photos as static content
+  app.use(data.getPhotosUrlPath, express.static(data.photosDirectoryFullPath))
 
   // photosUploadUrlPath is defined on /keys-configs/configs.json
   app.post(data.photosUploadUrlPath, async (req, res) => {

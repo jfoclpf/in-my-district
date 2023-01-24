@@ -31,8 +31,9 @@ const requestHistoricUrlPath = serverInfo.url.paths.requestHistoric
 const solvedOccurrenceUrlPath = serverInfo.url.paths.solvedOccurrence // for the link municipalities and parishes use to declare occurrence as resolved
 const mainServerPort = serverInfo.mainServerPort
 
-// upload of images/photos
+// download/upload of images/photos
 const photosUploadUrlPath = serverInfo.url.paths.photosUpload
+const getPhotosUrlPath = serverInfo.url.paths.getPhotos
 const photosServerPort = serverInfo.photosServerPort
 const photosDirectoryFullPath = path.join(__dirname, serverInfo.photosDirectory)
 
@@ -317,7 +318,7 @@ const server = app.listen(mainServerPort, () => console.log(`Request server list
 
 // server for uploading files to main server's disk
 const server2 = require(path.join(__dirname, 'photosServer'))
-  .init({ photosUploadUrlPath, photosServerPort, photosDirectoryFullPath })
+  .init({ photosUploadUrlPath, getPhotosUrlPath, photosServerPort, photosDirectoryFullPath })
 
 console.log('Initializing timers to cleanup database')
 // directory where the images are stored with respect to present file
