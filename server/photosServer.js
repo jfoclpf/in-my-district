@@ -16,6 +16,8 @@ module.exports.init = (data) => {
   app.use(bodyParser.json({ limit: '50mb' }))
   app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }))
 
+  app.use('/image_server', express.static(path.join(__dirname, 'uploadedImages')))
+
   // photosUploadUrlPath is defined on /keys-configs/configs.json
   app.post(data.photosUploadUrlPath, async (req, res) => {
     debug('Getting files')
@@ -52,8 +54,8 @@ module.exports.init = (data) => {
   })
 
   const server = app.listen(
-    data.photosUploadAppPort,
-    () => console.log(`File upload server listening on port ${data.photosUploadAppPort}!`)
+    data.photosServerPort,
+    () => console.log(`Photos server listening on port ${data.photosServerPort}!`)
   )
 
   return server
