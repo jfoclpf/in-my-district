@@ -316,7 +316,7 @@ function generateUuid () {
 const server = app.listen(mainServerPort, () => console.log(`Request server listening on port ${mainServerPort}!`))
 
 // server for uploading files to main server's disk
-const server2 = require(path.join(__dirname, 'photosUpload'))
+const server2 = require(path.join(__dirname, 'photosServer'))
   .init({ photosUploadUrlPath, photosServerPort, photosDirectoryFullPath })
 
 console.log('Initializing timers to cleanup database')

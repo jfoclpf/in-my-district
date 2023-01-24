@@ -3,8 +3,8 @@ Here resides the NodeJS code of the sever that:
 
  - connects to a MySQL database (`main.js`)
  - receives HTTP requests from the APP to submit or update new ocurrences in the database (`main.js`)
- - receives the uploaded photos corresponding to the occurrences sent by the APP (`photosUpload.js`)
- - stores these photos, to be shown on the app or on the website (`photosUpload.js`)
+ - receives the uploaded photos corresponding to the occurrences sent by the APP (`photosServer.js`)
+ - stores these photos, to be shown on the app or on the website (`photosServer.js`)
 
 The code also runs periodically to
 
