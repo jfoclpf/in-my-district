@@ -266,65 +266,71 @@ function insertFetchedDataIntoHistoric () {
 function sendReminderEmail (occurrence) {
   const getPhotosUrl = variables.urls.databaseServer.getPhotos
 
-  const progressAlert = $.jAlert({
-    class: 'ja_300px',
-    closeBtn: false,
-    content: `Carregando as imagens&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="${cordova.file.applicationDirectory + 'www/css/res/images/loading.gif'}" />`
-  })
-  // download images from server to cache to attach them in email
-  // DB has 4 fields for images for the same DB entry: foto1, foto2, foto3 and foto4
-  const photosDeferred = []
-  console.log('start sendReminderEmail')
-  const downloadFileToDevice = function (photoIndex, fullImgUrl, fileName) {
-    let destPathDir
-    if (functions.isThisAndroid()) {
-      // https://cordova.apache.org/docs/en/latest/reference/cordova-plugin-file/#file-system-layouts
-      destPathDir = cordova.file.cacheDirectory // normally: file:///data/data/<app-id>/cache
-    } else {
-      window.alert('Unknown device: ' + device.platform)
-      return
-    }
-    file.downloadFileToDevice(fullImgUrl, fileName, destPathDir,
-      (err, localFileName) => {
-        if (err) {
-          photosDeferred[photoIndex].resolve(null)
+  file.readFile(cordova.file.applicationDirectory + 'www/css/res/images/loading.gif', { format: 'dataURL' })
+    .then((dataURL) => {
+      const progressAlert = $.jAlert({
+        class: 'ja_300px',
+        closeBtn: false,
+        content: `Carregando as imagens&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="${dataURL}" />`
+      })
+      // download images from server to cache to attach them in email
+      // DB has 4 fields for images for the same DB entry: foto1, foto2, foto3 and foto4
+      const photosDeferred = []
+      console.log('start sendReminderEmail')
+      const downloadFileToDevice = function (photoIndex, fullImgUrl, fileName) {
+        let destPathDir
+        if (functions.isThisAndroid()) {
+          // https://cordova.apache.org/docs/en/latest/reference/cordova-plugin-file/#file-system-layouts
+          destPathDir = cordova.file.cacheDirectory // normally: file:///data/data/<app-id>/cache
         } else {
-          const filePathForEmailAttachment = cordova.plugins.email.adaptPhotoInfoForEmailAttachment(localFileName)
-          photosDeferred[photoIndex].resolve(filePathForEmailAttachment)
+          window.alert('Unknown device: ' + device.platform)
+          return
         }
-      })
-  }
-
-  for (let photoIndex = 1; photoIndex <= 4; photoIndex++) {
-    if (occurrence['foto' + photoIndex]) { // if that photo index exists in the DB entry
-      const fileName = occurrence['foto' + photoIndex]
-      const fullImgUrl = getPhotosUrl + '/' + fileName
-
-      photosDeferred[photoIndex] = $.Deferred()
-      downloadFileToDevice(photoIndex, fullImgUrl, fileName)
-    }
-  }
-
-  $.when(...photosDeferred).done(function (/* arguments array */) {
-    const attachments = []
-    for (let i = 0; i < arguments.length; i++) {
-      if (arguments[i]) {
-        attachments.push(arguments[i])
+        file.downloadFileToDevice(fullImgUrl, fileName, destPathDir,
+          (err, localFileName) => {
+            if (err) {
+              photosDeferred[photoIndex].resolve(null)
+            } else {
+              const filePathForEmailAttachment = cordova.plugins.email.adaptPhotoInfoForEmailAttachment(localFileName)
+              photosDeferred[photoIndex].resolve(filePathForEmailAttachment)
+            }
+          })
       }
-    }
-    console.log(JSON.stringify(attachments, 0, 3))
 
-    const emailSubject = `Anomalia com ${occurrence.anomaly1}, ${occurrence.anomaly2} na ${occurrence.data_local}, ${occurrence.data_concelho} - Inquirição sobre estado processual da ocorrência`
+      for (let photoIndex = 1; photoIndex <= 4; photoIndex++) {
+        if (occurrence['foto' + photoIndex]) { // if that photo index exists in the DB entry
+          const fileName = occurrence['foto' + photoIndex]
+          const fullImgUrl = getPhotosUrl + '/' + fileName
 
-    setTimeout(() => {
-      progressAlert.closeAlert()
-      cordova.plugins.email.open({
-        to: [occurrence.email_concelho, occurrence.email_freguesia],
-        attachments, // file paths or base64 data streams
-        subject: emailSubject, // subject of the email
-        body: text.getReminderMessage(occurrence), // email body (for HTML, set isHtml to true)
-        isHtml: true // indicats if the body is HTML or plain text
+          photosDeferred[photoIndex] = $.Deferred()
+          downloadFileToDevice(photoIndex, fullImgUrl, fileName)
+        }
+      }
+
+      $.when(...photosDeferred).done(function (/* arguments array */) {
+        const attachments = []
+        for (let i = 0; i < arguments.length; i++) {
+          if (arguments[i]) {
+            attachments.push(arguments[i])
+          }
+        }
+        console.log(JSON.stringify(attachments, 0, 3))
+
+        const emailSubject = `Anomalia com ${occurrence.anomaly1}, ${occurrence.anomaly2} na ${occurrence.data_local}, ${occurrence.data_concelho} - Inquirição sobre estado processual da ocorrência`
+
+        setTimeout(() => {
+          progressAlert.closeAlert()
+          cordova.plugins.email.open({
+            to: [occurrence.email_concelho, occurrence.email_freguesia],
+            attachments, // file paths or base64 data streams
+            subject: emailSubject, // subject of the email
+            body: text.getReminderMessage(occurrence), // email body (for HTML, set isHtml to true)
+            isHtml: true // indicats if the body is HTML or plain text
+          })
+        }, 3000)
       })
-    }, 3000)
-  })
+    })
+    .catch((err) => {
+      console.error('Error fetching GIF www/css/res/images/loading.gif', err)
+    })
 }
