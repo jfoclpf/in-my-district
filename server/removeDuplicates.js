@@ -10,9 +10,9 @@ const mysql = require('mysql') // module to get info from database
 const debug = require('debug')('removeDuplicates')
 const sqlFormatter = require('sql-formatter')
 
-var photosDirectoryFullPath // directory full path where the images/photos of occurrences are stored
-var DBInfo
-var dBPoolConnections // database connection variable
+let photosDirectoryFullPath // directory full path where the images/photos of occurrences are stored
+let DBInfo
+let dBPoolConnections // database connection variable
 
 module.exports.init = (data) => {
   photosDirectoryFullPath = data.photosDirectoryFullPath
@@ -26,7 +26,7 @@ module.exports.init = (data) => {
 // goes through the db and find inexistanf images, if so, delete them
 function removeDuplicates () {
   // get all production entries grouped by uuid and then for each uuid ordered by date
-  var query = `SELECT * FROM ${DBInfo.db_tables.ocorrencias} WHERE PROD=1 ` +
+  const query = `SELECT * FROM ${DBInfo.db_tables.ocorrencias} WHERE PROD=1 ` +
     `ORDER BY ${DBInfo.db_tables.ocorrencias}.uuid  ASC, ${DBInfo.db_tables.ocorrencias}.data_data ASC`
 
   debug(sqlFormatter.format(query))
@@ -54,9 +54,9 @@ function removeDuplicates () {
 // repeated entries normally are inserted consecutively in the database
 // that is, when an user submits twice the same entry
 function getEntriesToBeDeleted (results) {
-  var output = []
+  const output = []
   // due to the mysql query, results are already grouped by (device) uuid, and then ordered by date
-  for (var i = 1; i < results.length; i++) {
+  for (let i = 1; i < results.length; i++) {
     // previous entry
     const previousA = results[i - 1].data_hora
     const previousB = results[i - 1].data_freguesia
@@ -88,8 +88,8 @@ function getEntriesToBeDeleted (results) {
 // check if two photos are equal (have same jpg content)
 function areTwoPhotosEqual (photoA, photoB) {
   if (photoA && photoB) {
-    var photoABuffer = fs.readFileSync(path.join(photosDirectoryFullPath, photoA))
-    var photoBBuffer = fs.readFileSync(path.join(photosDirectoryFullPath, photoB))
+    const photoABuffer = fs.readFileSync(path.join(photosDirectoryFullPath, photoA))
+    const photoBBuffer = fs.readFileSync(path.join(photosDirectoryFullPath, photoB))
     return photoABuffer.equals(photoBBuffer)
   } else {
     return false
@@ -113,7 +113,7 @@ function deleteEntry (entry, callback) {
       debug('Entry in database marked as deleted')
       // delete files from server corresponding to entry
       const photoArray = [entry.foto1, entry.foto2, entry.foto3, entry.foto4]
-      for (var i = 0; i < photoArray.length; i++) {
+      for (let i = 0; i < photoArray.length; i++) {
         if (photoArray[i]) {
           const filePath = path.join(photosDirectoryFullPath, photoArray[i])
           fs.unlink(filePath, (err) => {
