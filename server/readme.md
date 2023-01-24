@@ -34,8 +34,8 @@ server {
     proxy_set_header X-Forwarded-Proto https;
   }
 
-  # server for uploading photos
-  location = /serverapp_img_upload {
+  # server for photos
+  location = ^\/(serverapp_img_upload|image_server)$ {
     proxy_pass http://localhost:3046;
     proxy_http_version 1.1;
     proxy_set_header Upgrade $http_upgrade;
@@ -43,13 +43,7 @@ server {
     proxy_set_header Host $host;
     proxy_cache_bypass $http_upgrade;
     proxy_set_header X-Forwarded-For $remote_addr;
-  }
-
-  # server for static uploaded images/photos
-  location /image_server/ {
-    alias /var/www/in-my-district/server/uploadedImages/;
-    autoindex off;
-  }
+	}
 
   location = /robots.txt { 
     add_header Content-Type text/plain;
