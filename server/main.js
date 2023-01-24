@@ -55,9 +55,9 @@ app.get('/', function (req, res) {
 // to upload anew or update the data of an occurrence
 app.post(submissionsUrlPath, function (req, res) {
   // object got from POST
-  var serverCommand = req.body.serverCommand || req.body.dbCommand // dbCommand for backward compatibility
+  const serverCommand = req.body.serverCommand || req.body.dbCommand // dbCommand for backward compatibility
   debug('serverCommand is ', serverCommand)
-  var databaseObj = req.body.databaseObj
+  const databaseObj = req.body.databaseObj
   debug('with databaseObj: ', databaseObj)
 
   if (!serverCommand || !databaseObj) {
@@ -69,8 +69,8 @@ app.post(submissionsUrlPath, function (req, res) {
   debug('\nInserting user data into ' +
                 'database table ' + DBInfo.database + '->' + DBInfo.db_tables.ocorrencias)
 
-  var query
-  var returnedData = {}
+  let query
+  let returnedData = {}
   switch (serverCommand) {
     case 'submitNewEntryToDB': { // (new entry in table) builds sql query to insert user data
       databaseObj.table_row_uuid = generateUuid()
@@ -147,14 +147,14 @@ app.get(requestHistoricUrlPath, function (req, res) {
 
   // not all fields should be public, other fields like name and email
   // are sensitive and confirmation keys are secret
-  var fieldsArr = ['table_row_uuid', 'uuid', 'foto1', 'foto2', 'foto3', 'foto4',
+  const fieldsArr = ['table_row_uuid', 'uuid', 'foto1', 'foto2', 'foto3', 'foto4',
     'data_data', 'data_hora', 'data_concelho', 'data_freguesia', 'data_local',
     'data_num_porta', 'data_coord_latit', 'data_coord_long', 'anomaly1', 'anomaly2',
     'anomaly_code', 'email_concelho', 'email_freguesia', 'ocorrencia_resolvida',
     'ocorrencia_resolvida_por_op', 'ocorrencia_resolvida_por_municipio',
     'ocorrencia_resolvida_por_freguesia', 'ocorrencia_resolvida_por_utilizadores_adicionais']
 
-  var query = `SELECT ${mysql.escapeId(fieldsArr)} FROM ${DBInfo.database}.${DBInfo.db_tables.ocorrencias} `
+  let query = `SELECT ${mysql.escapeId(fieldsArr)} FROM ${DBInfo.database}.${DBInfo.db_tables.ocorrencias} `
 
   if (uuid) { // user device uuid
     // get the all entries for a specific user (ex: to generate historic for user)
@@ -255,7 +255,7 @@ app.get(solvedOccurrenceUrlPath + '/:authority?/:table_row_uuid?/:key?', functio
         })
       },
       (callback) => {
-        var solvedObj2Db
+        let solvedObj2Db
         if (whoSolvedOk === 'parish') {
           solvedObj2Db = { ocorrencia_resolvida_por_freguesia: 1 }
         } else if (whoSolvedOk === 'municipality') {
@@ -304,8 +304,8 @@ app.get(solvedOccurrenceUrlPath + '/:authority?/:table_row_uuid?/:key?', functio
 
 function generateUuid () {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-    var r = Math.random() * 16 | 0
-    var v = c === 'x' ? r : (r & 0x3 | 0x8)
+    const r = Math.random() * 16 | 0
+    const v = c === 'x' ? r : (r & 0x3 | 0x8)
     return v.toString(16)
   })
 }
