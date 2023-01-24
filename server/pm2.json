@@ -2,6 +2,8 @@
   "apps" : [{
     "name"        : "in-my-district",
     "script"      : "main.js",
+    "wait_ready" : true,
+    "listen_timeout" : 50000,
     "watch"       : false,
     "instances"   : "2",
     "exec_mode"   : "cluster",

@@ -314,7 +314,12 @@ function generateUuid () {
 /* ############################################################################################## */
 /* ############################################################################################## */
 
-const server = app.listen(mainServerPort, () => console.log(`Request server listening on port ${mainServerPort}!`))
+const server = app.listen(mainServerPort, () => {
+  console.log(`Request server listening on port ${mainServerPort}!`)
+  if (process.send) {
+    process.send('ready') // trigger to PM2 that app is ready
+  }
+})
 
 // server for uploading files to main server's disk
 const server2 = require(path.join(__dirname, 'photosServer'))
