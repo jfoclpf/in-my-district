@@ -15,8 +15,8 @@
         "getPhotos": "/image_server"
       }
     },
-    "mainAppPort": 3045,
-    "photosUploadAppPort": 3046,
+    "mainServerPort": 3045,
+    "photosServerPort": 3046,
     "photosDirectory": "uploadedImages",
     "mysql": {
       "__comment": "MySQL Database where to store all the occorrences",

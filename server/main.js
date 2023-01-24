@@ -29,11 +29,11 @@ const serverInfo = configs.server
 const submissionsUrlPath = serverInfo.url.paths.submissions // to upload anew or update the data of an occurence
 const requestHistoricUrlPath = serverInfo.url.paths.requestHistoric
 const solvedOccurrenceUrlPath = serverInfo.url.paths.solvedOccurrence // for the link municipalities and parishes use to declare occurrence as resolved
-const mainAppPort = serverInfo.mainAppPort
+const mainServerPort = serverInfo.mainServerPort
 
 // upload of images/photos
 const photosUploadUrlPath = serverInfo.url.paths.photosUpload
-const photosUploadAppPort = serverInfo.photosUploadAppPort
+const photosServerPort = serverInfo.photosServerPort
 const photosDirectoryFullPath = path.join(__dirname, serverInfo.photosDirectory)
 
 DBInfo.connectionLimit = 20 // for pooling
@@ -313,11 +313,11 @@ function generateUuid () {
 /* ############################################################################################## */
 /* ############################################################################################## */
 
-const server = app.listen(mainAppPort, () => console.log(`Request server listening on port ${mainAppPort}!`))
+const server = app.listen(mainServerPort, () => console.log(`Request server listening on port ${mainServerPort}!`))
 
 // server for uploading files to main server's disk
 const server2 = require(path.join(__dirname, 'photosUpload'))
-  .init({ photosUploadUrlPath, photosUploadAppPort, photosDirectoryFullPath })
+  .init({ photosUploadUrlPath, photosServerPort, photosDirectoryFullPath })
 
 console.log('Initializing timers to cleanup database')
 // directory where the images are stored with respect to present file
