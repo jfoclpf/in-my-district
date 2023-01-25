@@ -327,9 +327,9 @@ const server2 = require(path.join(__dirname, 'photosServer'))
 
 console.log('Initializing timers to cleanup database')
 // directory where the images are stored with respect to present file
-require(path.join(__dirname, 'cleanBadPhotos'))
+require(path.join(__dirname, 'routines', 'cleanBadPhotos'))
   .init({ photosDirectoryFullPath, DBInfo, dBPoolConnections })
-require(path.join(__dirname, 'removeDuplicates'))
+require(path.join(__dirname, 'routines', 'removeDuplicates'))
   .init({ photosDirectoryFullPath, DBInfo, dBPoolConnections })
 
 // gracefully exiting upon CTRL-C or when PM2 stops the process
