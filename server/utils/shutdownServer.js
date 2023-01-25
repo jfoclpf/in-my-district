@@ -6,16 +6,30 @@ module.exports = function (signal, server, server2, dBPoolConnections) {
   try {
     async.parallel([
       (callback) => {
-        server.close(() => {
+        // closeAllConnections() is only available after Node v18.02
+        if (server.closeAllConnections) {
+          server.closeAllConnections()
           console.log('Main server closed')
           callback()
-        })
+        } else {
+          server.close(() => {
+            console.log('Main server closed')
+            callback()
+          })
+        }
       },
       (callback) => {
-        server2.close(() => {
-          console.log('Server for photos upload closed')
+        // closeAllConnections() is only available after Node v18.02
+        if (server2.closeAllConnections) {
+          server2.closeAllConnections()
+          console.log('Photos server closed')
           callback()
-        })
+        } else {
+          server2.close(() => {
+            console.log('Photos server closed')
+            callback()
+          })
+        }
       },
       (callback) => {
         dBPoolConnections.end((err) => {
@@ -34,7 +48,7 @@ module.exports = function (signal, server, server2, dBPoolConnections) {
         setTimeout(() => process.exit(1), 5000)
       } else {
         console.log('Grecefully exited, servers and DB connections closed for main script')
-        process.exitCode = 0
+        setTimeout(() => process.exit(0), 1000)
       }
     })
   } catch (err) {
