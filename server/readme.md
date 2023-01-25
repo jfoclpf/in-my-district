@@ -2,14 +2,14 @@
 Here resides the NodeJS code of the sever that: 
 
  - connects to a MySQL database (`main.js`)
- - receives HTTP requests from the APP to submit or update new ocurrences in the database (`main.js`)
- - receives the uploaded photos corresponding to the occurrences sent by the APP (`photosServer.js`)
- - stores these photos, to be shown on the app or on the website (`photosServer.js`)
+ - receives HTTP requests from the APP to submit or update new ocurrences in the database (`servers/occurrences/index.js`)
+ - receives the uploaded photos corresponding to the occurrences sent by the APP (`servers/photos/index.js`)
+ - stores these photos, to be shown on the app or on the website (`servers/photos/index.js`)
 
 The code also runs periodically to
 
- - mark entries in the database as deleted if pathnames of photos don't exist in the server drive (`cleanBadPhotos`)
- - remove duplicated entries in database (`removeDuplicates.js`)
+ - mark entries in the database as deleted if pathnames of photos don't exist in the server drive (`routines/cleanBadPhotos`)
+ - remove duplicated entries in database (`routines/removeDuplicates.js`)
 
 The entry point of the server is `main.js`.
  

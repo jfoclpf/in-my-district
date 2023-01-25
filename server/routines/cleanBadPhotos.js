@@ -14,7 +14,7 @@ let photosDirectoryFullPath // directory full path where the images/photos of oc
 let DBInfo
 let dBPoolConnections // database connection variable
 
-module.exports.init = (data) => {
+module.exports = (data) => {
   photosDirectoryFullPath = data.photosDirectoryFullPath
   DBInfo = data.DBInfo
   dBPoolConnections = data.dBPoolConnections

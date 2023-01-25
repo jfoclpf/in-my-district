@@ -7,7 +7,12 @@ const bodyParser = require('body-parser')
 const cors = require('cors')
 const debug = require('debug')('server:file-transfer')
 
-module.exports.init = (data) => {
+module.exports = (serverInfo) => {
+  const photosUploadUrlPath = serverInfo.url.paths.photosUpload
+  const getPhotosUrlPath = serverInfo.url.paths.getPhotos
+  const photosServerPort = serverInfo.photosServerPort
+  const photosDirectoryFullPath = serverInfo.photosDirectoryFullPath
+
   const app = express()
 
   // enable files upload
@@ -17,10 +22,10 @@ module.exports.init = (data) => {
   app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }))
 
   // endpoint to get photos as static content
-  app.use(data.getPhotosUrlPath, express.static(data.photosDirectoryFullPath))
+  app.use(getPhotosUrlPath, express.static(photosDirectoryFullPath))
 
   // photosUploadUrlPath is defined on /keys-configs/configs.json
-  app.post(data.photosUploadUrlPath, async (req, res) => {
+  app.post(photosUploadUrlPath, async (req, res) => {
     debug('Getting files')
     try {
       if (!req.files) {
@@ -35,7 +40,7 @@ module.exports.init = (data) => {
         debug(req.files)
         const img = req.files.file
         // Use the mv() method to place the file in upload directory (i.e. "uploads")
-        img.mv(path.join(data.photosDirectoryFullPath, img.name))
+        img.mv(path.join(photosDirectoryFullPath, img.name))
 
         // send response
         res.status(200).send({
@@ -55,8 +60,8 @@ module.exports.init = (data) => {
   })
 
   const server = app.listen(
-    data.photosServerPort,
-    () => console.log(`Photos server listening on port ${data.photosServerPort}!`)
+    photosServerPort,
+    () => console.log(`Photos server listening on port ${photosServerPort}!`)
   )
 
   return server
