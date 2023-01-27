@@ -44,7 +44,7 @@ module.exports = ({ configs, dBPoolConnections }) => {
   // link for the municipality or parish authorities to click to mark occurence as resolved
   app.get(
     solvedOccurrenceUrlPath + '/:authority?/:table_row_uuid?/:key?',
-    require(path.join(routesDir, 'requestHistoric'))({ DBInfo, dBPoolConnections, websiteUrlOrigin })
+    require(path.join(routesDir, 'solvedOccurrence'))({ DBInfo, dBPoolConnections, websiteUrlOrigin })
   )
 
   // main server for dealing with occurrences
