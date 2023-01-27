@@ -1,5 +1,5 @@
 /* eslint camelcase: off */
-/* global cordova, $, device */
+/* global cordova, $, device, FileReader */
 
 import * as appSecrets from './appSecrets.js'
 
@@ -95,4 +95,18 @@ export function setDebugValues () {
 
 export function isNonEmptyString (str) {
   return str && typeof str === 'string'
+}
+
+export function downloadAsDataURL (url) {
+  return new Promise((resolve, reject) => {
+    fetch(url)
+      .then(res => res.blob())
+      .then(blob => {
+        const reader = new FileReader()
+        reader.readAsDataURL(blob)
+        reader.onloadend = () => resolve(reader.result)
+        reader.onerror = err => reject(err)
+      })
+      .catch(err => reject(err))
+  })
 }
