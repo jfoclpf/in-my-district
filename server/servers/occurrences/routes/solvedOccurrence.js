@@ -8,6 +8,10 @@ module.exports = ({ DBInfo, dBPoolConnections, websiteUrlOrigin }) => (req, res)
   const tableRowUuid = req.params.table_row_uuid
   const key = req.params.key
 
+  debug('authority:', authority)
+  debug('tableRowUuid:', tableRowUuid)
+  debug('key:', key)
+
   if (
     (authority !== 'freguesia' && authority !== 'municipio') ||
     !tableRowUuid ||
