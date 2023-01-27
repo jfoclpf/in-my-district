@@ -277,23 +277,18 @@ function sendReminderEmail (occurrence) {
       // DB has 4 fields for images for the same DB entry: foto1, foto2, foto3 and foto4
       const photosDeferred = []
       console.log('start sendReminderEmail')
-      const downloadFileToDevice = function (photoIndex, fullImgUrl, fileName) {
-        let destPathDir
-        if (functions.isThisAndroid()) {
-          // https://cordova.apache.org/docs/en/latest/reference/cordova-plugin-file/#file-system-layouts
-          destPathDir = cordova.file.cacheDirectory // normally: file:///data/data/<app-id>/cache
-        } else {
-          window.alert('Unknown device: ' + device.platform)
-          return
-        }
-        file.downloadFileToDevice(fullImgUrl, fileName, destPathDir,
-          (err, localFileName) => {
+
+      const downloadPhoto = function (photoIndex, fullImgUrl) {
+        functions.downloadAsDataURL(fullImgUrl)
+          .then(dataURL => {
+            const adaptedDataUrl = cordova.plugins.email.adaptDataUrlForAttachment(dataURL, photoIndex)
+            photosDeferred[photoIndex].resolve(adaptedDataUrl)
+          })
+          .catch(err => {
             if (err) {
-              photosDeferred[photoIndex].resolve(null)
-            } else {
-              const filePathForEmailAttachment = cordova.plugins.email.adaptPhotoInfoForEmailAttachment(localFileName)
-              photosDeferred[photoIndex].resolve(filePathForEmailAttachment)
+              console.warn(`Could not download ${fullImgUrl}`, err)
             }
+            photosDeferred[photoIndex].resolve(null)
           })
       }
 
@@ -303,7 +298,7 @@ function sendReminderEmail (occurrence) {
           const fullImgUrl = getPhotosUrl + '/' + fileName
 
           photosDeferred[photoIndex] = $.Deferred()
-          downloadFileToDevice(photoIndex, fullImgUrl, fileName)
+          downloadPhoto(photoIndex, fullImgUrl)
         }
       }
 
@@ -314,7 +309,6 @@ function sendReminderEmail (occurrence) {
             attachments.push(arguments[i])
           }
         }
-        console.log(JSON.stringify(attachments, 0, 3))
 
         const emailSubject = `Anomalia com ${occurrence.anomaly1}, ${occurrence.anomaly2} na ${occurrence.data_local}, ${occurrence.data_concelho} - Inquirição sobre estado processual da ocorrência`
 
