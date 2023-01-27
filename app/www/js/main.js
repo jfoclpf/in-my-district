@@ -313,7 +313,7 @@ function sendEMailMessage () {
   try {
     const imagesArray = photos.getPhotosForEmailAttachment()
     // console.log(JSON.stringify(imagesArray, 0, 3))
-    attachments = imagesArray.map((path, i) => cordova.plugins.email.adaptPhotoInfoForEmailAttachment(path, i))
+    attachments = imagesArray.map((path, i) => cordova.plugins.email.adaptDataUrlForAttachment(path, i))
   } catch (err) {
     console.error('Error gathering attachments', err, attachments)
     window.alert('Erro a obter anexos')

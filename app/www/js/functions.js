@@ -6,8 +6,8 @@ import * as appSecrets from './appSecrets.js'
 // to run on startup
 // add functions related with respective plugins
 export function addFunctionsToPlugins () {
-  cordova.plugins.email.adaptPhotoInfoForEmailAttachment = function (path, index) {
-    return `base64:photo${index + 1}.jpg//` + path.split(',').pop()
+  cordova.plugins.email.adaptDataUrlForAttachment = function (data, index) {
+    return `base64:photo${index + 1}.jpg//` + data.split(',').pop()
   }
 }
 
