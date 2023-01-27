@@ -55,4 +55,4 @@ jobs:
         rm -rf platforms/ plugins/
         cordova platform add ios
     - run: npm test
-    - run: cordova build ios --buildFlag='-UseModernBuildSystem=0'
+    - run: cordova build ios --buildFlag="CODE_SIGN_IDENTITY=''" --buildFlag="CODE_SIGNING_REQUIRED=NO"
