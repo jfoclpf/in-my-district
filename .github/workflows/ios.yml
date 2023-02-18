@@ -54,5 +54,9 @@ jobs:
         cordova platform rm ios
         rm -rf platforms/ plugins/
         cordova platform add ios
+        cordova plugin rm cordova-plugin-network-information
+        cordova clean
+    - run: cordova requirements ios
     - run: npm test
-    - run: cordova build ios --buildFlag='-UseModernBuildSystem=0'
+    - name: Build iOS
+      run: cordova build ios --device --buildFlag="CODE_SIGN_IDENTITY=''" --buildFlag="CODE_SIGNING_REQUIRED=NO" --buildFlag="CODE_SIGN_ENTITLEMENTS=''" --buildFlag="CODE_SIGNING_ALLOWED=NO"
