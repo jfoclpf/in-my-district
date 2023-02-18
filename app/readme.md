@@ -1,7 +1,7 @@
 ## Como instalar e testar a APP
 ### Requisitos, _debug_ e eventuais problemas
 
-* ver [documentação](/docs.md)
+* ver [documentação](./docs.md)
 
 ### Android
 
