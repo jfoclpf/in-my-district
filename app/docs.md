@@ -25,6 +25,8 @@ O gradle é usado para fazer o `build` dos projetos Apache Cordova
 
 O Android SDK (que é instalado automaticamente quando se instala o Android Studio) é usado para testar a APP no seu telemóvel Android.
 
+No caso de não ter instalado o Android Studio, poderá precisar também do [Android CMD Line tools](https://developer.android.com/studio/command-line) para obter as últimas versões dos comandos.
+
 ## Eventuais problemas com versões do Java
 
 Um problema comum pode estar relacionado com as versões do Java. Para saber a versão corra `java -c` e `javac -version` (compilador).
@@ -59,6 +61,39 @@ para listar os dispositivos Android detectados. Caso o dispositivo seja detetado
 `cordova run android --device`
 
 Para fazer debug no Chrome aceda a `chrome://inspect/#devices`
+
+## Usar um emulador
+
+Instalar o emulador
+
+```
+[sudo] sdkmanager --install "emulator"
+```
+
+Instalar as plataformas de teste, exemplo:
+
+```
+[sudo] sdkmanager --install "system-images;android-32;google_apis;x86_64"
+[sudo] sdkmanager --install "system-images;android-33;google_apis;x86_64"
+```
+
+Criar o dispositivo virtual (AVD), exemplo:
+
+```
+avdmanager create avd -n emulator -k "system-images;android-32;google_apis;x86_64"
+```
+
+Confirmar que ficou instalado
+
+```
+avdmanager list avd
+```
+
+Correr o emulador
+
+```
+cordova emulate android --target=emulator
+```
 
 ## Plugins necessários
 
