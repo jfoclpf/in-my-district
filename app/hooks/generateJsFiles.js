@@ -13,8 +13,14 @@ module.exports = function (context) {
   const appDir = context.opts.projectRoot
 
   // fetch config JSON file to generate Javascript files
-  // use sample file if used by Continuous Integration (Github CI Actions)
-  const configsFile = path.join(appDir, '..', 'keys-configs', process.env.CI ? 'configs.sample.json' : 'configs.json')
+
+  // use sample config file as default or if used by Continuous Integration (Github CI Actions)
+  let bUseConfigsSample = true
+  if (process.env.CONFIGS_PROD && !process.env.CI) {
+    bUseConfigsSample = false
+  }
+
+  const configsFile = path.join(appDir, '..', 'keys-configs', bUseConfigsSample ? 'configs.sample.json' : 'configs.json')
   const configs = JSON.parse(fs.readFileSync(configsFile, 'utf8'))
   console.log(`${twoSpaces}Configuration file: ${path.relative(appDir, configsFile)}`)
 

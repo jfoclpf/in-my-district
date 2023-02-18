@@ -7,6 +7,7 @@ cd ..        # directory of the app dir
 source ../keys-configs/appSigningEnvs
 
 export PATH=${PATH}:$ANDROID_SDK_ROOT/tools:$ANDROID_SDK_ROOT/platform-tools
+export CONFIGS_PROD=1
 
 cordova clean
 

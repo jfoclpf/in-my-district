@@ -10,6 +10,7 @@ cd ..        # root directory of the project
 source ../keys-configs/appSigningEnvs
 
 export PATH=${PATH}:$ANDROID_SDK_ROOT/tools:$ANDROID_SDK_ROOT/platform-tools
+export CONFIGS_PROD=1
 
 # detect if device is connected
 adb get-state 1>/dev/null 2>&1 && printf "\033[32mDEVICE ATTACHED\033[0m\n\n" || { printf "\033[31m No device attached\n\n"; exit 1; }

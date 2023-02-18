@@ -1,6 +1,7 @@
 #!/bin/bash
 cd "${0%/*}"
 
+export CONFIGS_PROD=1
 cordova build
 
 if [ -z "$1" ] 
