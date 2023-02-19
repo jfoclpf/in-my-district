@@ -27,6 +27,9 @@ O Android SDK (que é instalado automaticamente quando se instala o Android Stud
 
 No caso de não ter instalado o Android Studio, poderá precisar também do [Android CMD Line tools](https://developer.android.com/studio/command-line) para obter as últimas versões dos comandos.
 
+## Configurações
+
+Por padrão a APP usa o ficheiro público de configurações [`/keys-configs/configs.sample.json`](/keys-configs/configs.sample.json). Em Produção deverá criar uma cópia privada deste ficheiro denominando-o de `/keys-configs/configs.json` e editando-o em conformidade (este ficheiro não será registado no git, vede [`/.gitignore`](/.gitignore)), sendo necessário também atribuir a variável de sistema `CONFIGS_PROD=1` antes dos comandos `cordova`, por exemplo em Unix/Bash `CONFIGS_PROD=1 cordova run android` (vede por exemplo os scripts localizados em [`/scripts`](./scripts)).
 ## Eventuais problemas com versões do Java
 
 Um problema comum pode estar relacionado com as versões do Java. Para saber a versão corra `java -c` e `javac -version` (compilador).
@@ -62,7 +65,7 @@ para listar os dispositivos Android detectados. Caso o dispositivo seja detetado
 
 Para fazer debug no Chrome aceda a `chrome://inspect/#devices`
 
-## Usar um emulador
+## Testar num emulador
 
 Instalar o emulador
 
