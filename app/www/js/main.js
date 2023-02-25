@@ -97,8 +97,6 @@ function init () {
     }
   })
 
-  functions.updateDateAndTime()
-
   $('input.mandatory').each(function () {
     if (!DEBUG && $(this).val() === '') {
       $(this).css('border-color', 'red')

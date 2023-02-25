@@ -48,12 +48,31 @@ export function cleanArray (actual) {
   return newArray
 }
 
-// initializes date and time with current date and time
+// initializes date and time with current date and time of Lisbon from time API
+// if time API is not available, use device internal clock
 export function updateDateAndTime () {
-  const date = new Date()
-  $('#date').datepicker('setDate', date)
-  const currentTime = pad(date.getHours(), 2) + ':' + pad(date.getMinutes(), 2)
-  $('#time').val(currentTime)
+  return new Promise((resolve, reject) => {
+    const zone = 'Europe/Lisbon'
+    fetch('https://worldtimeapi.org/api/timezone/' + zone)
+      .then(r => r.json())
+      .then(r => {
+        // strip out timezone offset from datetime ISO string
+        const date = new Date(r.datetime.replace(/[+-]\d\d:\d\d$/, ''))
+        console.log(`Time now in ${zone}: ${date.getHours()}:${date.getMinutes()}`)
+        $('#date').datepicker('setDate', date)
+        const currentTime = pad(date.getHours(), 2) + ':' + pad(date.getMinutes(), 2)
+        $('#time').val(currentTime)
+      })
+      .catch(() => {
+        const date = new Date()
+        $('#date').datepicker('setDate', date)
+        const currentTime = pad(date.getHours(), 2) + ':' + pad(date.getMinutes(), 2)
+        $('#time').val(currentTime)
+      })
+      .finally(() => {
+        resolve()
+      })
+  })
 }
 
 export function clearCache () {

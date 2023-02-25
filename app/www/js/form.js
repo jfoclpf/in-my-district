@@ -29,7 +29,8 @@ export function init () {
       async: true,
       crossDomain: true
     }),
-    localization.getGeolocation() // get GPS coordinates and addresses (municipality, parish, street and street number)
+    localization.getGeolocation(), // get GPS coordinates and addresses (municipality, parish, street and street number)
+    functions.updateDateAndTime()
   ])
     .then((results) => {
       if (results[0].status === 'fulfilled') {
@@ -281,28 +282,32 @@ function updateImgContainers () {
 /* ********************************************************************** */
 /* ********************* UPDATE LOCALE BUTTON *************************** */
 
-// botão get address by GPS (Atualizar)
+// botão Atualizar (Refresh)
 $('#getCurrentAddresBtn').on('click', function () {
   spinnerOnButton(true)
   GPSLoadingOnFields(true)
 
-  localization.getGeolocation()
-    .then((res) => {
-      updatesFormMapToNewCoordinates(res.latitude, res.longitude)
-      localization.fillFormWithAddress(res.addressFromOSM, res.addressFromGeoApiPt)
-    })
-    .catch((err) => {
-      console.error('Error on localization.getGeolocation()')
-      if (err) {
-        console.error(err)
-      }
-    })
+  Promise.allSettled([
+    new Promise((resolve, reject) => {
+      localization.getGeolocation()
+        .then((res) => {
+          updatesFormMapToNewCoordinates(res.latitude, res.longitude)
+          localization.fillFormWithAddress(res.addressFromOSM, res.addressFromGeoApiPt)
+        })
+        .catch((err) => {
+          console.error('Error on localization.getGeolocation()')
+          if (err) {
+            console.error(err)
+          }
+        })
+        .finally(() => resolve())
+    }),
+    functions.updateDateAndTime()
+  ])
     .finally(() => {
       GPSLoadingOnFields(false)
       spinnerOnButton(false)
     })
-
-  functions.updateDateAndTime()
 })
 
 /* spinner */
