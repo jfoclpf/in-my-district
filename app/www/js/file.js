@@ -7,8 +7,11 @@ export function readFile (path, options) {
     window.resolveLocalFileSystemURL(path, (fileEntry) => {
       fileEntry.file((file) => {
         const reader = new FileReader()
-        reader.onloadend = () => {
+        reader.onload = () => {
           resolve(reader.result)
+        }
+        reader.onerror = () => {
+          reject(Error(`Error occurred reading file: ${path}`))
         }
 
         const format = options.format
@@ -24,10 +27,6 @@ export function readFile (path, options) {
             break
           default:
             reader.readAsText(file)
-        }
-
-        reader.onerror = () => {
-          reject(Error(`Error occurred reading file: ${path}`))
         }
       })
     }, (error) => {
