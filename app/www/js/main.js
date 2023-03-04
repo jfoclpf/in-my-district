@@ -91,7 +91,7 @@ function init () {
   // populates HTML select according to the information on anomalies.js file
   anomalies.populatesAnomaliesSelect((err) => {
     if (err) {
-      console.error(err)
+      console.error('Error loading anomalies', err)
     } else {
       map.init()
     }

@@ -11,7 +11,7 @@ export function readFile (path, options) {
           resolve(reader.result)
         }
         reader.onerror = () => {
-          reject(Error(`Error occurred reading file: ${path}`))
+          reject(Error(`Error reading file\npath: ${path}\nfileEntry: ${JSON.stringify(fileEntry, null, 2)}`))
         }
 
         const format = options.format
@@ -28,9 +28,20 @@ export function readFile (path, options) {
           default:
             reader.readAsText(file)
         }
+      }, (err) => {
+        reject(Error(
+          `Error on fileEntry.file method: ${err.toString()}\n` +
+          `path: ${path}\n` +
+          `options: ${JSON.stringify(options, null, 2)}\n` +
+          `fileEntry: ${JSON.stringify(fileEntry, null, 2)}`,
+          err))
       })
-    }, (error) => {
-      reject(Error('resolve error', error))
+    }, (err) => {
+      reject(Error(
+        `Error on resolveLocalFileSystemURL method: ${err.toString()}\n` +
+        `path: ${path}\n` +
+        `options: ${JSON.stringify(options, null, 2)}`,
+        err))
     })
   })
 }
