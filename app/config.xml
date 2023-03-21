@@ -89,6 +89,7 @@
     <icon src="res/icon/ios/512.png" width="512" height="512"/>
     <icon src="res/icon/ios/1024.png" width="1024" height="1024"/>
     <preference name="iosPersistentFileLocation" value="Library"/>
+    <preference name="iosExtraFilesystems" value="library,library-nosync,documents,documents-nosync,cache,bundle,root" />
     <preference name="NativeXHRLogging" value="full"/>
     <preference name="AllowUntrustedCerts" value="true"/>
     <preference name="InterceptRemoteRequests" value="all"/>
