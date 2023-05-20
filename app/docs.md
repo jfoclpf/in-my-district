@@ -35,7 +35,7 @@ Para testes ou produção com um Servidor e Base de Dados personalizados deverá
 
 ## Eventuais problemas com versões do Java
 
-Um problema comum pode estar relacionado com as versões do Java. Para saber a versão corra `java -c` e `javac -version` (compilador).
+Um problema comum pode estar relacionado com as versões do Java. Para saber a versão corra `java -version` e `javac -version` (compilador).
 
 Em Debian/Ubuntu para escolher a versão correta, corra `sudo update-alternatives --config javac`. Em macOS, por exemplo, `export JAVA_HOME=/usr/libexec/java_home -v 1.11`.
 
