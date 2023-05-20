@@ -3,6 +3,7 @@
 import * as form from './form.js'
 import * as contacts from './contacts.js'
 import * as photos from './photos.js'
+import * as functions from './functions.js'
 
 // get main message
 // parameter <option> may be:
@@ -25,13 +26,16 @@ export function getMainMessage (option, dbEntryResultData) {
       message += `${getRandomGreetings()} da Junta de Freguesia de ${parish};<br>`
     }
 
-    message += '<br>' +
+    message += '<br>'
 
-      `Eu, <b>${$('#name').val().trim()}</b>, ` +
+    if (!functions.isThis_iOS()) {
+      message += `Eu, <b>${$('#name').val().trim()}</b>, ` +
       `detentor do <b>${$('#id_type').val()}</b> com o número <b>${$('#id_number').val()}</b>, ` +
       `com o Número de Identificação Fiscal (NIF) <b>${$('#nif').val()}</b> ` +
-      `e com residência em <b>${$('#address').val().trim()}, ${$('#postal_code').val()}, ${$('#address_city').val().trim()}</b>, ` +
-      'venho por este meio comunicar a V. Exas. a seguinte anomalia e irregularidade, ' +
+      `e com residência em <b>${$('#address').val().trim()}, ${$('#postal_code').val()}, ${$('#address_city').val().trim()}</b>, `
+    }
+
+    message += 'venho por este meio comunicar a V. Exas. a seguinte anomalia e irregularidade, ' +
       'para que a mesma seja resolvida pelos serviços de V. Exas o mais rapidamente quanto possível.<br><br>' +
 
       `No passado dia <b>${$.datepicker.formatDate("dd' de 'MM' de 'yy", $('#date').datepicker('getDate'))}</b>` +
@@ -143,12 +147,17 @@ export function getRegards () {
 
   const regard = regards[Math.floor(Math.random() * regards.length)]
 
-  // full name
-  const Name = $('#name').val()
-  // gets first and last name
-  const ShortName = Name.split(' ')[0] + ' ' + Name.split(' ')[(Name.split(' ')).length - 1]
+  let msgEnd
+  if (!functions.isThis_iOS()) {
+    // full name
+    const Name = $('#name').val()
+    // gets first and last name
+    const ShortName = Name.split(' ')[0] + ' ' + Name.split(' ')[(Name.split(' ')).length - 1]
 
-  const msgEnd = regard + ',<br>' + ShortName
+    msgEnd = regard + ',<br>' + ShortName
+  } else {
+    msgEnd = regard
+  }
 
   return msgEnd
 }

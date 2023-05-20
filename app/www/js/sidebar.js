@@ -3,6 +3,7 @@
 import * as map from './map.js'
 import * as historic from './historic.js'
 import * as variables from './variables.js'
+import * as functions from './functions.js'
 
 export function init () {
   $('#sidebarCollapse').on('click', function (e) {
@@ -28,10 +29,16 @@ export function init () {
     }
   })
 
-  $('#personal_data_show').on('click', function () {
-    showSection('personal_data')
-    toggleSidebar(false)
-  })
+  // in iOS we will not request personnal data to user, see issue #57
+  if (functions.isThis_iOS()) {
+    $('#personal_data_show').hide()
+    $('#playstore_evaluation_link').hide()
+  } else {
+    $('#personal_data_show').on('click', function () {
+      showSection('personal_data')
+      toggleSidebar(false)
+    })
+  }
 
   $('#historic_show').on('click', function () {
     historic.updateHistoric()

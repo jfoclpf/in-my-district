@@ -16,6 +16,11 @@ let mainFormMap
 let anomalyMapMarker // map marker referring to the place where the anomaly is located
 
 export function init () {
+  // in iOS we don't request personnal data, see #57
+  if (functions.isThis_iOS()) {
+    $('#personal_data').remove()
+  }
+
   // loading spinner on
   GPSLoadingOnFields(true)
 
@@ -161,24 +166,26 @@ export function isMessageReady () {
     return false
   }
 
-  // detects if the name is correctly filled in
-  const Name = $('#name').val()
-  if (!personalInfo.isFullNameOK(Name) && !main.DEBUG) {
-    $.jAlert({
-      title: 'Erro no nome!',
-      theme: 'red',
-      content: 'Insira o nome completo.'
-    })
-    return false
-  }
+  if (!functions.isThis_iOS()) {
+    // detects if the name is correctly filled in
+    const Name = $('#name').val()
+    if (!personalInfo.isFullNameOK(Name) && !main.DEBUG) {
+      $.jAlert({
+        title: 'Erro no nome!',
+        theme: 'red',
+        content: 'Insira o nome completo.'
+      })
+      return false
+    }
 
-  if (!personalInfo.isPostalCodeOK() && !main.DEBUG) {
-    $.jAlert({
-      title: 'Erro no Código Postal!',
-      theme: 'red',
-      content: 'Insira o Código Postal no formato XXXX-XXX'
-    })
-    return false
+    if (!personalInfo.isPostalCodeOK() && !main.DEBUG) {
+      $.jAlert({
+        title: 'Erro no Código Postal!',
+        theme: 'red',
+        content: 'Insira o Código Postal no formato XXXX-XXX'
+      })
+      return false
+    }
   }
 
   // from here the inputs are correctly written
