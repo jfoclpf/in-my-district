@@ -58,7 +58,7 @@ export function init () {
     toggleSidebar(false)
   })
 
-  $('#app_evaluation_link').on('click', function () {
+  $('#playstore_evaluation_link').on('click', function () {
     cordova.InAppBrowser.open(variables.urls.appStores.playStore, '_system')
   })
 }
