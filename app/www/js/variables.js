@@ -10,7 +10,7 @@ export const urls = {
  },
  "appStores": {
   "playStore": "https://play.google.com/store/apps/details?id=com.in.my.district",
-  "F-Droid": "https://f-droid.org/packages/com.in.my.district/"
+  "F-Droid": "https://f-droid.org/packages/com.in.my.district"
  },
  "geoApi": {
   "nominatimReverse": "https://nominatim.openstreetmap.org/reverse",
