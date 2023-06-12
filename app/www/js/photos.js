@@ -14,6 +14,45 @@ const photosUriOnFileSystem = [] // photos URI always on file system (file uri i
 
 export function getPhoto (imgNmbr, type, callback) {
   console.log('%c ========== GETTING PHOTO ========== ', 'background: yellow; color: blue')
+}
+
+  if (functions.isThisAndroid()) {
+    // ensure Android has enough camera/media permissions to advance
+    const permissions = cordova.plugins.permissions
+    permissions.checkPermission(permissions.CAMERA, function (status) {
+      if (!status.hasPermission) {
+        console.log('No permission to access CAMERA. Requesting...')
+        permissions.requestPermission(permissions.CAMERA,
+          function (status) {
+            if (!status.hasPermission) {
+              errorGrantingCameraPermission()
+            } else {
+              startingCamera(imgNmbr, type, callback)
+            }
+          }, function () {
+            errorGrantingCameraPermission()
+          })
+      } else {
+        startingCamera(imgNmbr, type, callback)
+      }
+    })
+  } else {
+    startingCamera(imgNmbr, type, callback)
+  }
+}
+
+function errorGrantingCameraPermission () {
+  console.error('Erro na permissão para aceder à Câmera')
+  window.alert('Erro na permissão para aceder à Câmera')
+}
+
+function startingCamera (imgNmbr, type, callback) {
+  console.log('Has permission to use CAMERA')
+
+  // store for the case when the app reboots, see function onAppResumeAfterReboot
+  window.localStorage.setItem('isUserUsingCamera', JSON.stringify(true))
+  window.localStorage.setItem('userCapturingPhotoNumber', imgNmbr.toString())
+  window.localStorage.setItem('userCapturingPhotoType', type)
 
   const options = setCameraOptions(type)
 
