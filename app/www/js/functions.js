@@ -1,6 +1,7 @@
 /* eslint camelcase: off */
 /* global cordova, $, device, FileReader */
 
+import * as main from './main.js'
 import * as appSecrets from './appSecrets.js'
 
 // to run on startup
@@ -64,12 +65,20 @@ export function updateDateAndTime () {
         $('#time').val(currentTime)
       })
       .catch(() => {
+        // get date from device in case worldtimeapi fails
         const date = new Date()
         $('#date').datepicker('setDate', date)
         const currentTime = pad(date.getHours(), 2) + ':' + pad(date.getMinutes(), 2)
         $('#time').val(currentTime)
       })
       .finally(() => {
+        $('#date,#time').each(function () {
+          if (!main.DEBUG && $(this).val() === '') {
+            $(this).css('border-color', 'red')
+          } else {
+            $(this).css('border-color', '')
+          }
+        })
         resolve()
       })
   })
