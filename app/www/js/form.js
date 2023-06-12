@@ -216,19 +216,16 @@ $(':text').each(function (index) {
 
 /* ********************************************************************** */
 /* *********************** IMAGES/PHOTOS ******************************** */
-// buttons "Add Image"
+// buttons "Add Photo"
 $('#addImg_1, #addImg_2, #addImg_3, #addImg_4').on('click', function () {
   // get id, for example #remImg_2
   const id = $(this).attr('id')
   console.log('photo id: ' + id)
   // gets the number of the element, by obtaining the last character of the id
-  const num = id[id.length - 1]
+  const num = parseInt(id[id.length - 1])
 
   const callback = function (imgNmbr) {
-    // hides "Adds image" button
-    $('#' + 'addImg_' + imgNmbr).html('<i class="fa fa-edit"></i>')
-    $('#' + 'remImg_' + imgNmbr).show()
-    updateImgContainers()
+    console.log(`Photo ${imgNmbr} added`)
   }
 
   $.jAlert({
@@ -257,9 +254,14 @@ $('#remImg_1, #remImg_2, #remImg_3, #remImg_4').on('click', function () {
   // get id, for example #remImg_2
   const id = $(this).attr('id')
   // gets the number of the element, by obtaining the last character of the id
-  const num = id[id.length - 1]
+  const num = parseInt(id[id.length - 1])
 
-  photos.removeImage('myImg_' + num, num)
+  const imgId = 'myImg_' + num.toString()
+  const imgElem = document.getElementById(imgId)
+  imgElem.src = ''
+  imgElem.style.display = 'none'
+  photos.removeImage(num)
+
   $(this).hide()
 
   $('#addImg_' + num).html('<i class="fa fa-plus"></i>')
@@ -267,20 +269,41 @@ $('#remImg_1, #remImg_2, #remImg_3, #remImg_4').on('click', function () {
   updateImgContainers()
 })
 
+export function displayImage (imgUri, imgNmbr) {
+  // show button to edit/add photo and button to remove photo
+  $('#addImg_' + imgNmbr.toString()).html('<i class="fa fa-edit"></i>')
+  $('#remImg_' + imgNmbr.toString()).show()
+
+  const imgId = 'myImg_' + imgNmbr.toString()
+  const imgElem = document.getElementById(imgId)
+  // show image
+  imgElem.src = imgUri
+  imgElem.style.display = 'block'
+  // show also parent div
+  const parentNode = imgElem.parentNode
+  parentNode.style.display = 'block'
+
+  updateImgContainers()
+}
+
+// function to add the [+] button on the next empty container
 function updateImgContainers () {
   const numberOfContainers = $('#image_selector .img-container').length
+  // button to add photo for the next empty container
   let hasShownButton = false
   for (let i = 0; i < numberOfContainers; i++) {
-    console.log(i)
     const $this = $('#image_selector .img-container').eq(i)
     if (!$this.find('img').attr('src')) {
       if (!hasShownButton) {
-        console.log('show')
+        console.log('show image container ' + (i + 1).toString())
         $this.show()
         hasShownButton = true
       } else {
+        console.log('hide image container ' + (i + 1).toString())
         $this.hide()
       }
+    } else {
+      $this.show()
     }
   }
 }

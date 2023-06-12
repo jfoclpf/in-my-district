@@ -153,16 +153,28 @@ function onOnline () {
     })
 }
 
-function onResume () {
-  console.log('onResume')
-
+function onResume (res) {
   // stop loading spinner
   $('#spinner-send_email_btn').hide()
   $('#send_email_btn').show()
+
+  const result = res.pendingResult
+  console.log('onResume', result)
+  if (
+    result &&
+    result.pluginServiceName.toLowerCase() === 'camera' &&
+    result.pluginStatus === 'OK'
+  ) {
+    // result.result has the image URI
+    photos.onAppResumeAfterReboot(result.result)
+  }
 }
 
 function initialWelcomePopup () {
-  if (JSON.parse(window.localStorage.getItem('didUserAlreadySeeWelcomePopup'))) {
+  if (
+    JSON.parse(window.localStorage.getItem('didUserAlreadySeeWelcomePopup')) ||
+    JSON.parse(window.localStorage.getItem('isUserUsingCamera'))
+  ) {
     return
   }
 
@@ -197,7 +209,10 @@ function initialWelcomePopup () {
 
 // request user to evaluate this app on Play Store
 function requestUserAppEvaluation () {
-  if (JSON.parse(window.localStorage.getItem('didUserAlreadyClickedToEvaluatedApp'))) {
+  if (
+    JSON.parse(window.localStorage.getItem('didUserAlreadyClickedToEvaluatedApp')) ||
+    JSON.parse(window.localStorage.getItem('isUserUsingCamera'))
+  ) {
     return
   }
 
@@ -234,7 +249,10 @@ function requestUserAppEvaluation () {
 
 // this APP only works with MIUI optimization ON, warn user about it
 function xiaomiWarning () {
-  if (JSON.parse(window.localStorage.getItem('didUserAlreadySeeXiaomiWarning'))) {
+  if (
+    JSON.parse(window.localStorage.getItem('didUserAlreadySeeXiaomiWarning')) ||
+    JSON.parse(window.localStorage.getItem('isUserUsingCamera'))
+  ) {
     return
   }
 

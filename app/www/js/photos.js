@@ -1,4 +1,4 @@
-/* global $, Camera */
+/* global $, cordova, Camera */
 
 import * as file from './file.js'
 import * as form from './form.js'
@@ -9,12 +9,16 @@ import { readFile } from './file.js'
 // get Photo function
 // type depends if the photo is got from camera or the photo library
 
-const photosForEmailAttachment = [] // array with photos info for email attachment (fileUri in android and base64 in iOS)
-const photosUriOnFileSystem = [] // photos URI always on file system (file uri in android and iOS)
+let photosAsBase64 = [] // array with photos info for email attachment (fileUri in android and base64 in iOS)
+let photosUriOnFileSystem = [] // photos URI always on file system (file uri in android and iOS)
+let photoWithGPS = [] // 'synced' or 'unsynced'
 
+// imgNmbr may only be Number 1, 2, 3 or 4
 export function getPhoto (imgNmbr, type, callback) {
   console.log('%c ========== GETTING PHOTO ========== ', 'background: yellow; color: blue')
-}
+  if (![1, 2, 3, 4].includes(imgNmbr)) {
+    throw Error('imgNmbr must be Number 1, 2, 3 or 4')
+  }
 
   if (functions.isThisAndroid()) {
     // ensure Android has enough camera/media permissions to advance
@@ -59,10 +63,12 @@ function startingCamera (imgNmbr, type, callback) {
   console.log('starting navigator.camera.getPicture')
   navigator.camera.getPicture(function (result) {
     console.log('cameraSuccess init')
+    console.log('%c Camera Success', 'color: green; font-weight:bold')
+    window.localStorage.setItem('isUserUsingCamera', JSON.stringify(false))
     cameraSuccess(result, imgNmbr, type, callback)
   },
   function cameraError (error) {
-    console.debug('Não foi possível obter fotografia: ' + error, 'app')
+    console.error('Não foi possível obter fotografia:', error)
   }, options)
 }
 
@@ -91,17 +97,22 @@ function cameraSuccess (result, imgNmbr, type, callback) {
     console.log('ImageUri b) ' + imageUri)
   }
 
-  photosUriOnFileSystem[imgNmbr] = imageUri
+  photosUriOnFileSystem[imgNmbr - 1] = imageUri
 
   if (functions.isThisAndroid()) {
     // resizeImage plugin is just working on android
+    console.log('Resizing photo...')
     resizeImage(imageUri, function (resizedImgUri, err) {
+      console.log('Photo resized')
       const imgToShowUri = !err ? resizedImgUri : imageUri
 
+      console.log('Getting file content of Photo...')
       readFile(imgToShowUri, { format: 'dataURL' })
         .then((dataURL) => {
-          displayImage(dataURL, 'myImg_' + imgNmbr)
-          photosForEmailAttachment[imgNmbr] = dataURL
+          console.log('Got File content of Photo')
+          form.displayImage(dataURL, imgNmbr)
+          photosAsBase64[imgNmbr - 1] = dataURL
+          storePhotosArrays('photosAsBase64')
         })
         .catch((err) => {
           console.error(err)
@@ -114,8 +125,9 @@ function cameraSuccess (result, imgNmbr, type, callback) {
     // in iOS the photos to be attached must also be stored as dataURL
     readFile(imageUri, { format: 'dataURL' })
       .then((dataURL) => {
-        displayImage(dataURL, 'myImg_' + imgNmbr)
-        photosForEmailAttachment[imgNmbr] = dataURL
+        form.displayImage(dataURL, imgNmbr)
+        photosAsBase64[imgNmbr - 1] = dataURL
+        storePhotosArrays('photosAsBase64')
       })
       .catch((err) => {
         console.error(err)
@@ -127,11 +139,18 @@ function cameraSuccess (result, imgNmbr, type, callback) {
     window.alert('This APP only works in Android or iOS')
   }
 
-  // if user selects a photo from the library
-  // it gets, when available on the photo the EXIF information
-  // the date, time and GPS information, to fill in the form
-  if (isCameraWithExifInfoAvailable && type === 'library' &&
-    thisResult.json_metadata && thisResult.json_metadata !== '{}') {
+  if (type === 'camera') {
+    // photo comes from the camera, thus the device GPS already coincides with the photo
+    photoWithGPS[imgNmbr - 1] = 'synced'
+  } else if (
+    isCameraWithExifInfoAvailable &&
+    type === 'library' &&
+    thisResult.json_metadata &&
+    thisResult.json_metadata !== '{}'
+  ) {
+    // if user selects a photo from the library
+    // it gets, when available on the photo the EXIF information
+    // the date, time and GPS information, to fill in the form
     // convert json_metadata JSON string to JSON Object
     const metadata = JSON.parse(thisResult.json_metadata)
 
@@ -156,8 +175,12 @@ function cameraSuccess (result, imgNmbr, type, callback) {
     }
 
     // if the photo EXIF info has GPS information
-    if (metadata.gpsLatitude && metadata.gpsLatitudeRef &&
-              metadata.gpsLongitude && metadata.gpsLongitudeRef) {
+    if (
+      metadata.gpsLatitude &&
+      metadata.gpsLatitudeRef &&
+      metadata.gpsLongitude &&
+      metadata.gpsLongitudeRef
+    ) {
       const lat = localization.convertDMSStringInfoToDD(metadata.gpsLatitude, metadata.gpsLatitudeRef)
       const lon = localization.convertDMSStringInfoToDD(metadata.gpsLongitude, metadata.gpsLongitudeRef)
 
@@ -171,8 +194,36 @@ function cameraSuccess (result, imgNmbr, type, callback) {
           }
         })
       }
+      photoWithGPS[imgNmbr - 1] = 'synced'
+    } else {
+      photoWithGPS[imgNmbr - 1] = 'unsynced'
+    }
+  } else {
+    // photo was got from library and it has no GPS info
+    photoWithGPS[imgNmbr - 1] = 'unsynced'
+  }
+}
+
+// this function is called after app reboots while the user is taking a photo,
+// normally it happens on devices with low memory RAM
+export function onAppResumeAfterReboot (imageUri) {
+  // restore arrays with photo information
+  restorePhotosArrays()
+  console.log('photosAsBase64: ', photosAsBase64)
+
+  for (let i = 0; i < photosAsBase64.length; i++) {
+    if (photosAsBase64[i]) {
+      form.displayImage(photosAsBase64[i], i + 1)
     }
   }
+
+  const imgNmbr = parseInt(window.localStorage.getItem('userCapturingPhotoNumber')) || 1
+  const type = window.localStorage.getItem('userCapturingPhotoType') || ''
+
+  // add photo that was pending
+  cameraSuccess(imageUri, imgNmbr, type, function (imgNmbr) {
+    console.log(`Photo ${imgNmbr} added`)
+  })
 }
 
 // camera plugin options
@@ -192,6 +243,8 @@ function setCameraOptions (type) {
     quality: 50, // do not increase, otherwise the email plugin cannot attach photo due to photo file size
     destinationType: Camera.DestinationType.FILE_URI,
     // In this app, dynamically set the picture source, Camera or photo gallery
+    targetWidth: 1200,
+    targetHeight: 1600,
     sourceType: srcType,
     encodingType: Camera.EncodingType.JPEG,
     mediaType: Camera.MediaType.PICTURE,
@@ -199,6 +252,34 @@ function setCameraOptions (type) {
     correctOrientation: true // Corrects Android orientation quirks
   }
   return options
+}
+
+// store arrays with Photo information
+function storePhotosArrays (arrayName) {
+  switch (arrayName) {
+    case 'photosUriOnFileSystem':
+      window.localStorage.setItem(arrayName, JSON.stringify(photosUriOnFileSystem))
+      break
+    case 'photosAsBase64':
+      window.localStorage.setItem(arrayName, JSON.stringify(photosAsBase64))
+      break
+    case 'photoWithGPS':
+      window.localStorage.setItem(arrayName, JSON.stringify(photoWithGPS))
+      break
+    case 'ALL':
+      window.localStorage.setItem('photosUriOnFileSystem', JSON.stringify(photosUriOnFileSystem))
+      window.localStorage.setItem('photosAsBase64', JSON.stringify(photosAsBase64))
+      window.localStorage.setItem('photoWithGPS', JSON.stringify(photoWithGPS))
+      break
+    default:
+      throw Error('Invalid option ' + arrayName)
+  }
+}
+
+function restorePhotosArrays () {
+  photosUriOnFileSystem = JSON.parse(window.localStorage.getItem('photosUriOnFileSystem'))
+  photosAsBase64 = JSON.parse(window.localStorage.getItem('photosAsBase64'))
+  photoWithGPS = JSON.parse(window.localStorage.getItem('photoWithGPS'))
 }
 
 // tries to get date from file name
@@ -269,18 +350,11 @@ function isValidDate (year, month, day) {
   return date && (date.getMonth() + 1) === month
 }
 
-function displayImage (imgUri, id) {
-  const elem = document.getElementById(id)
-  elem.src = imgUri
-  elem.style.display = 'block'
-}
-
-export function removeImage (id, num) {
-  const elem = document.getElementById(id)
-  elem.src = ''
-  elem.style.display = 'none'
-  photosUriOnFileSystem[num] = null
-  photosForEmailAttachment[num] = null
+export function removeImage (num) {
+  photosUriOnFileSystem[num - 1] = ''
+  photosAsBase64[num - 1] = ''
+  photoWithGPS[num - 1] = ''
+  storePhotosArrays('ALL')
 }
 
 function resizeImage (imageUri, callback) {
@@ -295,8 +369,8 @@ function resizeImage (imageUri, callback) {
 }
 
 export function getPhotosForEmailAttachment () {
-  // removes empty values from photosForEmailAttachment, concatenating valid indexes, ex: [1, null, 2, null] will be [1, 2]
-  return functions.cleanArray(photosForEmailAttachment)
+  // removes empty values from photosAsBase64, concatenating valid indexes, ex: [1, null, 2, null] will be [1, 2]
+  return functions.cleanArray(photosAsBase64)
 }
 
 export function getPhotosUriOnFileSystem () {
