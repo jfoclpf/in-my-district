@@ -205,8 +205,7 @@ export function isMessageReady () {
 // removes leading and trailing spaces on every text field "on focus out"
 $(':text').each(function (index) {
   $(this).focusout(function () {
-    let text = $(this).val()
-    text = $.trim(text)
+    let text = $(this).val().trim()
     text = text.replace(/\s\s+/g, ' ') // removes consecutive spaces in-between
     $(this).val(text)
   })

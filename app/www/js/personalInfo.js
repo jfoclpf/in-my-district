@@ -29,8 +29,7 @@ $('input.personal_info').each(function () {
   $(this).focusout(function () {
     const id = $(this).attr('id')
     console.log(id)
-    let value = $(this).val()
-    value = $.trim(value)
+    let value = $(this).val().trim()
     value = value.replace(/\s\s+/g, ' ') // removes consecutive spaces in-between
     window.localStorage.setItem(id, value)
 
@@ -57,7 +56,7 @@ export function isFullNameOK (fullName) {
   name = name.replace(/\s\s+/g, ' ')
 
   // trims leading and trailing spaces
-  name = $.trim(name)
+  name = name.trim()
 
   // gets the number of words / names
   const name_array = name.split(' ')
@@ -142,7 +141,7 @@ $('#postal_code').on('input', function () {
 export function isPostalCodeOK () {
   let plate_str = $('#postal_code').val()
 
-  plate_str = $.trim(plate_str)
+  plate_str = plate_str.trim()
 
   if (plate_str.length !== 8) {
     return false
