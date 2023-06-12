@@ -111,7 +111,7 @@ function init () {
     requestUserAppEvaluation()
     initialWelcomePopup()
     // this APP only works with MIUI optimization ON, warn the user about it
-    if (device.manufacturer.toLowerCase() === 'xiaomi') {
+    if (device.manufacturer.toLowerCase().includes() === 'xiaomi') {
       xiaomiWarning()
     }
   }
