@@ -2,6 +2,7 @@
 /* global $ */
 
 import * as main from './main.js'
+import * as variables from './variables.js'
 
 // populates personal in fields information if available in storage
 export function loadsPersonalInfo () {
@@ -126,6 +127,15 @@ $('#postal_code').on('input', function () {
     $(this).css('border-color', 'red')
   } else {
     $(this).css('border-color', '')
+    // postal code is OK, get now locality/city from postal code
+    fetch(`${variables.urls.geoApi.ptApi}/cp/${$('#postal_code').val()}?json=1`)
+      .then(r => r.json())
+      .then(res => {
+        if (res.Localidade) {
+          $('#address_city').val(res.Localidade)
+            .trigger('input').trigger('input')
+        }
+      })
   }
 
   $(this).val(function (index, value) {
