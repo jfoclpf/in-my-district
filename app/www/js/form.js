@@ -335,6 +335,14 @@ $.datepicker.setDefaults({
 })
 $('#date').datepicker()
 
+$('#date, #time').on('input keyup keypress focusout', function () {
+  if ($(this).val() === '' && !main.DEBUG) {
+    $(this).css('border-color', 'red')
+  } else {
+    $(this).css('border-color', '')
+  }
+})
+
 /* ********************************************************************** */
 /* ********************* LOCAL OF OCCURRENCE **************************** */
 // when the select of municipalities is changed, updates the select of parishes
