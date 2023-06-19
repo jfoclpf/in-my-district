@@ -11,14 +11,20 @@ export CONFIGS_PROD=1
 
 cordova clean
 
-cordova build --release android
+cordova build --release android -- --packageType=apk
 
 cp ../keys-configs/$KEY_FILENAME platforms/android/app/build/outputs/apk/release/
 cd platforms/android/app/build/outputs/apk/release/
 
-jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore $KEY_FILENAME -storepass $KEY_PASS app-release-unsigned.apk $KEY_ALIAS
+# old method
+# jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore $KEY_FILENAME -storepass $KEY_PASS app-release-unsigned.apk $KEY_ALIAS
 
 zipalign -v 4 app-release-unsigned.apk inMyDistrict.apk
+
+printf $'\n\nSigning \n\n'
+printf ""
+
+apksigner sign --ks $KEY_FILENAME --pass-encoding utf-8 --ks-key-alias $KEY_ALIAS --ks-pass pass:$KEY_PASS --key-pass pass:$KEY_PASS inMyDistrict.apk
 
 cd ../../../../../../..
 rm -f dist/inMyDistrict.apk

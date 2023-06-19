@@ -20,7 +20,7 @@ adb shell pm list packages | grep com.in.my.district && adb uninstall com.in.my.
 
 cordova clean
 
-cordova build --release android
+cordova build --release android -- --packageType=apk
 
 cp ../keys-configs/$KEY_FILENAME platforms/android/app/build/outputs/apk/release/
 cd platforms/android/app/build/outputs/apk/release/
