@@ -203,6 +203,7 @@ function cameraSuccess (result, imgNmbr, type, callback) {
     // photo was got from library and it has no GPS info
     photoWithGPS[imgNmbr - 1] = 'unsynced'
   }
+  storePhotosArrays('photoWithGPS')
 }
 
 // this function is called after app reboots while the user is taking a photo,
@@ -210,6 +211,7 @@ function cameraSuccess (result, imgNmbr, type, callback) {
 export function onAppResumeAfterReboot (imageUri) {
   // restore arrays with photo information
   restorePhotosArrays()
+  console.log('photosUriOnFileSystem: ', photosUriOnFileSystem)
   console.log('photosAsBase64: ', photosAsBase64)
 
   for (let i = 0; i < photosAsBase64.length; i++) {
