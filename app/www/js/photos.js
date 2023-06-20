@@ -98,6 +98,7 @@ function cameraSuccess (result, imgNmbr, type, callback) {
   }
 
   photosUriOnFileSystem[imgNmbr - 1] = imageUri
+  storePhotosArrays('photosUriOnFileSystem')
 
   if (functions.isThisAndroid()) {
     // resizeImage plugin is just working on android
